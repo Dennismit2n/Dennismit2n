@@ -74,6 +74,20 @@ function ladeTexte() {
   return kontext.I18N;
 }
 
+// Kachelfarben der Website: .tool-<key> { --tool: var(--x) } und die Werte von --x
+// (und --x-flow, falls die Kachel einen Verlauf trägt) aus dem Dunkel-Block von
+// css/style.css. Die README-Kacheln stehen immer auf dunklem Grund, darum die Dunkel-Werte.
+function ladeKachelfarben() {
+  const css = fs.readFileSync(path.join(WEBSITE, 'css', 'style.css'), 'utf8').replace(/\r\n/g, '\n');
+  const block = css.match(/:root\[data-theme="dark"\]\s*\{([\s\S]*?)\n\}/);
+  if (!block) throw new Error('Dunkel-Block :root[data-theme="dark"] in css/style.css nicht gefunden.');
+  const werte = {}, verlaeufe = {}, zuordnung = {};
+  for (const m of block[1].matchAll(/--([a-z-]+):\s*(#[0-9a-fA-F]{6})\s*;/g)) werte[m[1]] = m[2].toUpperCase();
+  for (const m of block[1].matchAll(/--([a-z-]+)-flow:\s*linear-gradient\(([^;]*)\)\s*;/g)) verlaeufe[m[1]] = m[2].match(/#[0-9a-fA-F]{6}/g).map((c) => c.toUpperCase());
+  for (const m of css.matchAll(/\.tool-([a-z-]+)\s*\{\s*--tool:\s*var\(--([a-z-]+)\)/g)) zuordnung[m[1]] = m[2];
+  return { werte, verlaeufe, zuordnung };
+}
+
 function artVon(werkzeug) {
   if (ART_SONDERFAELLE[werkzeug.key]) return ART_SONDERFAELLE[werkzeug.key];
   if (werkzeug.ctaKey === 'downloadTool') return 'windows';
@@ -144,6 +158,15 @@ function pruefeFarben() {
 }
 const akzent = (name, thema) => FARBEN.akzente[name][thema];
 
+// Akzent einer Werkzeug-Kachel in einer Darstellung: Rahmen und Etikett in der
+// Website-Farbe. Schafft die Farbe als Schrift auf dem Kachelgrund keine 4,5:1,
+// bekommt nur die Etikett-Schrift die Nebentextfarbe; Rahmen bleibt in Werkzeugfarbe.
+function kachelAkzent(farbe, verlauf, thema) {
+  const grund = FARBEN.bauplan[thema].grund;
+  const text = kontrast(farbe, grund) >= 4.5 ? farbe : FARBEN.bauplan[thema].schrift2;
+  return { text, linie: farbe, verlauf };
+}
+
 // Text, der am Handy (Spalte 293 px) lesbar bleiben muss.
 function handyPx(px, viewBoxBreite) { return (px * 293) / viewBoxBreite; }
 
@@ -184,6 +207,7 @@ function schreibe(relativ, inhalt) {
 pruefeFarben();
 const werkzeuge = ladeWerkzeuge();
 const texte = ladeTexte();
+const kachelfarben = ladeKachelfarben();
 
 // Werkzeuge vorbereiten
 for (const w of werkzeuge) {
@@ -199,7 +223,13 @@ for (const w of werkzeuge) {
   w.zeilen = umbrechen(kurz(w.beschreibung), KARTE.descPx, KARTE.descMax);
   if (breite(w.anzeigename, 24, true) > 420 - 94 - 18) fehler.push(`Name zu breit für die Kachel: ${w.anzeigename}`);
   if (94 + breite(ART_ETIKETT[w.art], KARTE.artPx) + 24 > 406) fehler.push(`Art-Etikett zu breit: ${ART_ETIKETT[w.art]}`);
-  if (!FARBEN.arten[w.art]) fehler.push(`Keine Farbe für Art „${w.art}“ in farben.json`);
+  const variable = kachelfarben.zuordnung[w.key];
+  w.farbe = variable && kachelfarben.werte[variable];
+  w.verlauf = variable && kachelfarben.verlaeufe[variable];
+  if (!w.farbe) { fehler.push(`Keine Kachelfarbe für „${w.key}“ in css/style.css der Website`); continue; }
+  for (const seite of FARBEN.github.dunkel) mindestens(`Kachelrand ${w.key} gegen GitHub`, w.farbe, seite, 3);
+  mindestens(`Kachelrand ${w.key} auf Kachelgrund dunkel`, w.farbe, FARBEN.bauplan.dunkel.grund, 3);
+  mindestens(`Etikett ${w.key} dunkel`, kachelAkzent(w.farbe, null, 'dunkel').text, FARBEN.bauplan.dunkel.grund, 4.5);
 }
 // Nebeneinander stehende Kacheln (am Desktop je zwei) bekommen dieselbe Höhe.
 werkzeuge.forEach((w, i) => {
@@ -220,7 +250,7 @@ for (const t of THEMEN) {
   for (const w of werkzeuge) {
     schreibe(path.join('assets', 'karten', `${w.key}-${t}.svg`), karte(FARBEN.bauplan[t], {
       iconSvg: w.iconSvg, name: w.anzeigename, art: ART_ETIKETT[w.art], zeilen: w.zeilen, hoehe: w.kartenHoehe, id: `k-${w.key}`,
-    }, akzent(FARBEN.arten[w.art], t)));
+    }, kachelAkzent(w.farbe, w.verlauf, t)));
   }
   schreibe(path.join('assets', `knopf-${t}.svg`), knopf(FARBEN.knopf[t]));
 }

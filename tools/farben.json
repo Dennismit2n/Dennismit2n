@@ -1,5 +1,5 @@
 {
-  "_herkunft": "Alle Werte aus Dennis' Palette profile_collors (p = primary/Petrol, Akzente = accent-1..6), dazu Weiß. Ausnahme: icons.rand (#6E7681, neutrales Grau, bewusst außerhalb der Palette, siehe ENTSCHEIDUNGEN #23). Kontraste prüft readme-bauen.mjs bei jedem Lauf.",
+  "_herkunft": "Alle Werte aus Dennis' Palette profile_collors (p = primary/Petrol, Akzente = accent-1..6), dazu Weiß. Die Kachelfarben der Werkzeuge stehen NICHT hier: readme-bauen.mjs liest sie aus css/style.css der Website (Dunkel-Werte), damit sie mit den Website-Kacheln übereinstimmen. Ausnahme: icons.rand (#6E7681, neutrales Grau, siehe ENTSCHEIDUNGEN #23). Kontraste prüft readme-bauen.mjs bei jedem Lauf.",
   "_rollen": "grund = Blattfläche, kante = Außenrand gegen die GitHub-Seite, rahmen = Zeichnungsrahmen und Schriftfeld, fein/grob = Konstruktionsraster (Deko), mass = Maßlinien, masstext = Maßzahlen und Ansichtsnamen, kontur = gezeichnete Linien, schrift = Claim, Titel und Namen, schrift2 = Nebentext, label = Feldnamen im Schriftfeld, rost = Akzent",
   "bauplan": {
     "dunkel": {
@@ -124,12 +124,6 @@
     "ueber-mich": "rost",
     "werkzeugkiste": "petrol",
     "werkbank": "gold"
-  },
-  "arten": {
-    "browser": "blau",
-    "windows": "violett",
-    "skill": "magenta",
-    "beides": "gruen"
   },
   "icons": {
     "_zweck": "Feiner Rand für Werkzeug-Icons, deren Fläche auf dunklem Grund fast verschwindet. Neutralgrau, trägt auf hellem und dunklem Grund.",

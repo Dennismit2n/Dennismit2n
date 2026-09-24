@@ -193,12 +193,20 @@ export const KARTE = { breite: 420, rand: 5, descPx: 21, descZeile: 27, descMax:
 // Höhe einer Kachel mit n Beschreibungszeilen.
 export const kartenHoehe = (n) => KARTE.oben + (n - 1) * KARTE.descZeile + 26;
 
-// akzent = { text, linie } der Werkzeug-Art (Browser, Windows, Skill, beides).
+// akzent = { text, linie, verlauf? } — die Kachelfarbe des Werkzeugs auf der Website;
+// verlauf (Farbstopps) nur bei Werkzeugen, deren Website-Kachel einen Verlauf trägt.
 export function karte(f, { iconSvg, name, art, zeilen, hoehe, id }, akzent) {
   const W = KARTE.breite, r = KARTE.rand;
   const o = [];
   o.push(`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${hoehe}" viewBox="0 0 ${W} ${hoehe}">`);
-  o.push(`<rect x="${r + 1.25}" y="${r + 1.25}" width="${W - 2 * r - 2.5}" height="${hoehe - 2 * r - 2.5}" rx="16" fill="${f.grund}" stroke="${akzent.linie}" stroke-width="2.5"/>`);
+  let rand = akzent.linie;
+  if (akzent.verlauf) {
+    const n = akzent.verlauf.length - 1;
+    const stopps = akzent.verlauf.map((c, i) => `<stop offset="${((i / n) * 100).toFixed(0)}%" stop-color="${c}"/>`).join('');
+    o.push(`<defs><linearGradient id="${id}-v" x1="0" y1="0" x2="1" y2="0.2">${stopps}</linearGradient></defs>`);
+    rand = `url(#${id}-v)`;
+  }
+  o.push(`<rect x="${r + 1.25}" y="${r + 1.25}" width="${W - 2 * r - 2.5}" height="${hoehe - 2 * r - 2.5}" rx="16" fill="${f.grund}" stroke="${rand}" stroke-width="2.5"/>`);
   o.push(`<rect x="${r + 9}" y="${r + 9}" width="${W - 2 * r - 18}" height="${hoehe - 2 * r - 18}" rx="9" fill="none" stroke="${f.fein}" stroke-width="1.2"/>`);
   o.push(icon(iconSvg, 24, 22, 56, id));
   o.push(text(94, 48, 24, f.schrift, name, ' font-weight="700"'));
