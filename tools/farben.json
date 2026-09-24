@@ -1,0 +1,25 @@
+{
+  "_herkunft": "Werte aus Dennis' Palette profile_collors (primary = Petrol, accent-1 = Rost). Kontraste prüft readme-bauen.mjs bei jedem Lauf.",
+  "knopf": {
+    "dunkel": {
+      "flaeche": "#003542",
+      "rand": "#0094AF",
+      "schrift": "#65D5EF",
+      "schrift2": "#00C4E5",
+      "pfeil": "#FFAB98"
+    },
+    "hell": {
+      "flaeche": "#004C5D",
+      "rand": "#004C5D",
+      "schrift": "#FFFFFF",
+      "schrift2": "#A5E0EE",
+      "pfeil": "#FBC6BA"
+    }
+  },
+  "icons": {
+    "_zweck": "Feiner Rand für Werkzeug-Icons, deren Fläche auf dunklem GitHub fast verschwindet. Neutralgrau, trägt auf hellem und dunklem Grund.",
+    "rand": "#6E7681",
+    "schwelle": 1.6,
+    "dunkler_grund": "#0d1117"
+  }
+}

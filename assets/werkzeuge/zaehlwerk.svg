@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+  <rect x="2" y="2" width="44" height="44" rx="11" fill="#2f4a08"/>
+  <!-- Zaehlwerk-Gehaeuse -->
+  <rect x="8" y="13" width="32" height="22" rx="4" fill="none" stroke="#a3e635" stroke-width="2.5"/>
+  <!-- drei Zaehlrollen, absteigend gefuellt -->
+  <rect x="13" y="18" width="6" height="12" rx="1.5" fill="#a3e635"/>
+  <rect x="21" y="21" width="6" height="9"  rx="1.5" fill="#a3e635" opacity=".7"/>
+  <rect x="29" y="24" width="6" height="6"  rx="1.5" fill="#a3e635" opacity=".45"/>
+</svg>

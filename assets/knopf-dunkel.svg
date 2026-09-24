@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="700" height="128" viewBox="0 0 700 128">
+<rect x="2" y="2" width="696" height="124" rx="26" fill="#003542" stroke="#0094AF" stroke-width="3"/>
+<g transform="translate(26 24) scale(1.667)" fill="none" stroke="#65D5EF" stroke-linecap="round"><path d="M16 21v-3a8 8 0 0 1 16 0v3" stroke-width="3.2"/><rect x="8" y="21" width="32" height="15" rx="3" stroke-width="3"/><path d="M9.5 28h29" stroke-width="2.6"/><rect x="21" y="25.5" width="6" height="5" rx="1.4" fill="#65D5EF" stroke="none"/></g>
+<text x="140" y="60" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Roboto, Arial, sans-serif" font-size="40" font-weight="700" fill="#65D5EF">Zur Werkzeugkiste</text>
+<text x="140" y="102" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Roboto, Arial, sans-serif" font-size="34" fill="#00C4E5">To the toolbox</text>
+<path d="M606 64h52M636 42l22 22-22 22" fill="none" stroke="#FFAB98" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

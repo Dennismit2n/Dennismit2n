@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+  <rect x="2" y="2" width="44" height="44" rx="11" fill="#0c1c1b" stroke="#6E7681" stroke-width="2"/>
+  <!-- Die Rampe selbst: eine Farbe, in Stufen von hell nach dunkel.
+       Fuenf statt elf Balken, weil elf bei 44 px nur noch Streifen waeren. -->
+  <rect x="10" y="10.4" width="28" height="4.4" rx="2" fill="#d9fbf4"/>
+  <rect x="10" y="16.1" width="28" height="4.4" rx="2" fill="#7fe8dc"/>
+  <rect x="10" y="21.8" width="28" height="4.4" rx="2" fill="#2dd4bf"/>
+  <rect x="10" y="27.5" width="28" height="4.4" rx="2" fill="#14a89c"/>
+  <rect x="10" y="33.2" width="28" height="4.4" rx="2" fill="#0b7068"/>
+</svg>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+  <rect x="2" y="2" width="44" height="44" rx="11" fill="#101321" stroke="#6E7681" stroke-width="2"/>
+  <!-- drei blaue Saeulen wie im Overlay, absteigend -->
+  <rect x="9"  y="14" width="8" height="24" rx="1.5" fill="#2f6bff"/>
+  <rect x="20" y="21" width="8" height="17" rx="1.5" fill="#38bdf8"/>
+  <rect x="31" y="28" width="8" height="10" rx="1.5" fill="#2f6bff" opacity=".8"/>
+  <!-- pinker Punkt aus dem Tray-Symbol -->
+  <circle cx="36.5" cy="13.5" r="4.5" fill="#ff2d95"/>
+</svg>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+  <rect x="2" y="2" width="44" height="44" rx="11" fill="#1c1b1f" stroke="#6E7681" stroke-width="2"/>
+  <!-- einfallender Lichtstrahl -->
+  <path d="M6 24h11" stroke="#f2efe9" stroke-width="2.4" stroke-linecap="round"/>
+  <!-- das Prisma -->
+  <path d="M24 10 13 36h22z" fill="none" stroke="#f2efe9" stroke-width="2.6" stroke-linejoin="round"/>
+  <!-- aufgefaechertes Spektrum: dieselben Stopps wie die Staerke-Anzeige -->
+  <g stroke-width="2.6" stroke-linecap="round">
+    <path d="M30 21 43 13" stroke="#e5484d"/>
+    <path d="M31 24 44 19" stroke="#f76b15"/>
+    <path d="M32 27 45 26" stroke="#e2c541"/>
+    <path d="M31 30 44 34" stroke="#6fbf3b"/>
+    <path d="M30 33 43 41" stroke="#7a5cff"/>
+  </g>
+</svg>
