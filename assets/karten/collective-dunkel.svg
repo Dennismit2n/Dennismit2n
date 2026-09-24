@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="175" viewBox="0 0 420 175">
+<rect x="6.25" y="6.25" width="407.5" height="162.5" rx="16" fill="#002028" stroke="#29A1FA" stroke-width="2.5"/>
+<rect x="14" y="14" width="392" height="147" rx="9" fill="none" stroke="#003542" stroke-width="1.2"/>
+<svg x="24" y="22" width="56" height="56" viewBox="0 0 48 48">
+  <rect x="2" y="2" width="44" height="44" rx="11" fill="#0d2a18" stroke="#6E7681" stroke-width="2"/>
+  <!-- der gemeinsame Topf, in drei Teile zerlegt -->
+  <circle cx="24" cy="24" r="15" fill="#4ade80"/>
+  <g stroke="#0d2a18" stroke-width="3.4" stroke-linecap="round">
+    <path d="M24 24 L24 9.5"/>
+    <path d="M24 24 L36.6 31.2"/>
+    <path d="M24 24 L11.4 31.2"/>
+  </g>
+  <circle cx="24" cy="24" r="3" fill="#0d2a18"/>
+</svg>
+<text x="94" y="48" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Roboto, Arial, sans-serif" font-size="24" fill="#65D5EF" font-weight="700">Collective-Calc</text>
+<rect x="94" y="58" width="159.7" height="30" rx="15" fill="none" stroke="#29A1FA" stroke-width="1.8"/>
+<text x="106" y="80" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Roboto, Arial, sans-serif" font-size="21" fill="#8ECAFF">im Browser</text>
+<text x="24" y="122" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Roboto, Arial, sans-serif" font-size="21" fill="#00ACCA">Wer schuldet wem was?</text>
+<text x="24" y="149" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Roboto, Arial, sans-serif" font-size="21" fill="#00ACCA">Gruppenausgaben teilen</text>
+</svg>

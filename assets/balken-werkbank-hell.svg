@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="846" height="72" viewBox="0 0 846 72">
+<style>@media (max-width: 560px) { .titel { font-size: 50px } .en { display: none } }</style>
+<rect x="1.5" y="1.5" width="843" height="69" rx="12" fill="#004C5D" stroke="#004C5D" stroke-width="3"/>
+<rect x="8" y="8" width="830" height="56" fill="none" stroke="#CCAE2E" stroke-width="2"/>
+<path d="M72 8V64" stroke="#CCAE2E" stroke-width="1.6"/>
+<path class="en" d="M640 8V64" stroke="#CCAE2E" stroke-width="1.6"/>
+<circle cx="40" cy="36" r="17" fill="none" stroke="#E2D4A6" stroke-width="2.4"/>
+<text x="40" y="42" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Roboto, Arial, sans-serif" font-size="17" fill="#E2D4A6" font-weight="600" text-anchor="middle">03</text>
+<text x="90" y="52" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Roboto, Arial, sans-serif" font-size="42" fill="#E2D4A6" font-weight="600" class="titel">Die Werkbank</text>
+<text x="824" y="43" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Roboto, Arial, sans-serif" font-size="19" fill="#E2D4A6" text-anchor="end" lang="en" class="en">The workbench</text>
+</svg>

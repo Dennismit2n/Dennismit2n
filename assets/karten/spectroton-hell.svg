@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="175" viewBox="0 0 420 175">
+<rect x="6.25" y="6.25" width="407.5" height="162.5" rx="16" fill="#004C5D" stroke="#61B7FF" stroke-width="2.5"/>
+<rect x="14" y="14" width="392" height="147" rx="9" fill="none" stroke="#006478" stroke-width="1.2"/>
+<svg x="24" y="22" width="56" height="56" viewBox="0 0 48 48">
+  <rect x="2" y="2" width="44" height="44" rx="11" fill="#0c1c1b" stroke="#6E7681" stroke-width="2"/>
+  <!-- Die Rampe selbst: eine Farbe, in Stufen von hell nach dunkel.
+       Fuenf statt elf Balken, weil elf bei 44 px nur noch Streifen waeren. -->
+  <rect x="10" y="10.4" width="28" height="4.4" rx="2" fill="#d9fbf4"/>
+  <rect x="10" y="16.1" width="28" height="4.4" rx="2" fill="#7fe8dc"/>
+  <rect x="10" y="21.8" width="28" height="4.4" rx="2" fill="#2dd4bf"/>
+  <rect x="10" y="27.5" width="28" height="4.4" rx="2" fill="#14a89c"/>
+  <rect x="10" y="33.2" width="28" height="4.4" rx="2" fill="#0b7068"/>
+</svg>
+<text x="94" y="48" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Roboto, Arial, sans-serif" font-size="24" fill="#FFFFFF" font-weight="700">Spectroton</text>
+<rect x="94" y="58" width="159.7" height="30" rx="15" fill="none" stroke="#61B7FF" stroke-width="1.8"/>
+<text x="106" y="80" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Roboto, Arial, sans-serif" font-size="21" fill="#B2D9FC">im Browser</text>
+<text x="24" y="122" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Roboto, Arial, sans-serif" font-size="21" fill="#A5E0EE">Eine Farbe rein, elf abgestimmte</text>
+<text x="24" y="149" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Roboto, Arial, sans-serif" font-size="21" fill="#A5E0EE">Stufen raus</text>
+</svg>

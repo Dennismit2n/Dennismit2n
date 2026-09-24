@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="202" viewBox="0 0 420 202">
+<rect x="6.25" y="6.25" width="407.5" height="189.5" rx="16" fill="#004C5D" stroke="#61B7FF" stroke-width="2.5"/>
+<rect x="14" y="14" width="392" height="174" rx="9" fill="none" stroke="#006478" stroke-width="1.2"/>
+<svg x="24" y="22" width="56" height="56" viewBox="0 0 48 48">
+  <rect x="2" y="2" width="44" height="44" rx="11" fill="#2f4a08"/>
+  <!-- Zaehlwerk-Gehaeuse -->
+  <rect x="8" y="13" width="32" height="22" rx="4" fill="none" stroke="#a3e635" stroke-width="2.5"/>
+  <!-- drei Zaehlrollen, absteigend gefuellt -->
+  <rect x="13" y="18" width="6" height="12" rx="1.5" fill="#a3e635"/>
+  <rect x="21" y="21" width="6" height="9"  rx="1.5" fill="#a3e635" opacity=".7"/>
+  <rect x="29" y="24" width="6" height="6"  rx="1.5" fill="#a3e635" opacity=".45"/>
+</svg>
+<text x="94" y="48" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Roboto, Arial, sans-serif" font-size="24" fill="#FFFFFF" font-weight="700">Zählwerk</text>
+<rect x="94" y="58" width="159.7" height="30" rx="15" fill="none" stroke="#61B7FF" stroke-width="1.8"/>
+<text x="106" y="80" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Roboto, Arial, sans-serif" font-size="21" fill="#B2D9FC">im Browser</text>
+<text x="24" y="122" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Roboto, Arial, sans-serif" font-size="21" fill="#A5E0EE">Zeigt, wohin dein Claude-Code-</text>
+<text x="24" y="149" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Roboto, Arial, sans-serif" font-size="21" fill="#A5E0EE">Verbrauch geht</text>
+</svg>

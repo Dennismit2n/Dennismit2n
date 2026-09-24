@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="202" viewBox="0 0 420 202">
+<rect x="6.25" y="6.25" width="407.5" height="189.5" rx="16" fill="#002028" stroke="#A582F4" stroke-width="2.5"/>
+<rect x="14" y="14" width="392" height="174" rx="9" fill="none" stroke="#003542" stroke-width="1.2"/>
+<svg x="24" y="22" width="56" height="56" viewBox="0 0 48 48">
+  <rect x="2" y="2" width="44" height="44" rx="11" fill="#101321" stroke="#6E7681" stroke-width="2"/>
+  <!-- drei blaue Saeulen wie im Overlay, absteigend -->
+  <rect x="9"  y="14" width="8" height="24" rx="1.5" fill="#2f6bff"/>
+  <rect x="20" y="21" width="8" height="17" rx="1.5" fill="#38bdf8"/>
+  <rect x="31" y="28" width="8" height="10" rx="1.5" fill="#2f6bff" opacity=".8"/>
+  <!-- pinker Punkt aus dem Tray-Symbol -->
+  <circle cx="36.5" cy="13.5" r="4.5" fill="#ff2d95"/>
+</svg>
+<text x="94" y="48" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Roboto, Arial, sans-serif" font-size="24" fill="#65D5EF" font-weight="700">Besucher-Ticker</text>
+<rect x="94" y="58" width="164.7" height="30" rx="15" fill="none" stroke="#A582F4" stroke-width="1.8"/>
+<text x="106" y="80" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Roboto, Arial, sans-serif" font-size="21" fill="#C8B7FF">für Windows</text>
+<text x="24" y="122" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Roboto, Arial, sans-serif" font-size="21" fill="#00ACCA">Deine GoatCounter-</text>
+<text x="24" y="149" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Roboto, Arial, sans-serif" font-size="21" fill="#00ACCA">Besucherzahlen schweben live</text>
+<text x="24" y="176" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Roboto, Arial, sans-serif" font-size="21" fill="#00ACCA">auf dem Schreibtisch</text>
+</svg>

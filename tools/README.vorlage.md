@@ -1,31 +1,34 @@
-<p>
-<a href="https://dennismit2n.github.io/"><picture>
-<source media="(prefers-color-scheme: dark)" srcset="assets/knopf-dunkel.svg">
-<img src="assets/knopf-hell.svg" width="350" height="64" alt="Zur Werkzeugkiste – To the toolbox">
-</picture></a>
-</p>
+<!-- titel -->
+
+<!-- knopf -->
 
 [dennismit2n.github.io](https://dennismit2n.github.io/)
 
-# Kleine Werkzeuge, die nichts von dir wollen
+<!-- balken:ueber-mich -->
 
-<p lang="en"><i>Small tools that want nothing from you.</i></p>
+<table><tr><td>
 
-Ich bin Dennis, im Netz Dennis_mit_2n. Seit Sommer 2026 baue ich kleine Werkzeuge, die eine Sache gut machen: ohne Anmeldung, ohne Anzeigen, die meisten kostenlos und quelloffen. Programmieren hab ich mir selbst beigebracht, mit KI als Lernhilfe und Claude als Werkbank-Kollegen. Ich will verstehen, was ich baue – nicht nur bauen lassen. Die Namen sind fast alle von mir selbst ausgedacht – man merkt’s. 😉
+<p lang="de">Ich bin Dennis, im Netz Dennis_mit_2n. Meine Werkzeuge wollen nichts von dir: keine Anmeldung, keine Anzeigen. Ich baue sie zusammen mit Claude – verstehen möchte ich sie trotzdem. Die Namen sind fast alle von mir selbst ausgedacht. Nur ich möchte was von dir: Verbesserungsvorschläge.😉</p>
 
-<p lang="en">I’m Dennis, online as Dennis_mit_2n. Since summer 2026 I’ve been building small tools that do one thing well: no sign-up, no ads, most of them free and open source. I taught myself to code, with AI as my tutor and Claude as my workbench buddy. I want to understand what I build – not just have it built. I came up with almost all of the names myself – you can tell. 😉</p>
+<p lang="en">I’m Dennis, online as Dennis_mit_2n. My tools want nothing from you: no sign-up, no ads. I build them together with Claude – but I’d still like to understand them. I came up with almost all of the names myself. I’m the one who’d like something from you: suggestions for improvement.😉</p>
 
-## Die Werkzeugkiste
+</td></tr></table>
 
-<!-- werkzeuge:de -->
+<!-- balken:werkzeugkiste -->
 
-Was sich zuletzt getan hat und wie jedes Werkzeug funktioniert: [Neuigkeiten & Anleitungen](https://dennismit2n.github.io/werkstatt.html)
+<!-- karten -->
 
-## Die Werkbank
+<p lang="de">Zu Zählwerk gehört der <a href="https://github.com/Dennismit2n/zaehlwerk-ticker/releases/latest">Zählwerk Ticker</a> für Windows. Was sich zuletzt getan hat und wie jedes Werkzeug funktioniert: <a href="https://dennismit2n.github.io/werkstatt.html">Neuigkeiten &amp; Anleitungen</a></p>
 
-Sprachen bisher: HTML, JavaScript, TypeScript, CSS, Python und PowerShell, dazu etwas Batch und Inno Setup.<br>Werkzeuge: VS Code, Git und GitHub, Claude Code, Electron.<br>Gebaut auf einem Windows-11-Laptop, getestet auf Android-Handy und -Tablet mit Stift.
+<!-- balken:werkbank -->
 
-Verbesserungsvorschläge sind willkommen – am liebsten als Issue im jeweiligen Repo.
+<table lang="de">
+<tr><th align="left" scope="row">Gelernt</th><td>selbst beigebracht, mit KI als Lernhilfe</td></tr>
+<tr><th align="left" scope="row">Sprachen bisher</th><td>HTML, JavaScript, TypeScript, CSS, Python, PowerShell – dazu etwas Batch und Inno Setup</td></tr>
+<tr><th align="left" scope="row">Werkzeuge</th><td>VS Code, Git und GitHub, Claude Code, Electron</td></tr>
+<tr><th align="left" scope="row">Gebaut auf</th><td>einem Windows-11-Laptop</td></tr>
+<tr><th align="left" scope="row">Getestet auf</th><td>einem Android-Handy und einem Android-Tablet mit Stift</td></tr>
+</table>
 
 <details lang="en">
 <summary><b>In English</b></summary>
@@ -38,12 +41,18 @@ What’s new and how each tool works: [News & guides](https://dennismit2n.github
 
 ### The workbench
 
-Languages so far: HTML, JavaScript, TypeScript, CSS, Python and PowerShell, plus a bit of Batch and Inno Setup.<br>Tools: VS Code, Git and GitHub, Claude Code, Electron.<br>Built on a Windows 11 laptop, tested on an Android phone and tablet with a stylus.
+<table>
+<tr><th align="left" scope="row">Learned</th><td>self-taught, with AI as my tutor</td></tr>
+<tr><th align="left" scope="row">Languages so far</th><td>HTML, JavaScript, TypeScript, CSS, Python, PowerShell – plus a bit of Batch and Inno Setup</td></tr>
+<tr><th align="left" scope="row">Tools</th><td>VS Code, Git and GitHub, Claude Code, Electron</td></tr>
+<tr><th align="left" scope="row">Built on</th><td>a Windows 11 laptop</td></tr>
+<tr><th align="left" scope="row">Tested on</th><td>an Android phone and an Android tablet with a stylus</td></tr>
+</table>
 
-Suggestions for improvement are welcome – ideally as an issue in the repo in question.
-
-<sub>To be honest: the browser tools count visits and clicks anonymously with GoatCounter – no cookies, never what you enter. Prismatical doesn’t count at all. Beyond that, Spectroton asks api.color.pizza for colour names, and Prismatical checks passwords with Have I Been Pwned only if you switch it on – even then only five characters of the hash leave your device, never the password. This page loads nothing from other servers: no counters, no stats, every image lives in this repo.</sub>
+<sub>To be honest: the browser tools count visits anonymously with GoatCounter – no cookies, never what you enter; Collective-Calc also counts a few steps such as “link shared”, without names or amounts. Prismatical doesn’t count at all. Beyond that, Spectroton sends the chosen colour (and, when you search by name, your search term) to api.color.pizza to find its name, and Prismatical checks passwords with Have I Been Pwned only if you switch it on – even then only five characters of the hash leave your device, never the password. The Besucher-Ticker fetches your own numbers from GoatCounter with your token; the token stays on your computer. This page loads nothing from other servers: no counters, no stats, every image lives in this repo.</sub>
 
 </details>
 
-<sub>Ehrlich gesagt: Die Werkzeuge im Browser zählen Aufrufe und Klicks anonym mit GoatCounter – ohne Cookies, ohne deine Eingaben. Prismatical zählt gar nicht. Darüber hinaus fragt Spectroton api.color.pizza nach Farbnamen, und Prismatical prüft Passwörter nur auf Wunsch bei Have I Been Pwned – selbst dann verlassen nur fünf Zeichen des Hashs dein Gerät, nie das Passwort. Diese Seite lädt nichts von fremden Servern: kein Zähler, keine Statistik, alle Bilder liegen hier im Repo.</sub>
+<p lang="de"><sub>Ehrlich gesagt: Die Werkzeuge im Browser zählen Aufrufe anonym mit GoatCounter – ohne Cookies, ohne deine Eingaben; Collective-Calc zählt zusätzlich ein paar Schritte wie „Link geteilt“, ohne Namen oder Beträge. Prismatical zählt gar nicht. Darüber hinaus schickt Spectroton die gewählte Farbe (und bei der Namenssuche deinen Suchbegriff) an api.color.pizza, um ihren Namen zu finden, und Prismatical prüft Passwörter nur auf Wunsch bei Have I Been Pwned – selbst dann verlassen nur fünf Zeichen des Hashs dein Gerät, nie das Passwort. Der Besucher-Ticker holt deine eigenen Zahlen mit deinem Token von GoatCounter; der Token bleibt auf deinem Rechner. Diese Seite lädt nichts von fremden Servern: kein Zähler, keine Statistik, alle Bilder liegen hier im Repo.</sub></p>
+
+<p align="center"><span lang="de">Danke euch allen für die Inspiration.</span><br><span lang="en">Thanks to all of you for the inspiration.</span><br><sub>© 2026 Dennis_mit_2n</sub></p>
