@@ -122,7 +122,9 @@ function iconKopie(quelle) {
   let svg = fs.readFileSync(quelle, 'utf8').replace(/\r\n/g, '\n');
   const flaeche = svg.match(/<rect\b[^>]*\bfill="(#[0-9a-fA-F]{6})"[^>]*>/);
   let gerandet = false;
-  if (flaeche && kontrast(flaeche[1], FARBEN.icons.dunkler_grund) < FARBEN.icons.schwelle) {
+  // Trägt die Fläche schon einen eigenen Rand (Fadenkreuz), bleibt sie, wie sie ist:
+  // ein zweites stroke-Attribut machte die SVG ungültig.
+  if (flaeche && !/\bstroke=/.test(flaeche[0]) && kontrast(flaeche[1], FARBEN.icons.dunkler_grund) < FARBEN.icons.schwelle) {
     const mitRand = flaeche[0].replace(/\s*\/?>$/, (ende) => ` stroke="${FARBEN.icons.rand}" stroke-width="2"${ende}`);
     svg = svg.replace(flaeche[0], mitRand);
     gerandet = true;

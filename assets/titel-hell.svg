@@ -15,9 +15,9 @@
 <rect x="30" y="110" width="20" height="26" fill="#004C5D"/>
 <text x="42" y="123" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Roboto, Arial, sans-serif" font-size="16" fill="#A5E0EE" text-anchor="middle" transform="rotate(-90 42 123)">15</text>
 <rect x="70.0" y="209.6" width="129.7" height="14.3" fill="#004C5D"/><text x="74" y="220" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Roboto, Arial, sans-serif" font-size="11" fill="#A5E0EE" font-weight="600" letter-spacing="1.6">VORDERANSICHT</text>
-<rect x="416" y="72" width="288" height="96" rx="10" fill="#004C5D" stroke="#FFFFFF" stroke-width="2.6"/>
-<path d="M422 78h276v84h-276zM422 120h276M468 78v84M514 78v84M560 78v84M606 78v84M652 78v84" fill="none" stroke="#FFFFFF" stroke-width="1.4"/>
-<svg x="430" y="84" width="30" height="30" viewBox="0 0 48 48">
+<rect x="393" y="72" width="334" height="96" rx="10" fill="#004C5D" stroke="#FFFFFF" stroke-width="2.6"/>
+<path d="M399 78h322v84h-322zM399 120h322M445 78v84M491 78v84M537 78v84M583 78v84M629 78v84M675 78v84" fill="none" stroke="#FFFFFF" stroke-width="1.4"/>
+<svg x="407" y="84" width="30" height="30" viewBox="0 0 48 48">
   <rect x="2" y="2" width="44" height="44" rx="11" fill="#0c1c1b" stroke="#6E7681" stroke-width="2"/>
   <!-- Die Rampe selbst: eine Farbe, in Stufen von hell nach dunkel.
        Fuenf statt elf Balken, weil elf bei 44 px nur noch Streifen waeren. -->
@@ -27,7 +27,7 @@
   <rect x="10" y="27.5" width="28" height="4.4" rx="2" fill="#14a89c"/>
   <rect x="10" y="33.2" width="28" height="4.4" rx="2" fill="#0b7068"/>
 </svg>
-<svg x="476" y="84" width="30" height="30" viewBox="0 0 48 48">
+<svg x="453" y="84" width="30" height="30" viewBox="0 0 48 48">
   <rect x="2" y="2" width="44" height="44" rx="11" fill="#7c2d12"/>
   <!-- oben die vage Idee: verstreute Punkte -->
   <circle cx="14" cy="11" r="2.2" fill="#fb923c" opacity=".55"/>
@@ -40,13 +40,13 @@
   <rect x="12" y="33" width="24" height="3.4" rx="1.7" fill="#fb923c" opacity=".75"/>
   <rect x="12" y="38.5" width="16" height="3.4" rx="1.7" fill="#fb923c" opacity=".5"/>
 </svg>
-<svg x="522" y="84" width="30" height="30" viewBox="0 0 48 48">
+<svg x="499" y="84" width="30" height="30" viewBox="0 0 48 48">
   <rect x="2" y="2" width="44" height="44" rx="11" fill="#0e7490"/>
   <path d="M12 21.5c6.6-6 17.4-6 24 0" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round"/>
   <path d="M16.5 27.5c4.2-3.8 10.8-3.8 15 0" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round"/>
   <circle cx="24" cy="34" r="2.6" fill="#fff"/>
 </svg>
-<svg x="568" y="84" width="30" height="30" viewBox="0 0 48 48">
+<svg x="545" y="84" width="30" height="30" viewBox="0 0 48 48">
   <rect x="2" y="2" width="44" height="44" rx="11" fill="#0369a1"/>
   <g stroke="#fff" stroke-width="2.5" stroke-linecap="round" fill="none">
     <g>
@@ -66,7 +66,7 @@
     </g>
   </g>
 </svg>
-<svg x="614" y="84" width="30" height="30" viewBox="0 0 48 48">
+<svg x="591" y="84" width="30" height="30" viewBox="0 0 48 48">
   <rect x="2" y="2" width="44" height="44" rx="11" fill="#1c1b1f" stroke="#6E7681" stroke-width="2"/>
   <!-- einfallender Lichtstrahl -->
   <path d="M6 24h11" stroke="#f2efe9" stroke-width="2.4" stroke-linecap="round"/>
@@ -81,7 +81,7 @@
     <path d="M30 33 43 41" stroke="#7a5cff"/>
   </g>
 </svg>
-<svg x="660" y="84" width="30" height="30" viewBox="0 0 48 48">
+<svg x="637" y="84" width="30" height="30" viewBox="0 0 48 48">
   <rect x="2" y="2" width="44" height="44" rx="11" fill="#7c3aed"/>
   <rect x="9" y="17" width="22" height="19" rx="3" fill="none" stroke="#fff" stroke-width="3"/>
   <circle cx="15.5" cy="23.5" r="2.2" fill="#fff"/>
@@ -89,7 +89,7 @@
   <path d="M39 9l-8.2 8.2" stroke="#fff" stroke-width="3.2" stroke-linecap="round"/>
   <path d="M30 11.5v6.5h6.5z" fill="#fff"/>
 </svg>
-<svg x="430" y="126" width="30" height="30" viewBox="0 0 48 48">
+<svg x="683" y="84" width="30" height="30" viewBox="0 0 48 48">
   <rect x="2" y="2" width="44" height="44" rx="11" fill="#2f4a08"/>
   <!-- Zaehlwerk-Gehaeuse -->
   <rect x="8" y="13" width="32" height="22" rx="4" fill="none" stroke="#a3e635" stroke-width="2.5"/>
@@ -98,7 +98,7 @@
   <rect x="21" y="21" width="6" height="9"  rx="1.5" fill="#a3e635" opacity=".7"/>
   <rect x="29" y="24" width="6" height="6"  rx="1.5" fill="#a3e635" opacity=".45"/>
 </svg>
-<svg x="476" y="126" width="30" height="30" viewBox="0 0 48 48">
+<svg x="407" y="126" width="30" height="30" viewBox="0 0 48 48">
   <rect x="2" y="2" width="44" height="44" rx="11" fill="#101321" stroke="#6E7681" stroke-width="2"/>
   <!-- drei blaue Saeulen wie im Overlay, absteigend -->
   <rect x="9"  y="14" width="8" height="24" rx="1.5" fill="#2f6bff"/>
@@ -107,7 +107,7 @@
   <!-- pinker Punkt aus dem Tray-Symbol -->
   <circle cx="36.5" cy="13.5" r="4.5" fill="#ff2d95"/>
 </svg>
-<svg x="522" y="126" width="30" height="30" viewBox="0 0 48 48">
+<svg x="453" y="126" width="30" height="30" viewBox="0 0 48 48">
   <rect x="2" y="2" width="44" height="44" rx="11" fill="#1c1530" stroke="#6E7681" stroke-width="2"/>
   <!-- Pinsel-Strich unter der Schrift, wie eine gemalte Grundlinie -->
   <path d="M9 35.5c4.5-3 9-3 13.5 0s9 3 13.5-1.5" fill="none" stroke="#f776a8" stroke-width="3.2" stroke-linecap="round"/>
@@ -117,7 +117,7 @@
   <path d="M26 29l4.5-14L35 29" fill="none" stroke="#eac54f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
   <path d="M27.8 24.5h5.4" fill="none" stroke="#eac54f" stroke-width="3" stroke-linecap="round"/>
 </svg>
-<svg x="568" y="126" width="30" height="30" viewBox="0 0 48 48">
+<svg x="499" y="126" width="30" height="30" viewBox="0 0 48 48">
   <rect x="2" y="2" width="44" height="44" rx="11" fill="#7a2e12"/>
   <!-- rim -->
   <circle cx="24" cy="27" r="16.5" fill="#c62828"/>
@@ -133,7 +133,7 @@
   <!-- pointer biting into the wheel from above -->
   <path d="M24 15.5 L19.6 5.5 L28.4 5.5 Z" fill="#fdf1dd"/>
 </svg>
-<svg x="614" y="126" width="30" height="30" viewBox="0 0 48 48">
+<svg x="545" y="126" width="30" height="30" viewBox="0 0 48 48">
   <rect x="2" y="2" width="44" height="44" rx="11" fill="#0d2a18" stroke="#6E7681" stroke-width="2"/>
   <!-- der gemeinsame Topf, in drei Teile zerlegt -->
   <circle cx="24" cy="24" r="15" fill="#4ade80"/>
@@ -144,7 +144,7 @@
   </g>
   <circle cx="24" cy="24" r="3" fill="#0d2a18"/>
 </svg>
-<svg x="660" y="126" width="30" height="30" viewBox="0 0 48 48">
+<svg x="591" y="126" width="30" height="30" viewBox="0 0 48 48">
   <defs>
     <linearGradient id="t11-bg" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="#0a2540"/>
@@ -161,12 +161,21 @@
   <!-- sparkle: the day to look forward to -->
   <path d="M34.5 9l1.5 3.4 3.4 1.5-3.4 1.5-1.5 3.4-1.5-3.4-3.4-1.5 3.4-1.5z" fill="#ffffff"/>
 </svg>
-<path d="M422 68V42M698 68V42M422 50H698" fill="none" stroke="#65D5EF" stroke-width="1.2"/>
-<path d="M0 0l11 -3.6v7.2z" transform="translate(422 50) rotate(0)" fill="#65D5EF"/>
-<path d="M0 0l11 -3.6v7.2z" transform="translate(698 50) rotate(180)" fill="#65D5EF"/>
+<svg x="637" y="126" width="30" height="30" viewBox="0 0 48 48"><rect x="2" y="2" width="44" height="44" rx="11" fill="#0b6b93"/><path d="M10 24 24 12l14 12" fill="none" stroke="#e0f2fe" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 22v14h20V22" fill="none" stroke="#e0f2fe" stroke-width="3" stroke-linejoin="round"/><rect x="22.5" y="21" width="3" height="10" rx="1.5" fill="#fde047"/><circle cx="24" cy="31.5" r="3.5" fill="#f87171"/></svg>
+<svg x="683" y="126" width="30" height="30" viewBox="0 0 48 48">
+  <!-- Schwarz mit feinem grünem Rand: die Kachel ist selbst schwarz, ohne Rand verschwände das Symbol darin -->
+  <rect x="2.5" y="2.5" width="43" height="43" rx="11" fill="#0b0d0c" stroke="#33ff88" stroke-opacity=".4"/>
+  <circle cx="24" cy="24" r="11.5" fill="none" stroke="#33ff88" stroke-width="2.2" opacity=".6"/>
+  <!-- vier Arme mit Lücke zur Mitte, wie die Vorlage „Kreuz + Punkt“ -->
+  <path d="M24 8v9M24 31v9M8 24h9M31 24h9" stroke="#33ff88" stroke-width="3" stroke-linecap="square"/>
+  <rect x="22" y="22" width="4" height="4" fill="#ffffff"/>
+</svg>
+<path d="M399 68V42M721 68V42M399 50H721" fill="none" stroke="#65D5EF" stroke-width="1.2"/>
+<path d="M0 0l11 -3.6v7.2z" transform="translate(399 50) rotate(0)" fill="#65D5EF"/>
+<path d="M0 0l11 -3.6v7.2z" transform="translate(721 50) rotate(180)" fill="#65D5EF"/>
 <rect x="526" y="35" width="68" height="22" fill="#004C5D"/>
-<text x="560" y="55" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Roboto, Arial, sans-serif" font-size="18" fill="#FBC6BA" font-weight="700" text-anchor="middle">12×</text>
-<rect x="412.0" y="209.6" width="187.7" height="14.3" fill="#004C5D"/><text x="416" y="220" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Roboto, Arial, sans-serif" font-size="11" fill="#A5E0EE" font-weight="600" letter-spacing="1.6">DRAUFSICHT, GEÖFFNET</text>
+<text x="560" y="55" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Roboto, Arial, sans-serif" font-size="18" fill="#FBC6BA" font-weight="700" text-anchor="middle">14×</text>
+<rect x="389.0" y="209.6" width="187.7" height="14.3" fill="#004C5D"/><text x="393" y="220" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Roboto, Arial, sans-serif" font-size="11" fill="#A5E0EE" font-weight="600" letter-spacing="1.6">DRAUFSICHT, GEÖFFNET</text>
 <rect x="16" y="230" width="814" height="214" fill="#004C5D" stroke="#A5E0EE" stroke-width="2.6"/>
 <path d="M16 382H830M600 382V444" stroke="#A5E0EE" stroke-width="1.6"/>
 <text x="30" y="249" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Roboto, Arial, sans-serif" font-size="11" fill="#A5E0EE" font-weight="600" letter-spacing="1.6">BENENNUNG</text>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="175" viewBox="0 0 420 175">
+<defs><linearGradient id="k-heizwarte-v" x1="0" y1="0" x2="1" y2="0.2"><stop offset="0%" stop-color="#7DD3FC"/><stop offset="25%" stop-color="#86EFAC"/><stop offset="50%" stop-color="#FDE047"/><stop offset="75%" stop-color="#FDBA74"/><stop offset="100%" stop-color="#F87171"/></linearGradient></defs>
+<rect x="6.25" y="6.25" width="407.5" height="162.5" rx="16" fill="#002028" stroke="url(#k-heizwarte-v)" stroke-width="2.5"/>
+<rect x="14" y="14" width="392" height="147" rx="9" fill="none" stroke="#003542" stroke-width="1.2"/>
+<svg x="24" y="22" width="56" height="56" viewBox="0 0 48 48"><rect x="2" y="2" width="44" height="44" rx="11" fill="#0b6b93"/><path d="M10 24 24 12l14 12" fill="none" stroke="#e0f2fe" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 22v14h20V22" fill="none" stroke="#e0f2fe" stroke-width="3" stroke-linejoin="round"/><rect x="22.5" y="21" width="3" height="10" rx="1.5" fill="#fde047"/><circle cx="24" cy="31.5" r="3.5" fill="#f87171"/></svg>
+<text x="94" y="48" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Roboto, Arial, sans-serif" font-size="24" fill="#65D5EF" font-weight="700">Heizwarte</text>
+<rect x="94" y="58" width="159.7" height="30" rx="15" fill="none" stroke="#7DD3FC" stroke-width="1.8"/>
+<text x="106" y="80" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Roboto, Arial, sans-serif" font-size="21" fill="#7DD3FC">im Browser</text>
+<text x="24" y="122" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Roboto, Arial, sans-serif" font-size="21" fill="#00ACCA">Wetter mit Heiz-Ampel</text>
+</svg>

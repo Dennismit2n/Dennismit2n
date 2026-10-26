@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+  <!-- Schwarz mit feinem grünem Rand: die Kachel ist selbst schwarz, ohne Rand verschwände das Symbol darin -->
+  <rect x="2.5" y="2.5" width="43" height="43" rx="11" fill="#0b0d0c" stroke="#33ff88" stroke-opacity=".4"/>
+  <circle cx="24" cy="24" r="11.5" fill="none" stroke="#33ff88" stroke-width="2.2" opacity=".6"/>
+  <!-- vier Arme mit Lücke zur Mitte, wie die Vorlage „Kreuz + Punkt“ -->
+  <path d="M24 8v9M24 31v9M8 24h9M31 24h9" stroke="#33ff88" stroke-width="3" stroke-linecap="square"/>
+  <rect x="22" y="22" width="4" height="4" fill="#ffffff"/>
+</svg>
