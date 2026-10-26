@@ -1,11 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="846" height="72" viewBox="0 0 846 72">
 <style>@media (max-width: 560px) { .titel { font-size: 50px } .en { display: none } }</style>
-<rect x="1.5" y="1.5" width="843" height="69" rx="12" fill="#002028" stroke="#007C94" stroke-width="3"/>
-<rect x="8" y="8" width="830" height="56" fill="none" stroke="#EE6E4F" stroke-width="2"/>
-<path d="M72 8V64" stroke="#EE6E4F" stroke-width="1.6"/>
-<path class="en" d="M640 8V64" stroke="#EE6E4F" stroke-width="1.6"/>
-<circle cx="40" cy="36" r="17" fill="none" stroke="#FFAB98" stroke-width="2.4"/>
-<text x="40" y="42" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Roboto, Arial, sans-serif" font-size="17" fill="#FFAB98" font-weight="600" text-anchor="middle">01</text>
-<text x="90" y="52" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Roboto, Arial, sans-serif" font-size="42" fill="#FFAB98" font-weight="600" class="titel">Über mich</text>
-<text x="824" y="43" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Roboto, Arial, sans-serif" font-size="19" fill="#FFAB98" text-anchor="end" lang="en" class="en">About me</text>
+<defs><clipPath id="bb"><rect x="3" y="3" width="840" height="66" rx="10"/></clipPath><pattern id="brf" width="10" height="10" x="8" y="8" patternUnits="userSpaceOnUse"><path d="M10 0V10H0" fill="none" stroke="#A5A5FF" stroke-opacity="0.07" stroke-width="0.7"/></pattern><pattern id="br" width="50" height="50" x="8" y="8" patternUnits="userSpaceOnUse"><rect width="50" height="50" fill="url(#brf)"/><path d="M50 0V50H0" fill="none" stroke="#A5A5FF" stroke-opacity="0.17" stroke-width="1"/></pattern><filter id="ba" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="22"/></filter><linearGradient id="bc" x1="0" x2="1"><stop offset="0.000" stop-color="#A5A5FF"/><stop offset="0.500" stop-color="#75C7FF"/><stop offset="1.000" stop-color="#AFA1FF"/></linearGradient></defs>
+<g clip-path="url(#bb)"><rect width="846" height="72" fill="#0F0F21"/><g filter="url(#ba)"><ellipse cx="110" cy="30" rx="220" ry="40" fill="#605CB1" opacity="0.45"/><ellipse cx="770" cy="46" rx="230" ry="42" fill="#493687" opacity="0.6"/><ellipse cx="430" cy="36" rx="170" ry="26" fill="#4D94C3" opacity="0.3"/></g><rect x="8" y="8" width="830" height="56" fill="url(#br)"/></g>
+<rect x="1.5" y="1.5" width="843" height="69" rx="12" fill="none" stroke="#6D54FB" stroke-width="3"/>
+<rect x="8" y="8" width="830" height="56" fill="none" stroke="#6D54FB" stroke-width="2"/>
+<path d="M72 8V64" stroke="#6D54FB" stroke-width="1.6"/>
+<path class="en" d="M640 8V64" stroke="#6D54FB" stroke-width="1.6"/>
+<circle cx="40" cy="36" r="17" fill="#0F0F21" fill-opacity="0.6" stroke="#75C7FF" stroke-width="2.4"/>
+<text x="40" y="42" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Roboto, Arial, sans-serif" font-size="17" fill="#75C7FF" font-weight="600" text-anchor="middle">01</text>
+<text x="90" y="52" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Roboto, Arial, sans-serif" font-size="42" fill="url(#bc)" font-weight="600" class="titel">Über mich</text>
+<text x="824" y="43" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Roboto, Arial, sans-serif" font-size="19" fill="#9C9ECD" text-anchor="end" lang="en" class="en">About me</text>
 </svg>

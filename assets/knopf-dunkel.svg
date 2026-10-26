@@ -1,7 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="700" height="128" viewBox="0 0 700 128">
-<rect x="2" y="2" width="696" height="124" rx="26" fill="#003542" stroke="#0094AF" stroke-width="3"/>
-<g transform="translate(22 30)" fill="none" stroke="#65D5EF" stroke-linecap="round" stroke-linejoin="round"><path d="M28 20V14Q28 11 31 11H57Q60 11 60 14V20M34 20V16H54V20" stroke-width="3.4"/><rect x="8" y="20" width="72" height="42" rx="8" stroke-width="3.6"/><path d="M8 33H80" stroke-width="3"/><path d="M18 29v8M70 29v8" stroke-width="5"/></g>
-<text x="140" y="60" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Roboto, Arial, sans-serif" font-size="40" fill="#65D5EF" font-weight="700">Zur Werkzeugkiste</text>
-<text x="140" y="102" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Roboto, Arial, sans-serif" font-size="34" fill="#00C4E5">To the toolbox</text>
-<path d="M606 64h52M636 42l22 22-22 22" fill="none" stroke="#FFAB98" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+<defs><clipPath id="kc"><rect x="2" y="2" width="696" height="124" rx="26"/></clipPath><filter id="ka" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="26"/></filter><linearGradient id="kr" gradientUnits="userSpaceOnUse" x1="2" y1="2" x2="698" y2="126"><stop offset="0.000" stop-color="#A5A5FF"/><stop offset="0.500" stop-color="#75C7FF"/><stop offset="1.000" stop-color="#AFA1FF"/></linearGradient></defs>
+<g clip-path="url(#kc)"><rect width="700" height="128" fill="#181831"/><g filter="url(#ka)"><ellipse cx="90" cy="70" rx="170" ry="60" fill="#605CB1" opacity="0.4"/><ellipse cx="560" cy="64" rx="200" ry="50" fill="#4D94C3" opacity="0.25"/></g></g>
+<rect x="2" y="2" width="696" height="124" rx="26" fill="none" stroke="url(#kr)" stroke-width="3"/>
+<g transform="translate(22 30)" fill="none" stroke="#B4B5FF" stroke-linecap="round" stroke-linejoin="round"><path d="M28 20V14Q28 11 31 11H57Q60 11 60 14V20M34 20V16H54V20" stroke-width="3.4"/><rect x="8" y="20" width="72" height="42" rx="8" stroke-width="3.6"/><path d="M8 33H80" stroke-width="3"/><path d="M18 29v8M70 29v8" stroke-width="5"/></g>
+<text x="140" y="60" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Roboto, Arial, sans-serif" font-size="40" fill="#E2E2F6" font-weight="700">Zur Werkzeugkiste</text>
+<text x="140" y="102" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Roboto, Arial, sans-serif" font-size="34" fill="#9C9ECD">To the toolbox</text>
+<path d="M606 64h52M636 42l22 22-22 22" fill="none" stroke="#75C7FF" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

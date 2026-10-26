@@ -18,7 +18,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
-import { titel, balken, karte, knopf, kontrast, breite, umbrechen, KARTE, kartenHoehe } from './zeichnen.mjs';
+import { titel, balken, karte, knopf, kontrast, hellsteStelle, breite, umbrechen, KARTE, kartenHoehe } from './zeichnen.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const args = process.argv.slice(2);
@@ -140,32 +140,36 @@ function mindestens(was, vorne, hinten, mindest) {
   if (wert < mindest) fehler.push(`${was}: ${vorne} auf ${hinten} nur ${wert.toFixed(2)}:1 (mind. ${mindest})`);
 }
 
+// Eine Rolle ist eine Farbe oder ein Verlauf (Liste); geprüft wird jede Farbe darin.
+const farbenVon = (wert) => (Array.isArray(wert) ? wert : [wert]);
+// Hellste Stelle des Blatts unter der Aurora: Text muss auch dort lesbar sein.
+const aurorahell = (thema) => hellsteStelle(FARBEN.bauplan[thema].grund, FARBEN.bauplan[thema].aurora);
+
 function pruefeFarben() {
   for (const t of THEMEN) {
-    const b = FARBEN.bauplan[t];
-    for (const rolle of ['schrift', 'schrift2', 'label', 'masstext', 'rost']) mindestens(`Bauplan ${t} ${rolle}`, b[rolle], b.grund, 4.5);
-    for (const rolle of ['kontur', 'mass', 'rahmen']) mindestens(`Bauplan ${t} ${rolle}`, b[rolle], b.grund, 3);
-    for (const seite of FARBEN.github[t]) mindestens(`Bauplan ${t} Kante gegen GitHub`, b.kante, seite, 3);
-    const k = FARBEN.knopf[t];
-    for (const rolle of ['schrift', 'schrift2']) mindestens(`Knopf ${t} ${rolle}`, k[rolle], k.flaeche, 4.5);
-    mindestens(`Knopf ${t} Pfeil`, k.pfeil, k.flaeche, 3);
-    for (const seite of FARBEN.github[t]) mindestens(`Knopf ${t} Rand gegen GitHub`, k.rand, seite, 3);
-    for (const [name, a] of Object.entries(FARBEN.akzente)) {
-      if (name.startsWith('_')) continue;
-      mindestens(`Akzent ${name} ${t} Text`, a[t].text, b.grund, 4.5);
-      mindestens(`Akzent ${name} ${t} Linie`, a[t].linie, b.grund, 3);
-      if (t === 'dunkel') for (const seite of FARBEN.github.dunkel) mindestens(`Akzent ${name} Rand gegen GitHub`, a[t].linie, seite, 3);
+    const b = FARBEN.bauplan[t], hell = aurorahell(t);
+    for (const rolle of ['schrift', 'schrift2', 'label', 'akzent', 'claim']) {
+      for (const c of farbenVon(b[rolle])) {
+        mindestens(`Bauplan ${t} ${rolle}`, c, b.grund, 4.5);
+        mindestens(`Bauplan ${t} ${rolle} auf Aurora`, c, hell, 4.5);
+      }
     }
+    for (const rolle of ['kontur', 'mass']) for (const c of farbenVon(b[rolle])) mindestens(`Bauplan ${t} ${rolle} auf Aurora`, c, hell, 3);
+    mindestens(`Bauplan ${t} rahmen`, b.rahmen, b.grund, 3);
+    for (const seite of FARBEN.github[t]) mindestens(`Bauplan ${t} Kante gegen GitHub`, b.kante, seite, 3);
+    const k = FARBEN.knopf[t], khell = hellsteStelle(k.flaeche, k.aurora);
+    for (const rolle of ['schrift', 'schrift2']) mindestens(`Knopf ${t} ${rolle} auf Aurora`, k[rolle], khell, 4.5);
+    for (const rolle of ['pfeil', 'koffer']) mindestens(`Knopf ${t} ${rolle} auf Aurora`, k[rolle], khell, 3);
+    for (const c of farbenVon(k.rand)) for (const seite of FARBEN.github[t]) mindestens(`Knopf ${t} Rand gegen GitHub`, c, seite, 3);
   }
 }
-const akzent = (name, thema) => FARBEN.akzente[name][thema];
 
 // Akzent einer Werkzeug-Kachel in einer Darstellung: Rahmen und Etikett in der
-// Website-Farbe. Schafft die Farbe als Schrift auf dem Kachelgrund keine 4,5:1,
-// bekommt nur die Etikett-Schrift die Nebentextfarbe; Rahmen bleibt in Werkzeugfarbe.
+// Website-Farbe. Schafft die Farbe als Schrift an der hellsten Stelle der Kachel
+// keine 4,5:1, bekommt nur die Etikett-Schrift die Nebentextfarbe; Rahmen bleibt
+// in Werkzeugfarbe.
 function kachelAkzent(farbe, verlauf, thema) {
-  const grund = FARBEN.bauplan[thema].grund;
-  const text = kontrast(farbe, grund) >= 4.5 ? farbe : FARBEN.bauplan[thema].schrift2;
+  const text = kontrast(farbe, aurorahell(thema)) >= 4.5 ? farbe : FARBEN.bauplan[thema].schrift2;
   return { text, linie: farbe, verlauf };
 }
 
@@ -231,7 +235,7 @@ for (const w of werkzeuge) {
   if (!w.farbe) { fehler.push(`Keine Kachelfarbe für „${w.key}“ in css/style.css der Website`); continue; }
   for (const seite of FARBEN.github.dunkel) mindestens(`Kachelrand ${w.key} gegen GitHub`, w.farbe, seite, 3);
   mindestens(`Kachelrand ${w.key} auf Kachelgrund dunkel`, w.farbe, FARBEN.bauplan.dunkel.grund, 3);
-  mindestens(`Etikett ${w.key} dunkel`, kachelAkzent(w.farbe, null, 'dunkel').text, FARBEN.bauplan.dunkel.grund, 4.5);
+  mindestens(`Etikett ${w.key} dunkel auf Aurora`, kachelAkzent(w.farbe, null, 'dunkel').text, aurorahell('dunkel'), 4.5);
 }
 // Nebeneinander stehende Kacheln (am Desktop je zwei) bekommen dieselbe Höhe.
 werkzeuge.forEach((w, i) => {
@@ -246,9 +250,10 @@ for (const z of claimZeilen) if (breite(z, 46, true) > 790) fehler.push(`Claim-Z
 if (handyPx(46, 846) < 14 || handyPx(42, 846) < 14) fehler.push('Titelschrift am Handy unter 14 px');
 for (const t of THEMEN) {
   schreibe(path.join('assets', `titel-${t}.svg`), titel(FARBEN.bauplan[t], {
-    claimZeilen, claimEn: texte.en.heroTitle, name: MARKE, seit: SEIT, icons: werkzeuge.map((w) => w.iconSvg),
+    claimZeilen, claimEn: texte.en.heroTitle, name: MARKE, seit: SEIT,
+    werkzeuge: werkzeuge.map((w) => ({ svg: w.iconSvg, farbe: w.farbe, verlauf: w.verlauf })),
   }));
-  for (const b of BALKEN) schreibe(path.join('assets', `balken-${b.datei}-${t}.svg`), balken(FARBEN.bauplan[t], b, akzent(FARBEN.abschnitte[b.datei], t)));
+  for (const b of BALKEN) schreibe(path.join('assets', `balken-${b.datei}-${t}.svg`), balken(FARBEN.bauplan[t], b));
   for (const w of werkzeuge) {
     schreibe(path.join('assets', 'karten', `${w.key}-${t}.svg`), karte(FARBEN.bauplan[t], {
       iconSvg: w.iconSvg, name: w.anzeigename, art: ART_ETIKETT[w.art], zeilen: w.zeilen, hoehe: w.kartenHoehe, id: `k-${w.key}`,

@@ -1,129 +1,62 @@
 {
-  "_herkunft": "Alle Werte aus Dennis' Palette profile_collors (p = primary/Petrol, Akzente = accent-1..6), dazu Weiß. Die Kachelfarben der Werkzeuge stehen NICHT hier: readme-bauen.mjs liest sie aus css/style.css der Website (Dunkel-Werte), damit sie mit den Website-Kacheln übereinstimmen. Ausnahme: icons.rand (#6E7681, neutrales Grau, siehe ENTSCHEIDUNGEN #23). Kontraste prüft readme-bauen.mjs bei jedem Lauf.",
-  "_rollen": "grund = Blattfläche, kante = Außenrand gegen die GitHub-Seite, rahmen = Zeichnungsrahmen und Schriftfeld, fein/grob = Konstruktionsraster (Deko), mass = Maßlinien, masstext = Maßzahlen und Ansichtsnamen, kontur = gezeichnete Linien, schrift = Claim, Titel und Namen, schrift2 = Nebentext, label = Feldnamen im Schriftfeld, rost = Akzent",
+  "_herkunft": "Farben des Twitch-Banners vom 26.10.2026, das sie aus der Website-Palette nimmt (ggaallaaxxyy77 + Aurora): bg #0F0F21, panel #181831, p200 #B4B5FF, p300 #A5A5FF, p700 #6D54FB, violet #AFA1FF, ice #75C7FF, soft #9C9ECD, text #E2E2F6, Aurora #605CB1/#493687/#4D94C3. Ersetzt die Petrol-Palette profile_collors (ENTSCHEIDUNGEN #25). Die Kachelfarben der Werkzeuge stehen NICHT hier: readme-bauen.mjs liest sie aus css/style.css der Website (Dunkel-Werte). Ausnahme: icons.rand (#6E7681, neutrales Grau, siehe ENTSCHEIDUNGEN #23). Kontraste prüft readme-bauen.mjs bei jedem Lauf, auch gegen die hellste Stelle der Aurora.",
+  "_rollen": "grund = Blattfläche, kante = Außenrand gegen die GitHub-Seite, rahmen = Zeichnungsrahmen, Fächer und Schriftfeld, raster + fein/grob = Konstruktionsraster (Farbe und Deckkraft, Deko), mass = Maßlinien und Pfeile, akzent = Maßzahlen, Mengenangabe, Verschlüsse, Jahr und Abschnittsnummer, kontur = Verlauf der gezeichneten Linien, claim = Verlauf von Claim und Abschnittstiteln, schrift = Namen, schrift2 = Nebentext, label = Feldnamen, familie = Familienbalken, aurora = weichgezeichnete Farbflecken [Farbe, Deckkraft]. Die Deckkräfte der Aurora sind kleiner als im Banner, damit Nebentext und Feldnamen auch an ihrer hellsten Stelle 4,5:1 schaffen.",
   "bauplan": {
     "dunkel": {
-      "grund": "#002028",
-      "kante": "#007C94",
-      "rahmen": "#007C94",
-      "fein": "#003542",
-      "grob": "#004C5D",
-      "mass": "#0094AF",
-      "masstext": "#00ACCA",
-      "kontur": "#65D5EF",
-      "schrift": "#65D5EF",
-      "schrift2": "#00ACCA",
-      "label": "#00ACCA",
-      "rost": "#FFAB98"
+      "grund": "#0F0F21",
+      "kante": "#6D54FB",
+      "rahmen": "#6D54FB",
+      "raster": "#A5A5FF",
+      "fein": 0.07,
+      "grob": 0.17,
+      "mass": "#75C7FF",
+      "akzent": "#75C7FF",
+      "kontur": ["#A5A5FF", "#75C7FF", "#AFA1FF"],
+      "claim": ["#A5A5FF", "#75C7FF", "#AFA1FF"],
+      "schrift": "#B4B5FF",
+      "schrift2": "#9C9ECD",
+      "label": "#9C9ECD",
+      "familie": ["#6D54FB", "#75C7FF", "#AFA1FF"],
+      "aurora": [["#605CB1", 0.45], ["#493687", 0.6], ["#4D94C3", 0.3]]
     },
     "hell": {
-      "grund": "#004C5D",
-      "kante": "#004C5D",
-      "rahmen": "#A5E0EE",
-      "fein": "#006478",
-      "grob": "#007C94",
-      "mass": "#65D5EF",
-      "masstext": "#A5E0EE",
-      "kontur": "#FFFFFF",
-      "schrift": "#FFFFFF",
-      "schrift2": "#A5E0EE",
-      "label": "#A5E0EE",
-      "rost": "#FBC6BA"
+      "grund": "#0F0F21",
+      "kante": "#6D54FB",
+      "rahmen": "#6D54FB",
+      "raster": "#A5A5FF",
+      "fein": 0.07,
+      "grob": 0.17,
+      "mass": "#75C7FF",
+      "akzent": "#75C7FF",
+      "kontur": ["#A5A5FF", "#75C7FF", "#AFA1FF"],
+      "claim": ["#A5A5FF", "#75C7FF", "#AFA1FF"],
+      "schrift": "#B4B5FF",
+      "schrift2": "#9C9ECD",
+      "label": "#9C9ECD",
+      "familie": ["#6D54FB", "#75C7FF", "#AFA1FF"],
+      "aurora": [["#605CB1", 0.45], ["#493687", 0.6], ["#4D94C3", 0.3]]
     }
   },
   "knopf": {
+    "_rollen": "rand ist im Dunkeln der Konturverlauf, im Hellen Violett p700 (die hellen Verlaufsfarben schaffen gegen Weiß keine 3:1)",
     "dunkel": {
-      "flaeche": "#003542",
-      "rand": "#0094AF",
-      "schrift": "#65D5EF",
-      "schrift2": "#00C4E5",
-      "pfeil": "#FFAB98"
+      "flaeche": "#181831",
+      "rand": ["#A5A5FF", "#75C7FF", "#AFA1FF"],
+      "schrift": "#E2E2F6",
+      "schrift2": "#9C9ECD",
+      "koffer": "#B4B5FF",
+      "pfeil": "#75C7FF",
+      "aurora": [["#605CB1", 0.4], ["#4D94C3", 0.25]]
     },
     "hell": {
-      "flaeche": "#003542",
-      "rand": "#003542",
-      "schrift": "#FFFFFF",
-      "schrift2": "#A5E0EE",
-      "pfeil": "#FBC6BA"
+      "flaeche": "#181831",
+      "rand": "#6D54FB",
+      "schrift": "#E2E2F6",
+      "schrift2": "#9C9ECD",
+      "koffer": "#B4B5FF",
+      "pfeil": "#75C7FF",
+      "aurora": [["#605CB1", 0.4], ["#4D94C3", 0.25]]
     }
-  },
-  "akzente": {
-    "_rollen": "text = Schrift und Kreise (dunkel Stufe 100, hell Stufe 50), linie = Rahmen und Etiketten (dunkel Stufe 300, hell Stufe 200)",
-    "petrol": {
-      "dunkel": {
-        "text": "#65D5EF",
-        "linie": "#00ACCA"
-      },
-      "hell": {
-        "text": "#A5E0EE",
-        "linie": "#00C4E5"
-      }
-    },
-    "rost": {
-      "dunkel": {
-        "text": "#FFAB98",
-        "linie": "#EE6E4F"
-      },
-      "hell": {
-        "text": "#FBC6BA",
-        "linie": "#FC8C71"
-      }
-    },
-    "magenta": {
-      "dunkel": {
-        "text": "#F0A9DF",
-        "linie": "#D86EC0"
-      },
-      "hell": {
-        "text": "#EFC5E5",
-        "linie": "#E78BD1"
-      }
-    },
-    "blau": {
-      "dunkel": {
-        "text": "#8ECAFF",
-        "linie": "#29A1FA"
-      },
-      "hell": {
-        "text": "#B2D9FC",
-        "linie": "#61B7FF"
-      }
-    },
-    "gold": {
-      "dunkel": {
-        "text": "#DAC36E",
-        "linie": "#B69900"
-      },
-      "hell": {
-        "text": "#E2D4A6",
-        "linie": "#CCAE2E"
-      }
-    },
-    "gruen": {
-      "dunkel": {
-        "text": "#AED185",
-        "linie": "#78AE2D"
-      },
-      "hell": {
-        "text": "#C8DDB1",
-        "linie": "#93C15A"
-      }
-    },
-    "violett": {
-      "dunkel": {
-        "text": "#C8B7FF",
-        "linie": "#A582F4"
-      },
-      "hell": {
-        "text": "#D6CDFA",
-        "linie": "#B79CFF"
-      }
-    }
-  },
-  "abschnitte": {
-    "ueber-mich": "rost",
-    "werkzeugkiste": "petrol",
-    "werkbank": "gold"
   },
   "icons": {
     "_zweck": "Feiner Rand für Werkzeug-Icons, deren Fläche auf dunklem Grund fast verschwindet. Neutralgrau, trägt auf hellem und dunklem Grund.",
