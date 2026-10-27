@@ -2,7 +2,7 @@
  * Zeichnet die Bilder der Profil-README im Stil einer Werkstattzeichnung (Blaupause),
  * eingefärbt wie das Twitch-Banner: Violett-Grund mit weicher Aurora, Konturen im
  * Verlauf, leuchtende Icons und ein bunter Saum um den Einsatz.
- * Titelbild, Abschnittsbalken, Werkzeug-Kacheln und den Knopf zur Werkzeugkiste.
+ * Titelbild, Abschnittsbalken, Werkzeug-Kacheln, den Knopf zur Werkzeugkiste und den Kaffee-Knopf.
  * Reine Funktionen: Farben und Inhalte kommen als Parameter, zurück kommt SVG-Text.
  *
  * Text läuft über Systemschriften (externe Schriften lädt GitHub in Bildern nicht).
@@ -310,8 +310,27 @@ function koffer(farbe) {
   ].join('');
 }
 
+// Kaffeetasse mit Dampf, Herz, Henkel und Untertasse, so groß wie der Koffer.
+function tasse(farbe) {
+  return [
+    `<g transform="translate(22 30)" fill="none" stroke="${farbe}" stroke-linecap="round" stroke-linejoin="round">`,
+    '<path d="M24 16Q20 11 24 6M37 16Q33 11 37 6M50 16Q46 11 50 6" stroke-width="3"/>',
+    '<path d="M14 22H62V42Q62 56 48 56H28Q14 56 14 42Z" stroke-width="3.6"/>',
+    '<path d="M62 28H67Q75 28 75 36Q75 44 67 44H62" stroke-width="3.4"/>',
+    '<path d="M8 63H80" stroke-width="4"/>',
+    `<path d="M38 47C30 41 30 34 34 34C36 34 37.5 35.5 38 37C38.5 35.5 40 34 42 34C46 34 46 41 38 47Z" fill="${farbe}" stroke="none"/>`,
+    '</g>',
+  ].join('');
+}
+
+// Was auf einem Knopf steht; farbe nennt die Rolle in farben.json, die das Zeichen färbt.
+export const KNOEPFE = {
+  werkzeugkiste: { zeichen: koffer, farbe: 'koffer', oben: 'Zur Werkzeugkiste', unten: 'To the toolbox' },
+  kaffee: { zeichen: tasse, farbe: 'tasse', oben: 'Kaffee spendieren', unten: 'Buy me a coffee' },
+};
+
 // f = Knopf-Farben; rand ist eine Farbe oder ein Verlauf (Liste).
-export function knopf(f) {
+export function knopf(f, art = KNOEPFE.werkzeugkiste) {
   const defs = [`<clipPath id="kc"><rect x="2" y="2" width="696" height="124" rx="26"/></clipPath>`, weich('ka', 26)];
   if (Array.isArray(f.rand)) defs.push(verlaufRaum('kr', f.rand, [2, 2, 698, 126]));
   return [
@@ -320,9 +339,9 @@ export function knopf(f) {
     `<g clip-path="url(#kc)"><rect width="700" height="128" fill="${f.flaeche}"/>`
       + auroraFlecken(f.aurora, [[90, 70, 170, 60], [560, 64, 200, 50]], 'ka') + '</g>',
     `<rect x="2" y="2" width="696" height="124" rx="26" fill="none" stroke="${farbeOder(f.rand, 'kr')}" stroke-width="3"/>`,
-    koffer(f.koffer),
-    text(140, 60, 40, f.schrift, 'Zur Werkzeugkiste', ' font-weight="700"'),
-    text(140, 102, 34, f.schrift2, 'To the toolbox'),
+    art.zeichen(f[art.farbe]),
+    text(140, 60, 40, f.schrift, art.oben, ' font-weight="700"'),
+    text(140, 102, 34, f.schrift2, art.unten),
     `<path d="M606 64h52M636 42l22 22-22 22" fill="none" stroke="${f.pfeil}" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>`,
     '</svg>',
     '',

@@ -58,6 +58,27 @@
       "aurora": [["#605CB1", 0.4], ["#4D94C3", 0.25]]
     }
   },
+  "kaffee": {
+    "_rollen": "Gelber Knopf zu Buy Me a Coffee (#FFDD00 wie deren Knopf), dunkle Tinte wie der Blattgrund; Rand im Dunkeln ein warmer Gelbverlauf, im Hellen Dunkelgold (Gelb schafft gegen Weiß keine 3:1). Eigene Zeichnung, kein fremdes Logo.",
+    "dunkel": {
+      "flaeche": "#FFDD00",
+      "rand": ["#FFF0A0", "#FFB800", "#FFE45C"],
+      "schrift": "#0F0F21",
+      "schrift2": "#4A3B00",
+      "tasse": "#0F0F21",
+      "pfeil": "#0F0F21",
+      "aurora": [["#FFF6B8", 0.55], ["#FFB000", 0.35]]
+    },
+    "hell": {
+      "flaeche": "#FFDD00",
+      "rand": "#8A6A00",
+      "schrift": "#0F0F21",
+      "schrift2": "#4A3B00",
+      "tasse": "#0F0F21",
+      "pfeil": "#0F0F21",
+      "aurora": [["#FFF6B8", 0.55], ["#FFB000", 0.35]]
+    }
+  },
   "icons": {
     "_zweck": "Feiner Rand für Werkzeug-Icons, deren Fläche auf dunklem Grund fast verschwindet. Neutralgrau, trägt auf hellem und dunklem Grund.",
     "rand": "#6E7681",
