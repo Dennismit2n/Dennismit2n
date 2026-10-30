@@ -323,9 +323,24 @@ function tasse(farbe) {
   ].join('');
 }
 
+// Gamepad für den Knopf zur Gaming-Seite, so breit wie der Koffer: Gehäuse mit
+// zwei Griffen, Steuerkreuz links, zwei Knöpfe rechts. Dasselbe Zeichen steht auf
+// gaming.html der Website über den Kacheln.
+function gamepad(farbe) {
+  return [
+    `<g transform="translate(22 34)" fill="none" stroke="${farbe}" stroke-linecap="round" stroke-linejoin="round">`,
+    '<path d="M27 9H61C72 9 78 16 81 27L84 40C86 50 76 55 69 48L61 40H27L19 48C12 55 2 50 4 40L7 27C10 16 16 9 27 9Z" stroke-width="3.6"/>',
+    '<path d="M25 21V35M18 28H32" stroke-width="3.6"/>',
+    `<circle cx="62" cy="24" r="3.4" fill="${farbe}" stroke="none"/>`,
+    `<circle cx="70" cy="32" r="3.4" fill="${farbe}" stroke="none"/>`,
+    '</g>',
+  ].join('');
+}
+
 // Was auf einem Knopf steht; farbe nennt die Rolle in farben.json, die das Zeichen färbt.
 export const KNOEPFE = {
   werkzeugkiste: { zeichen: koffer, farbe: 'koffer', oben: 'Zur Werkzeugkiste', unten: 'To the toolbox' },
+  gaming: { zeichen: gamepad, farbe: 'pad', oben: 'Zum Gaming-Stuff', unten: 'To the gaming stuff' },
   kaffee: { zeichen: tasse, farbe: 'tasse', oben: 'Kaffee spendieren', unten: 'Buy me a coffee' },
 };
 

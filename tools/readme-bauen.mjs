@@ -88,7 +88,12 @@ function ladeKachelfarben() {
   if (!block) throw new Error('Dunkel-Block :root[data-theme="dark"] in css/style.css nicht gefunden.');
   const werte = {}, verlaeufe = {}, zuordnung = {};
   for (const m of block[1].matchAll(/--([a-z-]+):\s*(#[0-9a-fA-F]{6})\s*;/g)) werte[m[1]] = m[2].toUpperCase();
-  for (const m of block[1].matchAll(/--([a-z-]+)-flow:\s*linear-gradient\(([^;]*)\)\s*;/g)) verlaeufe[m[1]] = m[2].match(/#[0-9a-fA-F]{6}/g).map((c) => c.toUpperCase());
+  // Verläufe, die nur aus var(--…) bestehen (z. B. --gaming-flow), tragen keine Hex-Werte
+  // und werden übersprungen — die README braucht sie nicht.
+  for (const m of block[1].matchAll(/--([a-z-]+)-flow:\s*linear-gradient\(([^;]*)\)\s*;/g)) {
+    const stopps = m[2].match(/#[0-9a-fA-F]{6}/g);
+    if (stopps) verlaeufe[m[1]] = stopps.map((c) => c.toUpperCase());
+  }
   for (const m of css.matchAll(/\.tool-([a-z-]+)\s*\{\s*--tool:\s*var\(--([a-z-]+)\)/g)) zuordnung[m[1]] = m[2];
   return { werte, verlaeufe, zuordnung };
 }
@@ -162,7 +167,7 @@ function pruefeFarben() {
     for (const rolle of ['kontur', 'mass']) for (const c of farbenVon(b[rolle])) mindestens(`Bauplan ${t} ${rolle} auf Aurora`, c, hell, 3);
     mindestens(`Bauplan ${t} rahmen`, b.rahmen, b.grund, 3);
     for (const seite of FARBEN.github[t]) mindestens(`Bauplan ${t} Kante gegen GitHub`, b.kante, seite, 3);
-    for (const [name, art] of [['knopf', KNOEPFE.werkzeugkiste], ['kaffee', KNOEPFE.kaffee]]) {
+    for (const [name, art] of [['knopf', KNOEPFE.werkzeugkiste], ['gaming', KNOEPFE.gaming], ['kaffee', KNOEPFE.kaffee]]) {
       const k = FARBEN[name][t], khell = hellsteStelle(k.flaeche, k.aurora);
       for (const rolle of ['schrift', 'schrift2']) mindestens(`Knopf ${name} ${t} ${rolle} auf Aurora`, k[rolle], khell, 4.5);
       for (const rolle of ['pfeil', art.farbe]) mindestens(`Knopf ${name} ${t} ${rolle} auf Aurora`, k[rolle], khell, 3);
@@ -272,6 +277,7 @@ for (const t of THEMEN) {
     }, kachelAkzent(w.farbe, w.verlauf, t)));
   }
   schreibe(path.join('assets', `knopf-${t}.svg`), knopf(FARBEN.knopf[t]));
+  schreibe(path.join('assets', `gaming-${t}.svg`), knopf(FARBEN.gaming[t], KNOEPFE.gaming));
   schreibe(path.join('assets', `kaffee-${t}.svg`), knopf(FARBEN.kaffee[t], KNOEPFE.kaffee));
 }
 for (const px of [KARTE.descPx, KARTE.artPx]) if (handyPx(px, KARTE.breite) < 14) fehler.push(`Kacheltext am Handy unter 14 px (${px})`);
@@ -280,6 +286,7 @@ for (const px of [KARTE.descPx, KARTE.artPx]) if (handyPx(px, KARTE.breite) < 14
 const teile = {
   titel: `<h1 lang="de">${bild('titel', `${texte.de.heroTitle} – ${texte.en.heroTitle}. Werkstatt ${MARKE}, seit ${SEIT}.`, 846)}</h1>`,
   knopf: `<p><a href="https://dennismit2n.github.io/">${bild('knopf', 'Zur Werkzeugkiste – To the toolbox', 350)}</a></p>`,
+  gaming: `<p><a href="https://dennismit2n.github.io/gaming.html">${bild('gaming', 'Zum Gaming-Stuff – To the gaming stuff', 350)}</a></p>`,
   kaffee: `<a href="https://buymeacoffee.com/dennis_mit_2n">${bild('kaffee', 'Kaffee spendieren – Buy me a coffee', 350)}</a>`,
   karten: '<p align="center" lang="de">' + werkzeuge.map((w) => `<a href="${w.url}"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/karten/${w.key}-dunkel.svg"><img src="assets/karten/${w.key}-hell.svg" width="410" alt="${escHtml(`${w.anzeigename}, ${ART_TEXT.de[w.art]}: ${w.beschreibung}`)}"></picture></a>`).join('') + '</p>',
   'werkzeuge:en': liste(werkzeuge, texte, 'en'),
