@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+  <!-- MW4 Rüstkammer: nachgezeichnet nach dem App-Icon (mw4/icons): Sechseck, Zielkreuz in Limette, oranger Punkt -->
+  <rect x="2" y="2" width="44" height="44" rx="11" fill="#12171a" stroke="#6E7681" stroke-width="2"/>
+  <polygon points="24,8.5 37.5,16.25 37.5,31.75 24,39.5 10.5,31.75 10.5,16.25" fill="none" stroke="#dcd0b0" stroke-width="3" stroke-linejoin="round"/>
+  <circle cx="24" cy="24" r="6.8" fill="none" stroke="#b5d334" stroke-width="2.3"/>
+  <path d="M24 14.5v19M14.5 24h19" stroke="#b5d334" stroke-width="2.3" stroke-linecap="round"/>
+  <circle cx="24" cy="24" r="2" fill="#f07d24"/>
+</svg>

@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="175" viewBox="0 0 420 175">
+<defs><clipPath id="k-vault-c"><rect x="6.25" y="6.25" width="407.5" height="162.5" rx="16"/></clipPath><filter id="k-vault-a" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="26"/></filter><filter id="k-vault-g" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="8"/></filter></defs>
+<g clip-path="url(#k-vault-c)"><rect width="420" height="175" fill="#0F0F21"/><g filter="url(#k-vault-a)"><ellipse cx="380" cy="0" rx="170" ry="60" fill="#605CB1" opacity="0.45"/><ellipse cx="410" cy="185" rx="190" ry="60" fill="#493687" opacity="0.6"/><ellipse cx="-20" cy="87.5" rx="90" ry="50" fill="#4D94C3" opacity="0.3"/></g><circle cx="52" cy="50" r="24" fill="#FFD400" opacity="0.55" filter="url(#k-vault-g)"/></g>
+<rect x="6.25" y="6.25" width="407.5" height="162.5" rx="16" fill="none" stroke="#FFD400" stroke-width="2.5"/>
+<rect x="14" y="14" width="392" height="147" rx="9" fill="none" stroke="#6D54FB" stroke-opacity="0.55" stroke-width="1.2"/>
+<svg x="24" y="22" width="56" height="56" viewBox="0 0 48 48">
+  <!-- BL4 Vault-Handbuch: nachgezeichnet nach dem App-Icon (bl4/icons): Gelb, „VH“ im Comic-Schnitt, Warnstreifen rechts -->
+  <rect x="2" y="2" width="44" height="44" rx="11" fill="#ffd400"/>
+  <defs>
+    <pattern id="k-vault-bl4-streifen" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="5" height="5" fill="#16120a"/>
+      <rect width="2.4" height="5" fill="#ffd400"/>
+    </pattern>
+  </defs>
+  <rect x="37.5" y="7" width="4.5" height="34" fill="url(#k-vault-bl4-streifen)" stroke="#16120a" stroke-width="1"/>
+  <g transform="translate(4.4 0) skewX(-10)" stroke-linejoin="round">
+    <g fill="#16120a" transform="translate(1.6 1.6)">
+      <polygon points="7,13 12,13 15,27.5 18,13 23,13 17.6,35 12.4,35"/>
+      <polygon points="23.5,13 28,13 28,21.6 31.5,21.6 31.5,13 36,13 36,35 31.5,35 31.5,26 28,26 28,35 23.5,35"/>
+    </g>
+    <g fill="#ffffff" stroke="#16120a" stroke-width="2">
+      <polygon points="7,13 12,13 15,27.5 18,13 23,13 17.6,35 12.4,35"/>
+      <polygon points="23.5,13 28,13 28,21.6 31.5,21.6 31.5,13 36,13 36,35 31.5,35 31.5,26 28,26 28,35 23.5,35"/>
+    </g>
+  </g>
+</svg>
+<text x="94" y="48" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Roboto, Arial, sans-serif" font-size="24" fill="#B4B5FF" font-weight="700">BL4 Vault-Handbuch</text>
+<rect x="94" y="58" width="159.7" height="30" rx="15" fill="#0F0F21" fill-opacity="0.5" stroke="#FFD400" stroke-width="1.8"/>
+<text x="106" y="80" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Roboto, Arial, sans-serif" font-size="21" fill="#FFD400">im Browser</text>
+<text x="24" y="122" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Roboto, Arial, sans-serif" font-size="21" fill="#9C9ECD">Borderlands-4-Handbuch</text>
+</svg>

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+  <!-- BL4 Vault-Handbuch: nachgezeichnet nach dem App-Icon (bl4/icons): Gelb, „VH“ im Comic-Schnitt, Warnstreifen rechts -->
+  <rect x="2" y="2" width="44" height="44" rx="11" fill="#ffd400"/>
+  <defs>
+    <pattern id="bl4-streifen" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="5" height="5" fill="#16120a"/>
+      <rect width="2.4" height="5" fill="#ffd400"/>
+    </pattern>
+  </defs>
+  <rect x="37.5" y="7" width="4.5" height="34" fill="url(#bl4-streifen)" stroke="#16120a" stroke-width="1"/>
+  <g transform="translate(4.4 0) skewX(-10)" stroke-linejoin="round">
+    <g fill="#16120a" transform="translate(1.6 1.6)">
+      <polygon points="7,13 12,13 15,27.5 18,13 23,13 17.6,35 12.4,35"/>
+      <polygon points="23.5,13 28,13 28,21.6 31.5,21.6 31.5,13 36,13 36,35 31.5,35 31.5,26 28,26 28,35 23.5,35"/>
+    </g>
+    <g fill="#ffffff" stroke="#16120a" stroke-width="2">
+      <polygon points="7,13 12,13 15,27.5 18,13 23,13 17.6,35 12.4,35"/>
+      <polygon points="23.5,13 28,13 28,21.6 31.5,21.6 31.5,13 36,13 36,35 31.5,35 31.5,26 28,26 28,35 23.5,35"/>
+    </g>
+  </g>
+</svg>

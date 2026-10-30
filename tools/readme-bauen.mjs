@@ -45,6 +45,11 @@ const ART_TEXT = {
 };
 // Kurzform fürs Etikett auf der Kachel (dort ist nur Platz für wenige Wörter).
 const ART_ETIKETT = { browser: 'im Browser', windows: 'für Windows', beides: 'Browser + Windows', skill: 'Skill für KI-Chats' };
+// Kachelzeile, wo der Teil vor „ – “ oder „: “ nichts sagen würde („Call of Duty“) oder zu lang wäre.
+const KURZ_SONDERFAELLE = {
+  craftionary: 'Minecraft-Rezepte, Fundorte und /give-Befehle',
+  ruestkammer: 'Meta-Builds und Time to Kill für Modern Warfare 4',
+};
 const ZUSATZ_EN = {
   zaehlwerk: 'Plus the [Zählwerk Ticker](https://github.com/Dennismit2n/zaehlwerk-ticker/releases/latest) for Windows.',
 };
@@ -233,7 +238,7 @@ for (const w of werkzeuge) {
   w.iconSvg = svg;
   schreibe(path.join('assets', 'werkzeuge', w.iconDatei), svg);
   if (gerandet) console.log(`  Rand für ${w.iconDatei}`);
-  w.zeilen = umbrechen(kurz(w.beschreibung), KARTE.descPx, KARTE.descMax);
+  w.zeilen = umbrechen(KURZ_SONDERFAELLE[w.key] || kurz(w.beschreibung), KARTE.descPx, KARTE.descMax);
   if (breite(w.anzeigename, 24, true) > 420 - 94 - 18) fehler.push(`Name zu breit für die Kachel: ${w.anzeigename}`);
   if (94 + breite(ART_ETIKETT[w.art], KARTE.artPx) + 24 > 406) fehler.push(`Art-Etikett zu breit: ${ART_ETIKETT[w.art]}`);
   const variable = kachelfarben.zuordnung[w.key];
