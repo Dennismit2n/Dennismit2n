@@ -105,11 +105,14 @@ function artVon(werkzeug) {
   throw new Error(`Art von „${werkzeug.key}“ unklar – in ART_SONDERFAELLE eintragen.`);
 }
 
-// Kacheltext: der Teil des Website-Kurztexts vor dem ersten „ – “ oder „: “.
+// Kacheltext: der erste Satz des Website-Kurztexts, aber nur bis zum ersten „: “.
+// Bis zur Text-Runde vom 30.10.2026 trennte ein „ – “ die Kurzform vom Rest; seitdem
+// stehen auf der Website keine Gedankenstriche mehr, sondern Punkte.
 function kurz(beschreibung) {
-  const m = beschreibung.match(/^(.+?)(?: – |: )/);
-  // Nur ein Doppelpunkt am Ende fällt weg – ein Punkt kann zu „Co.“ gehören.
-  return (m ? m[1] : beschreibung).replace(/:$/, '');
+  const satz = (beschreibung.match(/^(.+?\.)(?= \p{Lu})/u) || [, beschreibung])[1];
+  const m = satz.match(/^(.+?)(?: – |: )/);
+  // Ein Punkt am Ende fällt weg, außer er gehört zu „Co.“.
+  return (m ? m[1] : satz).replace(/(?<!\bCo)\.$/, '').replace(/:$/, '');
 }
 
 // Claim in zwei ungefähr gleich lange Zeilen teilen.
