@@ -38,13 +38,21 @@ const THEMEN = ['dunkel', 'hell'];
 const ART_SONDERFAELLE = {
   fontart: 'beides',      // Browser-Fassung plus Windows-Release
   masterprompt: 'skill',  // Agent Skill, der Knopf führt zum Repo
+  mods: 'mods',           // Sammelseite der Claude-Code-Mods
 };
 const ART_TEXT = {
-  de: { browser: 'im Browser', windows: 'für Windows', beides: 'im Browser und für Windows', skill: 'Skill für KI-Chats' },
-  en: { browser: 'in your browser', windows: 'for Windows', beides: 'in your browser and for Windows', skill: 'skill for AI chats' },
+  de: { browser: 'im Browser', windows: 'für Windows', beides: 'im Browser und für Windows', skill: 'Skill für KI-Chats', mods: 'Mods für Claude Code' },
+  en: { browser: 'in your browser', windows: 'for Windows', beides: 'in your browser and for Windows', skill: 'skill for AI chats', mods: 'mods for Claude Code' },
 };
 // Kurzform fürs Etikett auf der Kachel (dort ist nur Platz für wenige Wörter).
-const ART_ETIKETT = { browser: 'im Browser', windows: 'für Windows', beides: 'Browser + Windows', skill: 'Skill für KI-Chats' };
+const ART_ETIKETT = { browser: 'im Browser', windows: 'für Windows', beides: 'Browser + Windows', skill: 'Skill für KI-Chats', mods: 'Mods für Claude Code' };
+// Sammel-Kacheln der Startseite, die keinen TOOLS-Eintrag haben, aber in der
+// Werkzeugkiste stehen sollen (Dennis, 02.11.2026). Ihren Platz nimmt die
+// Reihenfolge der Kacheln in index.html vor; Texte kommen wie bei den
+// Werkzeugen aus i18n.js (<key>Desc). Gaming bleibt bewusst ein Knopf.
+const SAMMEL_KACHELN = {
+  mods: { key: 'mods', name: 'Werkstatt-Mods', icon: './assets/mods.svg', url: 'https://dennismit2n.github.io/mods.html' },
+};
 // Kachelzeile, wo der Teil vor „ – “ oder „: “ nichts sagen würde („Call of Duty“) oder zu lang wäre.
 const KURZ_SONDERFAELLE = {
   craftionary: 'Minecraft-Rezepte, Fundorte und /give-Befehle',
@@ -69,7 +77,20 @@ function ladeWerkzeuge() {
   const quelle = fs.readFileSync(path.join(WEBSITE, 'js', 'werkstatt.js'), 'utf8');
   const treffer = quelle.match(/var TOOLS = (\[[\s\S]*?\])\s*;/);
   if (!treffer) throw new Error('TOOLS-Liste in js/werkstatt.js nicht gefunden.');
-  return vm.runInNewContext('(' + treffer[1] + ')', {});
+  const werkzeuge = vm.runInNewContext('(' + treffer[1] + ')', {});
+
+  // Sammel-Kacheln an die Stelle setzen, die sie auf der Startseite haben:
+  // hinter das letzte Werkzeug, das dort vor ihnen steht.
+  const index = fs.readFileSync(path.join(WEBSITE, 'index.html'), 'utf8');
+  const reihenfolge = [...index.matchAll(/class="tool-card tool-([a-z-]+)"/g)].map((m) => m[1]);
+  for (const kachel of Object.values(SAMMEL_KACHELN)) {
+    const platz = reihenfolge.indexOf(kachel.key);
+    if (platz < 0) throw new Error(`Sammel-Kachel „${kachel.key}“ steht nicht in index.html der Website.`);
+    const davor = reihenfolge.slice(0, platz).reverse().find((k) => werkzeuge.some((w) => w.key === k));
+    const bei = davor ? werkzeuge.findIndex((w) => w.key === davor) + 1 : 0;
+    werkzeuge.splice(bei, 0, { ...kachel });
+  }
+  return werkzeuge;
 }
 
 function ladeTexte() {

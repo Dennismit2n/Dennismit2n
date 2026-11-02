@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="175" viewBox="0 0 420 175">
+<defs><clipPath id="k-mods-c"><rect x="6.25" y="6.25" width="407.5" height="162.5" rx="16"/></clipPath><filter id="k-mods-a" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="26"/></filter><filter id="k-mods-g" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="8"/></filter></defs>
+<g clip-path="url(#k-mods-c)"><rect width="420" height="175" fill="#0F0F21"/><g filter="url(#k-mods-a)"><ellipse cx="380" cy="0" rx="170" ry="60" fill="#605CB1" opacity="0.45"/><ellipse cx="410" cy="185" rx="190" ry="60" fill="#493687" opacity="0.6"/><ellipse cx="-20" cy="87.5" rx="90" ry="50" fill="#4D94C3" opacity="0.3"/></g><circle cx="52" cy="50" r="24" fill="#E08AD0" opacity="0.55" filter="url(#k-mods-g)"/></g>
+<rect x="6.25" y="6.25" width="407.5" height="162.5" rx="16" fill="none" stroke="#E08AD0" stroke-width="2.5"/>
+<rect x="14" y="14" width="392" height="147" rx="9" fill="none" stroke="#6D54FB" stroke-opacity="0.55" stroke-width="1.2"/>
+<svg x="24" y="22" width="56" height="56" viewBox="0 0 48 48">
+  <rect x="2" y="2" width="44" height="44" rx="11" fill="#1b1030" stroke="#6E7681" stroke-width="2"/>
+  <!-- Das Fenster von Claude Code, wie die Mods es ergaenzen: Hauptbereich links,
+       Seitenleiste rechts, Band ueber dem Eingabefeld unten. -->
+  <rect x="9" y="11" width="30" height="26" rx="3" fill="none" stroke="#e08ad0" stroke-width="2.4"/>
+  <rect x="27.5" y="12.2" width="10.3" height="23.6" rx="2" fill="#e08ad0" opacity="0.85"/>
+  <rect x="12.5" y="15.5" width="10" height="2.4" rx="1.2" fill="#e08ad0" opacity="0.6"/>
+  <rect x="12.5" y="20.5" width="12" height="2.4" rx="1.2" fill="#e08ad0" opacity="0.6"/>
+  <rect x="12.5" y="30.2" width="12" height="3.4" rx="1.7" fill="#e08ad0"/>
+</svg>
+<text x="94" y="48" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Roboto, Arial, sans-serif" font-size="24" fill="#B4B5FF" font-weight="700">Werkstatt-Mods</text>
+<rect x="94" y="58" width="266.8" height="30" rx="15" fill="#0F0F21" fill-opacity="0.5" stroke="#E08AD0" stroke-width="1.8"/>
+<text x="106" y="80" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Roboto, Arial, sans-serif" font-size="21" fill="#E08AD0">Mods für Claude Code</text>
+<text x="24" y="122" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Roboto, Arial, sans-serif" font-size="21" fill="#9C9ECD">Fünf Mods für Claude Code</text>
+</svg>

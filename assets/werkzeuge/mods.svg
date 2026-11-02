@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+  <rect x="2" y="2" width="44" height="44" rx="11" fill="#1b1030" stroke="#6E7681" stroke-width="2"/>
+  <!-- Das Fenster von Claude Code, wie die Mods es ergaenzen: Hauptbereich links,
+       Seitenleiste rechts, Band ueber dem Eingabefeld unten. -->
+  <rect x="9" y="11" width="30" height="26" rx="3" fill="none" stroke="#e08ad0" stroke-width="2.4"/>
+  <rect x="27.5" y="12.2" width="10.3" height="23.6" rx="2" fill="#e08ad0" opacity="0.85"/>
+  <rect x="12.5" y="15.5" width="10" height="2.4" rx="1.2" fill="#e08ad0" opacity="0.6"/>
+  <rect x="12.5" y="20.5" width="12" height="2.4" rx="1.2" fill="#e08ad0" opacity="0.6"/>
+  <rect x="12.5" y="30.2" width="12" height="3.4" rx="1.7" fill="#e08ad0"/>
+</svg>
