@@ -77,7 +77,10 @@ function ladeWerkzeuge() {
   const quelle = fs.readFileSync(path.join(WEBSITE, 'js', 'werkstatt.js'), 'utf8');
   const treffer = quelle.match(/var TOOLS = (\[[\s\S]*?\])\s*;/);
   if (!treffer) throw new Error('TOOLS-Liste in js/werkstatt.js nicht gefunden.');
-  const werkzeuge = vm.runInNewContext('(' + treffer[1] + ')', {});
+  // Seit 03.11.2026 steht „mods“ auch in TOOLS (für die Neuigkeiten auf
+  // werkstatt.html), dort mit relativem Link. Der Eintrag aus SAMMEL_KACHELN
+  // gilt, sonst stünde die Kachel doppelt da.
+  const werkzeuge = vm.runInNewContext('(' + treffer[1] + ')', {}).filter((w) => !SAMMEL_KACHELN[w.key]);
 
   // Sammel-Kacheln an die Stelle setzen, die sie auf der Startseite haben:
   // hinter das letzte Werkzeug, das dort vor ihnen steht.
