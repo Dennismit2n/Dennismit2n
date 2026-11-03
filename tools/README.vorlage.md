@@ -10,9 +10,9 @@
 
 <table><tr><td>
 
-<p lang="de">Ich bin Dennis, im Netz Dennis_mit_2n. Meine Werkzeuge wollen nichts von dir: keine Anmeldung, keine Anzeigen. Ich baue sie zusammen mit Claude – verstehen möchte ich sie trotzdem. Die Namen sind fast alle von mir selbst ausgedacht. Nur ich möchte was von dir: Verbesserungsvorschläge.😉</p>
+<p lang="de">Ich bin Dennis, im Netz Dennis_mit_2n. Meine Werkzeuge wollen nichts von dir: keine Anmeldung, keine Anzeigen. Ich baue sie zusammen mit Claude, verstehen möchte ich sie trotzdem. Die Namen sind fast alle von mir selbst ausgedacht. Nur ich möchte was von dir: Verbesserungsvorschläge.😉</p>
 
-<p lang="en">I’m Dennis, online as Dennis_mit_2n. My tools want nothing from you: no sign-up, no ads. I build them together with Claude – but I’d still like to understand them. I came up with almost all of the names myself. I’m the one who’d like something from you: suggestions for improvement.😉</p>
+<p lang="en">I’m Dennis, online as Dennis_mit_2n. My tools want nothing from you: no sign-up, no ads. I build them together with Claude, but I’d still like to understand them. I came up with almost all of the names myself. I’m the one who’d like something from you: suggestions for improvement.😉</p>
 
 </td></tr></table>
 
@@ -26,7 +26,7 @@
 
 <table lang="de">
 <tr><th align="left" scope="row">Gelernt</th><td>selbst beigebracht, mit KI als Lernhilfe</td></tr>
-<tr><th align="left" scope="row">Sprachen bisher</th><td>HTML, JavaScript, TypeScript, CSS, Python, PowerShell – dazu etwas Batch und Inno Setup</td></tr>
+<tr><th align="left" scope="row">Sprachen bisher</th><td>HTML, JavaScript, TypeScript, CSS, Python, PowerShell, dazu etwas Batch und Inno Setup</td></tr>
 <tr><th align="left" scope="row">Werkzeuge</th><td>VS Code, Git und GitHub, Claude Code, Electron</td></tr>
 <tr><th align="left" scope="row">Gebaut auf</th><td>einem Windows-11-Laptop</td></tr>
 <tr><th align="left" scope="row">Getestet auf</th><td>einem Android-Handy und einem Android-Tablet mit Stift</td></tr>
@@ -45,7 +45,7 @@ The gaming tools have their own page on the website: [Gaming](https://dennismit2
 
 <table>
 <tr><th align="left" scope="row">Learned</th><td>self-taught, with AI as my tutor</td></tr>
-<tr><th align="left" scope="row">Languages so far</th><td>HTML, JavaScript, TypeScript, CSS, Python, PowerShell – plus a bit of Batch and Inno Setup</td></tr>
+<tr><th align="left" scope="row">Languages so far</th><td>HTML, JavaScript, TypeScript, CSS, Python, PowerShell, plus a bit of Batch and Inno Setup</td></tr>
 <tr><th align="left" scope="row">Tools</th><td>VS Code, Git and GitHub, Claude Code, Electron</td></tr>
 <tr><th align="left" scope="row">Built on</th><td>a Windows 11 laptop</td></tr>
 <tr><th align="left" scope="row">Tested on</th><td>an Android phone and an Android tablet with a stylus</td></tr>
@@ -57,6 +57,6 @@ The gaming tools have their own page on the website: [Gaming](https://dennismit2
 
 <p lang="de"><sub>Ehrlich gesagt: Meine Werkzeuge zählen nichts mehr, weder Aufrufe noch Klicks. Nur ein paar davon brauchen fremde Server. Spectroton schickt die gewählte Farbe (und bei der Namenssuche deinen Suchbegriff) an api.color.pizza, um ihren Namen zu finden. Prismatical prüft Passwörter nur auf Wunsch bei Have I Been Pwned, selbst dann verlassen nur fünf Zeichen des Hashs dein Gerät, nie das Passwort. Heizwarte fragt das Wetter für deine Orte bei Open-Meteo und Bright Sky ab, Ortsnamen sucht es über Photon von komoot. Craftionary lädt die Original-Texturen nur auf Knopfdruck direkt von Mojang. Der Besucher-Ticker holt deine eigenen Zahlen mit deinem Token von GoatCounter, der Token bleibt auf deinem Rechner. Diese Seite lädt nichts von fremden Servern: kein Zähler, keine Statistik, alle Bilder liegen hier im Repo.</sub></p>
 
-<p align="center"><!-- kaffee --><br><sub><span lang="de">Wenn dir ein Werkzeug geholfen hat und du magst: Über einen Kaffee freue ich mich. Ganz freiwillig – alles bleibt kostenlos, nichts wird freigeschaltet. Der Knopf führt zu buymeacoffee.com.</span><br><span lang="en">If a tool helped you and you feel like it: I’d love a coffee. Entirely optional – everything stays free, nothing gets unlocked. The button leads to buymeacoffee.com.</span></sub></p>
+<p align="center"><!-- kaffee --><br><sub><span lang="de">Wenn dir ein Werkzeug geholfen hat und du magst: Über einen Kaffee freue ich mich. Ganz freiwillig, alles bleibt kostenlos, nichts wird freigeschaltet. Der Knopf führt zu buymeacoffee.com.</span><br><span lang="en">If a tool helped you and you feel like it: I’d love a coffee. Entirely optional. Everything stays free, nothing gets unlocked. The button leads to buymeacoffee.com.</span></sub></p>
 
 <p align="center"><span lang="de">Danke euch allen für die Inspiration.</span><br><span lang="en">Thanks to all of you for the inspiration.</span><br><sub>© 2026 Dennis_mit_2n</sub></p>

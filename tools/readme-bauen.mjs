@@ -311,10 +311,10 @@ for (const px of [KARTE.descPx, KARTE.artPx]) if (handyPx(px, KARTE.breite) < 14
 
 // README zusammensetzen
 const teile = {
-  titel: `<h1 lang="de">${bild('titel', `${texte.de.heroTitle} – ${texte.en.heroTitle}. Werkstatt ${MARKE}, seit ${SEIT}.`, 846)}</h1>`,
-  knopf: `<p><a href="https://dennismit2n.github.io/">${bild('knopf', 'Zur Werkzeugkiste – To the toolbox', 350)}</a></p>`,
-  gaming: `<p><a href="https://dennismit2n.github.io/gaming.html">${bild('gaming', 'Zum Gaming-Stuff – To the gaming stuff', 350)}</a></p>`,
-  kaffee: `<a href="https://buymeacoffee.com/dennis_mit_2n">${bild('kaffee', 'Kaffee spendieren – Buy me a coffee', 350)}</a>`,
+  titel: `<h1 lang="de">${bild('titel', `${texte.de.heroTitle} · ${texte.en.heroTitle}. Werkstatt ${MARKE}, seit ${SEIT}.`, 846)}</h1>`,
+  knopf: `<p><a href="https://dennismit2n.github.io/">${bild('knopf', 'Zur Werkzeugkiste · To the toolbox', 350)}</a></p>`,
+  gaming: `<p><a href="https://dennismit2n.github.io/gaming.html">${bild('gaming', 'Zum Gaming-Stuff · To the gaming stuff', 350)}</a></p>`,
+  kaffee: `<a href="https://buymeacoffee.com/dennis_mit_2n">${bild('kaffee', 'Kaffee spendieren · Buy me a coffee', 350)}</a>`,
   karten: '<p align="center" lang="de">' + werkzeuge.map((w) => `<a href="${w.url}"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/karten/${w.key}-dunkel.svg"><img src="assets/karten/${w.key}-hell.svg" width="410" alt="${escHtml(`${w.anzeigename}, ${ART_TEXT.de[w.art]}: ${w.beschreibung}`)}"></picture></a>`).join('') + '</p>',
   'werkzeuge:en': liste(werkzeuge, texte, 'en'),
 };
