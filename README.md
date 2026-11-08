@@ -78,4 +78,4 @@ The gaming tools have their own page on the website: [Gaming](https://dennismit2
 
 <p align="center"><a href="https://buymeacoffee.com/dennis_mit_2n"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/kaffee-dunkel.svg"><img src="assets/kaffee-hell.svg" width="350" alt="Kaffee spendieren · Buy me a coffee"></picture></a><br><sub><span lang="de">Wenn dir ein Werkzeug geholfen hat und du magst: Über einen Kaffee freue ich mich. Ganz freiwillig, alles bleibt kostenlos, nichts wird freigeschaltet. Der Knopf führt zu buymeacoffee.com.</span><br><span lang="en">If a tool helped you and you feel like it: I’d love a coffee. Entirely optional. Everything stays free, nothing gets unlocked. The button leads to buymeacoffee.com.</span></sub></p>
 
-<p align="center"><span lang="de">Danke euch allen für die Inspiration.</span><br><span lang="en">Thanks to all of you for the inspiration.</span><br><sub>© 2026 Dennis_mit_2n</sub></p>
+<p align="center"><span lang="de">Danke an alle für die Inspiration.</span><br><span lang="en">Thanks to all of you for the inspiration.</span><br><sub>© 2026 Dennis_mit_2n</sub></p>
