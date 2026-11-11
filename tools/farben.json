@@ -100,6 +100,14 @@
       "aurora": [["#FFF6B8", 0.55], ["#FFB000", 0.35]]
     }
   },
+  "ablauf": {
+    "_rollen": "Stationen im Ablauf-Bild (Blatt 04, 11.11.2026): flaeche = normale Station, betont = Bau und Release, ziel = letzte Station (Eisblau, mit Leuchten), schrift = Stationsname, tinte = Schrift auf der Ziel-Station. Linien, Raster, Aurora und Nebentext kommen aus bauplan. Das Bild gibt es nur in einer Fassung, weil bauplan.hell und bauplan.dunkel gleich sind (ENTSCHEIDUNGEN #25).",
+    "flaeche": "#181831",
+    "betont": "#352B80",
+    "ziel": "#75C7FF",
+    "schrift": "#E2E2F6",
+    "tinte": "#0F0F21"
+  },
   "icons": {
     "_zweck": "Feiner Rand für Werkzeug-Icons, deren Fläche auf dunklem Grund fast verschwindet. Neutralgrau, trägt auf hellem und dunklem Grund.",
     "rand": "#6E7681",

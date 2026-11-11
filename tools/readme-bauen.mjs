@@ -18,7 +18,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
-import { titel, balken, karte, knopf, KNOEPFE, kontrast, hellsteStelle, breite, umbrechen, KARTE, kartenHoehe } from './zeichnen.mjs';
+import { titel, balken, karte, knopf, ablauf, ABLAUF, KNOEPFE, kontrast, hellsteStelle, breite, umbrechen, KARTE, kartenHoehe } from './zeichnen.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const args = process.argv.slice(2);
@@ -67,7 +67,46 @@ const BALKEN = [
   { datei: 'ueber-mich', nummer: '01', titel: 'Über mich', en: 'About me' },
   { datei: 'werkzeugkiste', nummer: '02', titel: 'Die Werkzeugkiste', en: 'The toolbox' },
   { datei: 'werkbank', nummer: '03', titel: 'Die Werkbank', en: 'The workbench' },
+  { datei: 'ablauf', nummer: '04', titel: 'Der Ablauf', en: 'How it’s made' },
 ];
+// Blatt 04: wie ein Werkzeug entsteht (Dennis, 11.11.2026). Die Stationen folgen dem
+// tatsächlichen Ablauf: Idee, grill-me, Entscheidung mit Ausschluss, Bau, Prüfung, Release, News.
+const ABLAUF_TEXT = {
+  de: {
+    titel: 'Wie ein Werkzeug entsteht',
+    beschreibung: 'Sieben Stationen von der Idee bis zum News-Satz. Hakt die Prüfung, geht es zurück zum Bau.',
+    mass: '7 Stationen · Idee bis News-Satz',
+    hakt: 'hakt', haktLang: 'Hakt es: zurück zum Bau.',
+    blattFeld: 'BLATT', blatt: '04 · Der Ablauf', werkstattFeld: 'WERKSTATT',
+    stationen: [
+      { name: 'Idee', unter: 'was fehlt mir?', art: 'start' },
+      { name: 'grill me', unter: 'Fragerunde' },
+      { name: 'Entscheidung', unter: 'mit Ausschluss' },
+      { name: 'Claude Code', unter: 'der Bau', art: 'betont' },
+      { name: 'Prüfskript', unter: 'und Handy-Test' },
+      { name: 'Release', unter: 'Tag und Setup', art: 'betont' },
+      { name: 'News-Satz', unter: '14 Sprachen', art: 'ziel' },
+    ],
+    alt: 'Wie ein Werkzeug entsteht: Idee, grill me (Fragerunde), Entscheidung mit Ausschluss, Bau mit Claude Code, Prüfskript und Handy-Test, Release, News-Satz in 14 Sprachen. Hakt die Prüfung, geht es zurück zum Bau.',
+  },
+  en: {
+    titel: 'How a tool is made',
+    beschreibung: 'Seven stations from the idea to the news line. If the check fails, it goes back to the build.',
+    mass: '7 stations · idea to news line',
+    hakt: 'fails', haktLang: 'If it fails: back to the build.',
+    blattFeld: 'SHEET', blatt: '04 · How it’s made', werkstattFeld: 'WORKSHOP',
+    stationen: [
+      { name: 'Idea', unter: 'what’s missing?', art: 'start' },
+      { name: 'grill me', unter: 'question round' },
+      { name: 'Decision', unter: 'what it rules out' },
+      { name: 'Claude Code', unter: 'the build', art: 'betont' },
+      { name: 'Check script', unter: 'and phone test' },
+      { name: 'Release', unter: 'tag and setup', art: 'betont' },
+      { name: 'News line', unter: '14 languages', art: 'ziel' },
+    ],
+    alt: 'How a tool is made: idea, grill me (a round of questions), decision and what it rules out, build with Claude Code, check script and phone test, release, a news line in 14 languages. If the check fails, it goes back to the build.',
+  },
+};
 const SEIT = '2026';
 const MARKE = 'Dennis_mit_2n';
 
@@ -201,6 +240,30 @@ function pruefeFarben() {
       for (const c of farbenVon(k.rand)) for (const seite of FARBEN.github[t]) mindestens(`Knopf ${name} ${t} Rand gegen GitHub`, c, seite, 3);
     }
   }
+  // Ablauf-Bild: Schrift auf den Stationen, Nebentext auf der Fläche, Maße der Texte.
+  {
+    const a = FARBEN.ablauf, b = FARBEN.bauplan.dunkel;
+    if (JSON.stringify(FARBEN.bauplan.hell) !== JSON.stringify(b)) fehler.push('Ablauf-Bild gibt es nur in einer Fassung, bauplan.hell weicht aber von bauplan.dunkel ab');
+    mindestens('Ablauf Name auf Station', a.schrift, a.flaeche, 4.5);
+    mindestens('Ablauf Name auf betonter Station', a.schrift, a.betont, 4.5);
+    mindestens('Ablauf Nebentext auf Station', b.schrift2, a.flaeche, 4.5);
+    mindestens('Ablauf Nebentext auf betonter Station', b.schrift, a.betont, 4.5);
+    mindestens('Ablauf Schrift auf Ziel-Station', a.tinte, a.ziel, 4.5);
+    mindestens('Ablauf Rand der betonten Station', b.kontur[0], a.betont, 3);
+    for (const [sprache, t] of Object.entries(ABLAUF_TEXT)) {
+      if (t.stationen.length !== 7) fehler.push(`Ablauf ${sprache}: 7 Stationen erwartet`);
+      for (const [fassung, m] of Object.entries(ABLAUF)) {
+        for (const s of t.stationen) {
+          if (breite(s.name, m.namePx, true) > m.kasten - 6) fehler.push(`Ablauf ${sprache} ${fassung}: Name zu breit: ${s.name}`);
+          if (breite(s.unter, m.unterPx) > m.kasten - 6) fehler.push(`Ablauf ${sprache} ${fassung}: Nebentext zu breit: ${s.unter}`);
+        }
+        if (breite(t.mass, m.massPx) > m.breite - 40) fehler.push(`Ablauf ${sprache} ${fassung}: Maßtext zu breit`);
+      }
+      if (breite(t.blatt, 14, true) > ABLAUF.quer.kasten - 16) fehler.push(`Ablauf ${sprache}: Schriftfeld zu breit: ${t.blatt}`);
+      if (breite(t.haktLang, 21) > ABLAUF.hoch.breite - 40) fehler.push(`Ablauf ${sprache}: Rückweg-Satz zu breit`);
+    }
+    for (const px of [ABLAUF.hoch.namePx, ABLAUF.hoch.unterPx, ABLAUF.hoch.massPx]) if (handyPx(px, ABLAUF.hoch.breite) < 14) fehler.push(`Ablauf-Text am Handy unter 14 px (${px})`);
+  }
   // Text zwischen Zeichen (bis x 140) und Pfeil (ab x 606).
   for (const art of Object.values(KNOEPFE)) {
     if (140 + breite(art.oben, 40, true) > 596) fehler.push(`Knopftext zu breit: ${art.oben}`);
@@ -227,6 +290,11 @@ const escHtml = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>
 function bild(datei, alt, breiteAttr, hoeheAttr) {
   const hoehe = hoeheAttr ? ` height="${hoeheAttr}"` : '';
   return `<picture><source media="(prefers-color-scheme: dark)" srcset="assets/${datei}-dunkel.svg"><img src="assets/${datei}-hell.svg" width="${breiteAttr}"${hoehe} alt="${escHtml(alt)}"></picture>`;
+}
+
+// Ablauf-Bild: unter 600 px Fensterbreite die Hochkant-Fassung, sonst die quere.
+function ablaufBild(anhang, alt) {
+  return `<picture><source media="(max-width: 600px)" srcset="assets/ablauf-handy${anhang}.svg"><img src="assets/ablauf${anhang}.svg" width="846" alt="${escHtml(alt)}"></picture>`;
 }
 
 function liste(werkzeuge, texte, sprache) {
@@ -307,13 +375,22 @@ for (const t of THEMEN) {
   schreibe(path.join('assets', `gaming-${t}.svg`), knopf(FARBEN.gaming[t], KNOEPFE.gaming));
   schreibe(path.join('assets', `kaffee-${t}.svg`), knopf(FARBEN.kaffee[t], KNOEPFE.kaffee));
 }
+// Ablauf-Bild: quer für breite Fenster, hoch fürs Handy, je Sprache. Nur eine Farbfassung (siehe farben.json).
+for (const [sprache, t] of Object.entries(ABLAUF_TEXT)) {
+  const anhang = sprache === 'de' ? '' : `-${sprache}`;
+  const texteMitMarke = { ...t, marke: MARKE };
+  schreibe(path.join('assets', `ablauf${anhang}.svg`), ablauf(FARBEN.bauplan.dunkel, FARBEN.ablauf, texteMitMarke));
+  schreibe(path.join('assets', `ablauf-handy${anhang}.svg`), ablauf(FARBEN.bauplan.dunkel, FARBEN.ablauf, texteMitMarke, true));
+}
 for (const px of [KARTE.descPx, KARTE.artPx]) if (handyPx(px, KARTE.breite) < 14) fehler.push(`Kacheltext am Handy unter 14 px (${px})`);
 
 // README zusammensetzen
 const teile = {
   titel: `<h1 lang="de">${bild('titel', `${texte.de.heroTitle} · ${texte.en.heroTitle}. Werkstatt ${MARKE}, seit ${SEIT}.`, 846)}</h1>`,
-  knopf: `<p><a href="https://dennismit2n.github.io/">${bild('knopf', 'Zur Werkzeugkiste · To the toolbox', 350)}</a></p>`,
-  gaming: `<p><a href="https://dennismit2n.github.io/gaming.html">${bild('gaming', 'Zum Gaming-Stuff · To the gaming stuff', 350)}</a></p>`,
+  // Beide Knöpfe in einem Absatz: am Desktop nebeneinander, am Handy brechen sie von selbst um (Dennis, 11.11.2026).
+  knoepfe: `<p><a href="https://dennismit2n.github.io/">${bild('knopf', 'Zur Werkzeugkiste · To the toolbox', 350)}</a> <a href="https://dennismit2n.github.io/gaming.html">${bild('gaming', 'Zum Gaming-Stuff · To the gaming stuff', 350)}</a></p>`,
+  ablauf: `<p lang="de">${ablaufBild('', ABLAUF_TEXT.de.alt)}</p>`,
+  'ablauf:en': `<p>${ablaufBild('-en', ABLAUF_TEXT.en.alt)}</p>`,
   kaffee: `<a href="https://buymeacoffee.com/dennis_mit_2n">${bild('kaffee', 'Kaffee spendieren · Buy me a coffee', 350)}</a>`,
   karten: '<p align="center" lang="de">' + werkzeuge.map((w) => `<a href="${w.url}"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/karten/${w.key}-dunkel.svg"><img src="assets/karten/${w.key}-hell.svg" width="410" alt="${escHtml(`${w.anzeigename}, ${ART_TEXT.de[w.art]}: ${w.beschreibung}`)}"></picture></a>`).join('') + '</p>',
   'werkzeuge:en': liste(werkzeuge, texte, 'en'),

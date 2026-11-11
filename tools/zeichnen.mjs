@@ -2,7 +2,7 @@
  * Zeichnet die Bilder der Profil-README im Stil einer Werkstattzeichnung (Blaupause),
  * eingefärbt wie das Twitch-Banner: Violett-Grund mit weicher Aurora, Konturen im
  * Verlauf, leuchtende Icons und ein bunter Saum um den Einsatz.
- * Titelbild, Abschnittsbalken, Werkzeug-Kacheln, den Knopf zur Werkzeugkiste und den Kaffee-Knopf.
+ * Titelbild, Abschnittsbalken, Werkzeug-Kacheln, den Ablauf (Blatt 04), den Knopf zur Werkzeugkiste und den Kaffee-Knopf.
  * Reine Funktionen: Farben und Inhalte kommen als Parameter, zurück kommt SVG-Text.
  *
  * Text läuft über Systemschriften (externe Schriften lädt GitHub in Bildern nicht).
@@ -292,6 +292,112 @@ export function karte(f, { iconSvg, name, art, zeilen, hoehe, id }, akzent) {
   zeilen.forEach((z, i) => o.push(text(24, KARTE.oben + i * KARTE.descZeile, KARTE.descPx, f.schrift2, z)));
   o.push('</svg>', '');
   return o.join('\n');
+}
+
+// ------------------------------------------------------------------ Ablauf (Blatt 04)
+
+/*
+ * Wie ein Werkzeug entsteht, als Werkstattzeichnung. Zwei Fassungen:
+ *   quer (846 breit)  Stationen 1 bis 4 nach rechts, 5 bis 7 darunter zurück nach links,
+ *                     unten links das Schriftfeld
+ *   hoch (420 breit)  fürs Handy: alle Stationen untereinander
+ * f = Bauplan-Farben, a = Farben der Stationen (farben.json, ablauf), t = Texte.
+ * Stationen: { name, unter, art } mit art 'start' (gestrichelt), 'betont' oder 'ziel'.
+ * Die Maße stehen in ABLAUF, damit das Bauskript die Textbreiten dagegen prüfen kann.
+ */
+export const ABLAUF = {
+  quer: { breite: 846, kasten: 176, namePx: 22, unterPx: 16, massPx: 15 },
+  hoch: { breite: 420, kasten: 300, namePx: 24, unterPx: 21, massPx: 21 },
+};
+
+function ablaufKopf(f, W, H, flecken, t) {
+  return [
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-labelledby="at ad">`,
+    `<title id="at">${esc(t.titel)}</title><desc id="ad">${esc(t.beschreibung)}</desc>`,
+    // Die Verbindungsstriche laufen langsam; ohne Bewegung bleibt ein lesbares Standbild.
+    '<style>.leit { stroke-dasharray: 7 6; animation: lauf 9s linear infinite } @keyframes lauf { to { stroke-dashoffset: -130 } } @media (prefers-reduced-motion: reduce) { .leit { animation: none } }</style>',
+    `<defs><clipPath id="ab"><rect x="3" y="3" width="${W - 6}" height="${H - 6}" rx="10"/></clipPath>${raster(f, 'ar', 8, 8)}${weich('aa', 30)}${verlaufQuer('ac', f.claim)}`
+      + `<filter id="ag" x="-30%" y="-50%" width="160%" height="200%"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>`,
+    `<g clip-path="url(#ab)"><rect width="${W}" height="${H}" fill="${f.grund}"/>`
+      + auroraFlecken(f.aurora, flecken, 'aa')
+      + `<rect x="8" y="8" width="${W - 16}" height="${H - 16}" fill="url(#ar)"/></g>`,
+    `<rect x="1.5" y="1.5" width="${W - 3}" height="${H - 3}" rx="12" fill="none" stroke="${f.kante}" stroke-width="3"/>`,
+    `<rect x="8" y="8" width="${W - 16}" height="${H - 16}" fill="none" stroke="${f.rahmen}" stroke-width="2"/>`,
+  ];
+}
+
+function station(f, a, s, x, y, b, h, namePx, unterPx) {
+  const mitte = x + b / 2, ziel = s.art === 'ziel', betont = s.art === 'betont';
+  const flaeche = ziel ? a.ziel : betont ? a.betont : a.flaeche;
+  const rand = ziel ? a.ziel : betont ? f.kontur[0] : f.rahmen;
+  const nameY = y + h / 2 - 3;
+  return `<rect x="${x}" y="${y}" width="${b}" height="${h}" rx="9" fill="${flaeche}" stroke="${rand}" stroke-width="1.8"`
+      + `${s.art === 'start' ? ' stroke-dasharray="6 5"' : ''}${ziel ? ' filter="url(#ag)"' : ''}/>`
+    + text(mitte, nameY, namePx, ziel ? a.tinte : a.schrift, s.name, ' font-weight="600" text-anchor="middle"')
+    + text(mitte, nameY + unterPx + 4, unterPx, ziel ? a.tinte : betont ? f.schrift : f.schrift2, s.unter, ' text-anchor="middle"');
+}
+
+const nummer = (i) => String(i + 1).padStart(2, '0');
+
+function ablaufQuer(f, a, t) {
+  const { breite: W, kasten: b, namePx, unterPx, massPx } = ABLAUF.quer;
+  const H = 346, luecke = 28, h = 78, y1 = 92, y2 = 234;
+  const x = (i) => 29 + i * (b + luecke);
+  const platz = [[x(0), y1], [x(1), y1], [x(2), y1], [x(3), y1], [x(3), y2], [x(2), y2], [x(1), y2]];
+  const m1 = y1 + h / 2, m2 = y2 + h / 2, runter = x(3) + b / 2 - 22, hoch = x(3) + b / 2 + 22;
+  const massBreite = breite(t.mass, massPx) + 28;
+  return [
+    ...ablaufKopf(f, W, H, [[120, 40, 210, 70], [740, 320, 240, 80], [450, 170, 170, 50]], t),
+    // Maßlinie über die ganze Reihe, mit Lücke für die Maßzahl
+    `<path d="M${x(0)} 52H${(W - massBreite) / 2}M${(W + massBreite) / 2} 52H${x(3) + b}M${x(0)} 44V60M${x(3) + b} 44V60" fill="none" stroke="${f.mass}" stroke-width="1.2"/>`,
+    pfeilspitze(x(0), 52, 0, f.mass) + pfeilspitze(x(3) + b, 52, 180, f.mass),
+    text(W / 2, 57, massPx, f.akzent, t.mass, ' text-anchor="middle"'),
+    // Verbinder: obere Reihe nach rechts, hinunter, untere Reihe nach links
+    verlaufRaum('al', f.kontur, [x(0), 0, x(3) + b, 0]),
+    `<path class="leit" d="${[0, 1, 2].map((i) => `M${x(i) + b} ${m1}H${x(i + 1) - 10}`).join('')}M${runter} ${y1 + h}V${y2 - 10}M${x(3)} ${m2}H${x(2) + b + 10}M${x(2)} ${m2}H${x(1) + b + 10}" fill="none" stroke="url(#al)" stroke-width="2.4"/>`,
+    [1, 2, 3].map((i) => pfeilspitze(x(i), m1, 180, f.mass)).join('') + pfeilspitze(runter, y2, -90, f.mass)
+      + pfeilspitze(x(2) + b, m2, 0, f.mass) + pfeilspitze(x(1) + b, m2, 0, f.mass),
+    // Rückweg: hakt die Prüfung, geht es zurück zum Bau
+    `<path d="M${hoch} ${y2}V${y1 + h + 10}" fill="none" stroke="${f.schrift2}" stroke-width="1.8" stroke-dasharray="5 5"/>`,
+    pfeilspitze(hoch, y1 + h, 90, f.schrift2),
+    text(hoch + 12, (y1 + h + y2) / 2 + 5, 15, f.schrift2, t.hakt),
+    ...platz.map(([px, py], i) => station(f, a, t.stationen[i], px, py, b, h, namePx, unterPx)
+      + text(px + 2, py - 8, 14, f.akzent, nummer(i))),
+    // Schriftfeld unten links
+    `<rect x="${x(0)}" y="${y2}" width="${b}" height="${h}" fill="${f.grund}" fill-opacity="0.55" stroke="${f.rahmen}" stroke-width="1.6"/>`,
+    `<path d="M${x(0)} ${m2}H${x(0) + b}" stroke="${f.rahmen}" stroke-width="1.6"/>`,
+    feldname(x(0) + 10, y2 + 15, f, t.blattFeld) + text(x(0) + 10, y2 + 32, 14, a.schrift, t.blatt, ' font-weight="600"'),
+    feldname(x(0) + 10, m2 + 15, f, t.werkstattFeld) + text(x(0) + 10, m2 + 32, 14, 'url(#ac)', t.marke, ' font-weight="600"'),
+    '</svg>',
+    '',
+  ].join('\n');
+}
+
+function ablaufHoch(f, a, t) {
+  const { breite: W, kasten: b, namePx, unterPx, massPx } = ABLAUF.hoch;
+  const h = 84, luecke = 30, y0 = 92, x = 66, mitte = x + b / 2;
+  const y = (i) => y0 + i * (h + luecke);
+  const H = y(6) + h + 96;
+  return [
+    ...ablaufKopf(f, W, H, [[70, 90, 150, 110], [380, H - 130, 170, 130], [330, 420, 110, 90]], t),
+    text(W / 2, 56, massPx, f.akzent, t.mass, ' text-anchor="middle"'),
+    verlaufRaum('al', f.kontur, [0, y(0), 0, y(6)]),
+    `<path class="leit" d="${[0, 1, 2, 3, 4, 5].map((i) => `M${mitte} ${y(i) + h}V${y(i + 1) - 10}`).join('')}" fill="none" stroke="url(#al)" stroke-width="3"/>`,
+    [1, 2, 3, 4, 5, 6].map((i) => pfeilspitze(mitte, y(i), -90, f.mass)).join(''),
+    // Rückweg rechts außen von der Prüfung zum Bau
+    `<path d="M${x + b} ${y(4) + h / 2}H${x + b + 26}V${y(3) + h / 2}H${x + b + 10}" fill="none" stroke="${f.schrift2}" stroke-width="2" stroke-dasharray="5 5"/>`,
+    pfeilspitze(x + b, y(3) + h / 2, 0, f.schrift2),
+    ...t.stationen.map((s, i) => station(f, a, s, x, y(i), b, h, namePx, unterPx)
+      + text(x - 12, y(i) + h / 2 + 7, 20, f.akzent, nummer(i), ' text-anchor="end"')),
+    text(W / 2, H - 58, 21, f.schrift2, t.haktLang, ' text-anchor="middle"'),
+    text(W / 2, H - 26, 20, 'url(#ac)', t.marke, ' font-weight="600" text-anchor="middle"'),
+    '</svg>',
+    '',
+  ].join('\n');
+}
+
+export function ablauf(f, a, t, hoch = false) {
+  return hoch ? ablaufHoch(f, a, t) : ablaufQuer(f, a, t);
 }
 
 // ------------------------------------------------------------------ Knopf

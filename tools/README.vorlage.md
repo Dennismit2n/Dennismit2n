@@ -1,8 +1,6 @@
 <!-- titel -->
 
-<!-- knopf -->
-
-<!-- gaming -->
+<!-- knoepfe -->
 
 [dennismit2n.github.io](https://dennismit2n.github.io/)
 
@@ -10,9 +8,9 @@
 
 <table><tr><td>
 
-<p lang="de">Ich bin Dennis, im Netz Dennis_mit_2n. Meine Werkzeuge wollen nichts von dir: keine Anmeldung, keine Anzeigen. Ich baue sie zusammen mit Claude, verstehen möchte ich sie trotzdem. Die Namen sind fast alle von mir selbst ausgedacht. Nur ich möchte was von dir: Verbesserungsvorschläge.😉</p>
+<p lang="de">Ich bin Dennis, im Netz Dennis_mit_2n. Meine Werkzeuge wollen nichts von dir: keine Anmeldung, keine Anzeigen. Ich baue sie zusammen mit Claude, verstehen möchte ich sie trotzdem. Die Namen sind fast alle von mir selbst ausgedacht. Nur ich möchte was von dir: <a href="https://github.com/Dennismit2n/Dennismit2n/issues">Verbesserungsvorschläge</a>.😉 GitHub will dafür ein Konto, ich nicht.</p>
 
-<p lang="en">I’m Dennis, online as Dennis_mit_2n. My tools want nothing from you: no sign-up, no ads. I build them together with Claude, but I’d still like to understand them. I came up with almost all of the names myself. I’m the one who’d like something from you: suggestions for improvement.😉</p>
+<p lang="en">I’m Dennis, online as Dennis_mit_2n. My tools want nothing from you: no sign-up, no ads. I build them together with Claude, but I’d still like to understand them. I came up with almost all of the names myself. I’m the one who’d like something from you: <a href="https://github.com/Dennismit2n/Dennismit2n/issues">suggestions for improvement</a>.😉 GitHub wants an account for that, I don’t.</p>
 
 </td></tr></table>
 
@@ -30,7 +28,16 @@
 <tr><th align="left" scope="row">Werkzeuge</th><td>VS Code, Git und GitHub, Claude Code, Electron</td></tr>
 <tr><th align="left" scope="row">Gebaut auf</th><td>einem Windows-11-Laptop</td></tr>
 <tr><th align="left" scope="row">Getestet auf</th><td>einem Android-Handy und einem Android-Tablet mit Stift</td></tr>
+<tr><th align="left" scope="row">Sprachen der Werkzeuge</th><td>Website und die meisten Web-Werkzeuge in 14 Sprachen</td></tr>
+<tr><th align="left" scope="row">Gebaut mit</th><td>Claude Code, fast jeder Commit nennt es als Co-Author</td></tr>
+<tr><th align="left" scope="row">Entschieden</th><td>jede Entscheidung steht in einem Log, mit Begründung und mit dem, was sie ausschließt</td></tr>
+<tr><th align="left" scope="row">Geprüft</th><td>das Bauskript dieser Seite rechnet bei jedem Lauf jeden Textkontrast nach</td></tr>
+<tr><th align="left" scope="row">Gepflegt</th><td>jede sichtbare Änderung bekommt einen Satz in den Neuigkeiten</td></tr>
 </table>
+
+<!-- balken:ablauf -->
+
+<!-- ablauf -->
 
 <details lang="en">
 <summary><b>In English</b></summary>
@@ -49,7 +56,16 @@ The gaming tools have their own page on the website: [Gaming](https://dennismit2
 <tr><th align="left" scope="row">Tools</th><td>VS Code, Git and GitHub, Claude Code, Electron</td></tr>
 <tr><th align="left" scope="row">Built on</th><td>a Windows 11 laptop</td></tr>
 <tr><th align="left" scope="row">Tested on</th><td>an Android phone and an Android tablet with a stylus</td></tr>
+<tr><th align="left" scope="row">Languages of the tools</th><td>the website and most web tools come in 14 languages</td></tr>
+<tr><th align="left" scope="row">Built with</th><td>Claude Code, almost every commit names it as co-author</td></tr>
+<tr><th align="left" scope="row">Decided</th><td>every decision goes into a log, with the reason and with what it rules out</td></tr>
+<tr><th align="left" scope="row">Checked</th><td>this page’s build script recalculates every text contrast on each run</td></tr>
+<tr><th align="left" scope="row">Maintained</th><td>every visible change gets a line in the news</td></tr>
 </table>
+
+### How it’s made
+
+<!-- ablauf:en -->
 
 <sub>To be honest: my tools don’t count anything anymore, neither visits nor clicks. Only a few of them need other servers. Spectroton sends the chosen colour (and, when you search by name, your search term) to api.color.pizza to find its name. Prismatical checks passwords with Have I Been Pwned only if you switch it on, and even then only five characters of the hash leave your device, never the password. Heizwarte asks Open-Meteo and Bright Sky for the weather at your places and looks up place names with Photon by komoot. Craftionary downloads the original game textures straight from Mojang, only when you tap the button for it. The Besucher-Ticker fetches your own numbers from GoatCounter with your token, and the token stays on your computer. This page loads nothing from other servers: no counters, no stats, every image lives in this repo.</sub>
 
