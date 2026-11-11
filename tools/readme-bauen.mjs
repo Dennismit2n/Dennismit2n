@@ -23,7 +23,7 @@ import vm from 'node:vm';
 import crypto from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { titel, balken, karte, knopf, ablauf, setzeSchild, ABLAUF, KNOEPFE, kontrast, hellsteStelle, breite, umbrechen, KARTE, kartenHoehe } from './zeichnen.mjs';
+import { titel, balken, karte, knopf, ablauf, setzeSchild, ABLAUF, ZAHLEN_ZEICHEN, KNOEPFE, kontrast, hellsteStelle, breite, umbrechen, KARTE, kartenHoehe } from './zeichnen.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const args = process.argv.slice(2);
@@ -45,7 +45,7 @@ const SCHILD_DATEI = path.join(WEBSITE, 'assets', 'fonts', 'fraunces', 'fraunces
 const SCHILD_ORDNER = path.join(ROOT, 'tools', 'schrift');
 if (!fs.existsSync(SCHILD_DATEI)) throw new Error(`Überschriftenschrift fehlt: ${SCHILD_DATEI}`);
 const schildBenutzt = new Set(['OFL.txt', 'README.md']);
-setzeSchild((zeichen, staerke) => {
+const teilSchrift = (zeichen, staerke) => {
   const name = `fraunces-${staerke}-${crypto.createHash('sha1').update(zeichen).digest('hex').slice(0, 12)}.woff2`;
   const datei = path.join(SCHILD_ORDNER, name);
   schildBenutzt.add(name);
@@ -60,7 +60,11 @@ setzeSchild((zeichen, staerke) => {
     console.log(`  Teil-Schrift neu: ${name} für „${zeichen}“`);
   }
   return fs.readFileSync(datei).toString('base64');
-});
+};
+setzeSchild(teilSchrift);
+// Blatt 05 baut tools/statistik-bauen.mjs auf GitHub, wo kein Python läuft. Darum liegt die
+// Teil-Schrift für alle Ziffern schon hier bereit und gilt als gebraucht.
+teilSchrift([...ZAHLEN_ZEICHEN].sort().join(''), 560);
 // Breite, in der GitHub eine Kachel zeigt. Das Bild ist 420 breit gezeichnet, sein Lesetext 21 px:
 // bei 320 wird er 16 px groß, so groß wie der Fließtext der README (Dennis, 11.11.2026).
 // Am Handy (Spalte 293 px) bleibt alles wie vorher, dort begrenzt die Spaltenbreite.
@@ -344,6 +348,10 @@ function liste(werkzeuge, texte, sprache) {
 
 const geschrieben = [];
 const erwartet = new Set(['README.md']);
+// Bilder für Blatt 05: baut die Action (tools/statistik-bauen.mjs), nicht dieses Skript.
+// Sie gelten als erwartet und werden unten wie alle Bilder auf Verweise nach außen geprüft.
+const STATISTIK_BILDER = ['snake.svg', 'zahlen.svg', 'zahlen-handy.svg', 'zahlen-en.svg', 'zahlen-handy-en.svg'];
+for (const datei of STATISTIK_BILDER) erwartet.add(`assets/statistik/${datei}`);
 function schreibe(relativ, inhalt) {
   const rel = relativ.split(path.sep).join('/');
   erwartet.add(rel);
@@ -448,7 +456,7 @@ for (const [, quelle] of readme.matchAll(/\b(?:src|srcset)="([^"]+)"/g)) {
   else if (!fs.existsSync(path.join(ROOT, quelle))) fehler.push(`Bild fehlt: ${quelle}`);
 }
 // Keine externen Verweise in den erzeugten Bildern.
-for (const datei of geschrieben.concat([...erwartet]).filter((d) => d.endsWith('.svg'))) {
+for (const datei of geschrieben.concat([...erwartet]).filter((d) => d.endsWith('.svg') && fs.existsSync(path.join(ROOT, d)))) {
   const inhalt = fs.readFileSync(path.join(ROOT, datei), 'utf8');
   // Die eingebettete Schrift (data:font/woff2) ist kein Verweis nach außen.
   if (/(?:href|src)="(?!#)|@import|url\((?!#|data:font\/woff2;base64,)/.test(inhalt)) fehler.push(`Externer Verweis in ${datei}`);

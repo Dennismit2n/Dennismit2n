@@ -1,0 +1,51 @@
+# Baut einmal am Tag die Bilder für Blatt 05 „Die Zahlen“ der Profil-README
+# und legt sie in assets/statistik/ ab. Was genau gebaut wird, steht in
+# tools/statistik-bauen.mjs. Die Farben der Snake müssen zu tools/farben.json
+# (Abschnitt „zahlen“) passen.
+#
+# Fremde Actions sind auf einen festen Commit gesetzt, nicht auf einen Namen,
+# der sich verschieben lässt.
+name: Statistik-Bilder
+
+on:
+  schedule:
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: statistik
+
+jobs:
+  bauen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Snake zeichnen lassen
+        uses: Platane/snk/svg-only@d8f6715049803e982ee5ff501b6b9b7d5deeb09b # v3.5.0
+        with:
+          github_user_name: ${{ github.repository_owner }}
+          outputs: |
+            statistik-roh/snake.svg?color_snake=#E2E2F6&color_dots=#181831,#493687,#6D54FB,#A5A5FF,#75C7FF
+
+      - name: Zahlen holen und Bilder bauen
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node tools/statistik-bauen.mjs
+
+      - name: Geänderte Bilder ablegen
+        run: |
+          rm -rf statistik-roh
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/statistik
+          if git diff --cached --quiet; then
+            echo "Nichts geändert."
+          else
+            git commit -m "Statistik-Bilder aufgefrischt"
+            git push
+          fi

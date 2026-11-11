@@ -108,6 +108,11 @@
     "schrift": "#E2E2F6",
     "tinte": "#0F0F21"
   },
+  "zahlen": {
+    "_rollen": "Blatt 05, die eigenen GitHub-Zahlen (11.11.2026): stufen = fünf Farben des Beitragskalenders von 0 Beiträgen bis sehr viele, flaeche = Zahlenfelder. Dieselben fünf Farben und die Farbe der Schlange (#E2E2F6) stehen auch in .github/workflows/statistik.yml bei der Snake-Action, dort von Hand mitziehen.",
+    "stufen": ["#181831", "#493687", "#6D54FB", "#A5A5FF", "#75C7FF"],
+    "flaeche": "#181831"
+  },
   "icons": {
     "_zweck": "Feiner Rand für Werkzeug-Icons, deren Fläche auf dunklem Grund fast verschwindet. Neutralgrau, trägt auf hellem und dunklem Grund.",
     "rand": "#6E7681",

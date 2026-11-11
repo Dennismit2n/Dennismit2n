@@ -434,6 +434,121 @@ export function ablauf(f, a, t, hoch = false) {
   return mitSchild(hoch ? ablaufHoch(f, a, t) : ablaufQuer(f, a, t));
 }
 
+// ------------------------------------------------------------------ Zahlen (Blatt 05)
+
+/*
+ * Blatt 05: die eigenen GitHub-Zahlen. Die Bilder baut tools/statistik-bauen.mjs einmal am Tag
+ * in einer GitHub Action aus öffentlichen Daten; hier steht nur das Zeichnen.
+ *   schlange()  setzt das Bild der Snake-Action (Beitragsraster mit Schlange) in ein Blatt
+ *   zahlen()    Beitragskalender als 3D-Zeichnung plus vier Zahlenfelder, quer (846) oder hoch (420)
+ * Die Zahlen stehen in der Überschriftenschrift. Damit die Teil-Schrift jeden Tag dieselbe
+ * bleibt (auf GitHub läuft kein Python), meldet zahlen() immer den ganzen Satz ZAHLEN_ZEICHEN
+ * an, nicht nur die Ziffern des Tages.
+ */
+export const ZAHLEN_ZEICHEN = '0123456789.,';
+export const ZAHLEN = {
+  quer: { breite: 846, feld: 152, zahlPx: 34, textPx: 15, massPx: 15 },
+  hoch: { breite: 420, feld: 372, zahlPx: 40, textPx: 21, massPx: 21 },
+};
+
+export function schlange(f, roh, t) {
+  const kopf = roh.match(/<svg\b[^>]*>/);
+  const raster = kopf && kopf[0].match(/viewBox="([^"]+)"/);
+  if (!raster) throw new Error('Snake-Bild ohne viewBox, damit kann ich es nicht einrahmen.');
+  const [, , rb, rh] = raster[1].trim().split(/\s+/).map(Number);
+  const innen = roh.slice(roh.indexOf(kopf[0]) + kopf[0].length, roh.lastIndexOf('</svg>'));
+  const W = 846, b = 790, h = Math.round((b * rh) / rb), H = h + 62;
+  return mitSchild([
+    ...ablaufKopf(f, W, H, [[110, 30, 200, 60], [760, H, 220, 70], [430, H / 2, 160, 40]], t),
+    feldname(28, 31, f, t.feld),
+    `<svg x="28" y="40" width="${b}" height="${h}" viewBox="${raster[1]}">${innen}</svg>`,
+    '</svg>',
+    '',
+  ].join('\n'));
+}
+
+// Beitragskalender als Quader: Wochen laufen nach rechts unten, Wochentage nach links unten.
+// tage = [{ w, d, anzahl, stufe }], stufe 0 bis 4. Gezeichnet wird von hinten nach vorn.
+function kalender3d(f, stufen, tage, ox, oy, a, b, hmax) {
+  const max = Math.max(1, ...tage.map((t) => t.anzahl));
+  const z = (n) => Math.round(n * 10) / 10;
+  return [...tage].sort((p, q) => (p.w + p.d) - (q.w + q.d)).map((t) => {
+    const x = z(ox + (t.w - t.d) * a), y = z(oy + (t.w + t.d) * b);
+    const hoch = t.anzahl ? Math.round(4 + hmax * Math.sqrt(t.anzahl / max)) : 0;
+    const farbe = stufen[t.stufe];
+    const deckel = `<path fill="${farbe}" d="M${x} ${z(y - hoch)}l${a} ${b}l${-a} ${b}l${-a} ${-b}z"/>`;
+    if (!hoch) return deckel;
+    return deckel
+      + `<path fill="${mischen(farbe, f.grund, 0.38)}" d="M${z(x - a)} ${z(y + b - hoch)}l${a} ${b}v${hoch}l${-a} ${-b}z"/>`
+      + `<path fill="${mischen(farbe, f.grund, 0.62)}" d="M${z(x + a)} ${z(y + b - hoch)}l${-a} ${b}v${hoch}l${a} ${-b}z"/>`;
+  }).join('');
+}
+
+// Ausschnitt: ab der ersten Woche mit Beiträgen, mindestens 16 Wochen. Ein junges Konto zeigt so
+// große Quader statt eines fast leeren Jahres; mit der Zeit füllt sich der Kalender auf 53 Wochen.
+export function kalenderAusschnitt(tage) {
+  const wochen = Math.max(...tage.map((t) => t.w)) + 1;
+  const aktiv = tage.filter((t) => t.anzahl > 0).map((t) => t.w);
+  const n = Math.max(16, Math.min(wochen, wochen - (aktiv.length ? Math.min(...aktiv) : wochen)));
+  return { wochen: n, tage: tage.filter((t) => t.w >= wochen - n).map((t) => ({ ...t, w: t.w - (wochen - n) })) };
+}
+
+// Kalender in einen Platz einpassen: links/oben ist die Ecke, breiteMax die Breite, aMax die größte Quaderbreite.
+function kalenderBlock(f, stufen, tage, links, oben, breiteMax, aMax) {
+  const { wochen, tage: sicht } = kalenderAusschnitt(tage);
+  const a = Math.round(Math.min(aMax, breiteMax / (wochen + 8)) * 10) / 10, b = Math.round(a * 4.4) / 10;
+  const hmax = Math.round(Math.min(60, 5.5 * a));
+  return kalender3d(f, stufen, sicht, links + 7 * a, oben + hmax, a, b, hmax);
+}
+
+const zahlenAnmelden = () => { if (schildQuelle) { if (!schildZeichen.has(560)) schildZeichen.set(560, new Set()); for (const z of ZAHLEN_ZEICHEN) schildZeichen.get(560).add(z); } };
+
+function zahlenQuer(f, a, t) {
+  const { breite: W, feld: b, zahlPx, textPx, massPx } = ZAHLEN.quer;
+  const H = 360, x0 = 500, y0 = 96, h = 100, luecke = 16;
+  const massBreite = breite(t.mass, massPx) + 28;
+  return [
+    ...ablaufKopf(f, W, H, [[120, 40, 210, 70], [740, 330, 240, 80], [300, 220, 190, 60]], t),
+    `<path d="M29 52H${(W - massBreite) / 2}M${(W + massBreite) / 2} 52H817M29 44V60M817 44V60" fill="none" stroke="${f.mass}" stroke-width="1.2"/>`,
+    pfeilspitze(29, 52, 0, f.mass) + pfeilspitze(817, 52, 180, f.mass),
+    text(W / 2, 57, massPx, f.akzent, t.mass, ' text-anchor="middle"'),
+    kalenderBlock(f, a.stufen, t.tage, 30, 84, 440, 14),
+    feldname(29, H - 24, f, t.kalenderFeld),
+    ...t.felder.map((feld, i) => {
+      const x = x0 + (i % 2) * (b + luecke), y = y0 + Math.floor(i / 2) * (h + luecke);
+      return `<rect x="${x}" y="${y}" width="${b}" height="${h}" rx="9" fill="${a.flaeche}" stroke="${f.rahmen}" stroke-width="1.8"/>`
+        + schild(x + b / 2, y + 50, zahlPx, 'url(#ac)', feld.zahl, ' text-anchor="middle"')
+        + text(x + b / 2, y + 78, textPx, f.schrift2, feld.text, ' text-anchor="middle"');
+    }),
+    '</svg>',
+    '',
+  ].join('\n');
+}
+
+function zahlenHoch(f, a, t) {
+  const { breite: W, feld: b, zahlPx, textPx, massPx } = ZAHLEN.hoch;
+  const x = 24, y0 = 322, h = 64, luecke = 12, H = y0 + 4 * h + 3 * luecke + 30;
+  return [
+    ...ablaufKopf(f, W, H, [[70, 90, 150, 110], [380, H - 130, 170, 130], [330, 300, 110, 90]], t),
+    text(W / 2, 56, massPx, f.akzent, t.mass, ' text-anchor="middle"'),
+    kalenderBlock(f, a.stufen, t.tage, 30, 84, 360, 11),
+    feldname(x, y0 - 14, f, t.kalenderFeld),
+    ...t.felder.map((feld, i) => {
+      const y = y0 + i * (h + luecke);
+      return `<rect x="${x}" y="${y}" width="${b}" height="${h}" rx="9" fill="${a.flaeche}" stroke="${f.rahmen}" stroke-width="1.8"/>`
+        + schild(x + 20, y + 46, zahlPx, 'url(#ac)', feld.zahl)
+        + text(x + b - 20, y + 41, textPx, f.schrift2, feld.text, ' text-anchor="end"');
+    }),
+    '</svg>',
+    '',
+  ].join('\n');
+}
+
+export function zahlen(f, a, t, hoch = false) {
+  zahlenAnmelden();
+  return mitSchild(hoch ? zahlenHoch(f, a, t) : zahlenQuer(f, a, t));
+}
+
 // ------------------------------------------------------------------ Knopf
 
 // Dieselbe flache Werkzeugkiste wie im Titelbild (niedriger Bügelgriff, zwei
