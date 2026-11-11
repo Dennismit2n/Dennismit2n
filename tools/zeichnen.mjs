@@ -171,6 +171,7 @@ export function titel(f, { claimZeilen, claimEn, name, seit, werkzeuge }) {
   const defs = [
     `<clipPath id="tb"><rect x="3" y="3" width="${W - 6}" height="${H - 6}" rx="16"/></clipPath>`,
     raster(f, 'tr', 16, 16),
+    beschlagDefs('tx'),
     weich('ta', 40),
     weich('tg', 5, 100),
     weich('ts', 8, 40),
@@ -253,6 +254,8 @@ export function titel(f, { claimZeilen, claimEn, name, seit, werkzeuge }) {
   o.push(text(30, 372, 19, f.schrift2, claimEn, ' lang="en" class="en"'));
   o.push(schild(30, 436, 42, f.schrift, name));
   o.push(text(614, 436, 42, f.akzent, seit, ' font-weight="300"'));
+  // Schrauben zuletzt: die Felder des Schriftkopfs lägen sonst über den unteren beiden.
+  o.push(schraubenVier('tx', 16, 16, 814, 428, 9, 3));
   o.push('</svg>', '');
   o[defsPlatz] = `<defs>${defs.join('')}</defs>`;
   return mitSchild(o.join('\n'));
@@ -266,12 +269,13 @@ export function balken(f, { nummer, titel: t, en }) {
     `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">`,
     // Schmal dargestellt (Handy): Titel größer als Fließtext, rechtes Feld samt englischer Zeile aus.
     '<style>@media (max-width: 560px) { .titel { font-size: 50px } .en { display: none } }</style>' + schildStil(),
-    `<defs><clipPath id="bb"><rect x="3" y="3" width="${W - 6}" height="${H - 6}" rx="10"/></clipPath>${raster(f, 'br', 8, 8)}${weich('ba', 22)}${verlaufQuer('bc', f.claim)}</defs>`,
+    `<defs><clipPath id="bb"><rect x="3" y="3" width="${W - 6}" height="${H - 6}" rx="10"/></clipPath>${raster(f, 'br', 8, 8)}${weich('ba', 22)}${verlaufQuer('bc', f.claim)}${beschlagDefs('bx')}</defs>`,
     `<g clip-path="url(#bb)"><rect width="${W}" height="${H}" fill="${f.grund}"/>`
       + auroraFlecken(f.aurora, [[110, 30, 220, 40], [770, 46, 230, 42], [430, 36, 170, 26]], 'ba')
       + `<rect x="8" y="8" width="830" height="56" fill="url(#br)"/></g>`,
     `<rect x="1.5" y="1.5" width="${W - 3}" height="${H - 3}" rx="12" fill="none" stroke="${f.kante}" stroke-width="3"/>`,
     `<rect x="8" y="8" width="830" height="56" fill="none" stroke="${f.rahmen}" stroke-width="2"/>`,
+    schraubenVier('bx', 8, 8, 830, 56, 7, 2.5),
     `<path d="M72 8V64" stroke="${f.rahmen}" stroke-width="1.6"/>`,
     `<path class="en" d="M640 8V64" stroke="${f.rahmen}" stroke-width="1.6"/>`,
     `<circle cx="40" cy="36" r="17" fill="${f.grund}" fill-opacity="0.6" stroke="${f.akzent}" stroke-width="2.4"/>`,
@@ -318,6 +322,12 @@ export function beschlag(id, x, y, b, h, farbe, g, ab, deckkraft = 0.5) {
   const ecken = [[x + ab, y + ab], [x + b - ab - g, y + ab], [x + ab, y + h - ab - g], [x + b - ab - g, y + h - ab - g]];
   return `<rect x="${x}" y="${y}" width="${b}" height="${h}" fill="none" stroke="${farbe}" stroke-opacity="${deckkraft}" stroke-width="1.2"/>`
     + ecken.map(([ex, ey], i) => schraube(id, ex, ey, g, SCHRAUBEN_WINKEL[i])).join('');
+}
+
+// Nur die vier Schrauben, für Bilder, die ihren eckigen Rahmen schon haben (Titel, Balken, Blätter).
+export function schraubenVier(id, x, y, b, h, g, ab) {
+  return [[x + ab, y + ab], [x + b - ab - g, y + ab], [x + ab, y + h - ab - g], [x + b - ab - g, y + h - ab - g]]
+    .map(([ex, ey], i) => schraube(id, ex, ey, g, SCHRAUBEN_WINKEL[i])).join('');
 }
 
 // Schatten der Kachel nach links unten; er liegt im Rand des Bildes, darum nur wenige Pixel.
@@ -396,12 +406,13 @@ function ablaufKopf(f, W, H, flecken, t) {
     // Die Verbindungsstriche laufen langsam; ohne Bewegung bleibt ein lesbares Standbild.
     '<style>.leit { stroke-dasharray: 7 6; animation: lauf 9s linear infinite } @keyframes lauf { to { stroke-dashoffset: -130 } } @media (prefers-reduced-motion: reduce) { .leit { animation: none } }</style>' + schildStil(),
     `<defs><clipPath id="ab"><rect x="3" y="3" width="${W - 6}" height="${H - 6}" rx="10"/></clipPath>${raster(f, 'ar', 8, 8)}${weich('aa', 30)}${verlaufQuer('ac', f.claim)}`
-      + `<filter id="ag" x="-30%" y="-50%" width="160%" height="200%"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>`,
+      + `<filter id="ag" x="-30%" y="-50%" width="160%" height="200%"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>${beschlagDefs('ax')}</defs>`,
     `<g clip-path="url(#ab)"><rect width="${W}" height="${H}" fill="${f.grund}"/>`
       + auroraFlecken(f.aurora, flecken, 'aa')
       + `<rect x="8" y="8" width="${W - 16}" height="${H - 16}" fill="url(#ar)"/></g>`,
     `<rect x="1.5" y="1.5" width="${W - 3}" height="${H - 3}" rx="12" fill="none" stroke="${f.kante}" stroke-width="3"/>`,
     `<rect x="8" y="8" width="${W - 16}" height="${H - 16}" fill="none" stroke="${f.rahmen}" stroke-width="2"/>`,
+    schraubenVier('ax', 8, 8, W - 16, H - 16, 10, 3.5),
   ];
 }
 
