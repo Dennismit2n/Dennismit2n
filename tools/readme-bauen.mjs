@@ -44,7 +44,7 @@ const VORLAGE = path.join(ROOT, 'tools', 'README.vorlage.md');
 const SCHILD_DATEI = path.join(WEBSITE, 'assets', 'fonts', 'fraunces', 'fraunces-latin-wght-normal.woff2');
 const SCHILD_ORDNER = path.join(ROOT, 'tools', 'schrift');
 if (!fs.existsSync(SCHILD_DATEI)) throw new Error(`Überschriftenschrift fehlt: ${SCHILD_DATEI}`);
-const schildBenutzt = new Set(['OFL.txt']);
+const schildBenutzt = new Set(['OFL.txt', 'README.md']);
 setzeSchild((zeichen, staerke) => {
   const name = `fraunces-${staerke}-${crypto.createHash('sha1').update(zeichen).digest('hex').slice(0, 12)}.woff2`;
   const datei = path.join(SCHILD_ORDNER, name);
