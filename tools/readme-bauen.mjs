@@ -18,7 +18,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
-import { titel, balken, karte, knopf, ablauf, ABLAUF, KNOEPFE, kontrast, hellsteStelle, breite, umbrechen, KARTE, kartenHoehe } from './zeichnen.mjs';
+import { titel, balken, karte, knopf, ablauf, setzeSchild, ABLAUF, KNOEPFE, kontrast, hellsteStelle, breite, umbrechen, KARTE, kartenHoehe } from './zeichnen.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const args = process.argv.slice(2);
@@ -31,6 +31,17 @@ const PRUEFEN = args.includes('--pruefen');
 
 const FARBEN = JSON.parse(fs.readFileSync(path.join(ROOT, 'tools', 'farben.json'), 'utf8'));
 const VORLAGE = path.join(ROOT, 'tools', 'README.vorlage.md');
+// Überschriftenschrift der Website (Fraunces, Lateinschrift, alle Stärken). Sie wird in die
+// Bilder eingebettet, die Claim, Abschnittstitel oder den Ablauf tragen (Dennis, 11.11.2026).
+// Nicht in die Kacheln: die Datei wiegt eingebettet rund 49 KB je Bild, bei zwanzig Kacheln
+// wäre die Seite zehnmal so schwer. Dafür bräuchte es eine verkleinerte Schriftdatei.
+const SCHILD_DATEI = path.join(WEBSITE, 'assets', 'fonts', 'fraunces', 'fraunces-latin-wght-normal.woff2');
+if (!fs.existsSync(SCHILD_DATEI)) throw new Error(`Überschriftenschrift fehlt: ${SCHILD_DATEI}`);
+setzeSchild(fs.readFileSync(SCHILD_DATEI).toString('base64'));
+// Breite, in der GitHub eine Kachel zeigt. Das Bild ist 420 breit gezeichnet, sein Lesetext 21 px:
+// bei 320 wird er 16 px groß, so groß wie der Fließtext der README (Dennis, 11.11.2026).
+// Am Handy (Spalte 293 px) bleibt alles wie vorher, dort begrenzt die Spaltenbreite.
+const KACHEL_ANZEIGE = 320;
 const THEMEN = ['dunkel', 'hell'];
 
 // Was die Website nicht selbst verrät. Ein Werkzeug, das hier fehlt und nicht
@@ -382,6 +393,7 @@ for (const [sprache, t] of Object.entries(ABLAUF_TEXT)) {
   schreibe(path.join('assets', `ablauf${anhang}.svg`), ablauf(FARBEN.bauplan.dunkel, FARBEN.ablauf, texteMitMarke));
   schreibe(path.join('assets', `ablauf-handy${anhang}.svg`), ablauf(FARBEN.bauplan.dunkel, FARBEN.ablauf, texteMitMarke, true));
 }
+if (Math.abs((KARTE.descPx * KACHEL_ANZEIGE) / KARTE.breite - 16) > 0.5) fehler.push('Kacheltext am Desktop nicht mehr 16 px: KACHEL_ANZEIGE anpassen');
 for (const px of [KARTE.descPx, KARTE.artPx]) if (handyPx(px, KARTE.breite) < 14) fehler.push(`Kacheltext am Handy unter 14 px (${px})`);
 
 // README zusammensetzen
@@ -392,7 +404,7 @@ const teile = {
   ablauf: `<p lang="de">${ablaufBild('', ABLAUF_TEXT.de.alt)}</p>`,
   'ablauf:en': `<p>${ablaufBild('-en', ABLAUF_TEXT.en.alt)}</p>`,
   kaffee: `<a href="https://buymeacoffee.com/dennis_mit_2n">${bild('kaffee', 'Kaffee spendieren · Buy me a coffee', 350)}</a>`,
-  karten: '<p align="center" lang="de">' + werkzeuge.map((w) => `<a href="${w.url}"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/karten/${w.key}-dunkel.svg"><img src="assets/karten/${w.key}-hell.svg" width="410" alt="${escHtml(`${w.anzeigename}, ${ART_TEXT.de[w.art]}: ${w.beschreibung}`)}"></picture></a>`).join('') + '</p>',
+  karten: '<p align="center" lang="de">' + werkzeuge.map((w) => `<a href="${w.url}"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/karten/${w.key}-dunkel.svg"><img src="assets/karten/${w.key}-hell.svg" width="${KACHEL_ANZEIGE}" alt="${escHtml(`${w.anzeigename}, ${ART_TEXT.de[w.art]}: ${w.beschreibung}`)}"></picture></a>`).join('') + '</p>',
   'werkzeuge:en': liste(werkzeuge, texte, 'en'),
 };
 for (const b of BALKEN) teile[`balken:${b.datei}`] = `<h2 lang="de">${bild(`balken-${b.datei}`, b.titel, 846)}</h2>`;
@@ -415,7 +427,8 @@ for (const [, quelle] of readme.matchAll(/\b(?:src|srcset)="([^"]+)"/g)) {
 // Keine externen Verweise in den erzeugten Bildern.
 for (const datei of geschrieben.concat([...erwartet]).filter((d) => d.endsWith('.svg'))) {
   const inhalt = fs.readFileSync(path.join(ROOT, datei), 'utf8');
-  if (/(?:href|src)="(?!#)|@import|url\((?!#)/.test(inhalt)) fehler.push(`Externer Verweis in ${datei}`);
+  // Die eingebettete Schrift (data:font/woff2) ist kein Verweis nach außen.
+  if (/(?:href|src)="(?!#)|@import|url\((?!#|data:font\/woff2;base64,)/.test(inhalt)) fehler.push(`Externer Verweis in ${datei}`);
 }
 
 if (fehler.length) {

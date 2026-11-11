@@ -5,7 +5,9 @@
  * Titelbild, Abschnittsbalken, Werkzeug-Kacheln, den Ablauf (Blatt 04), den Knopf zur Werkzeugkiste und den Kaffee-Knopf.
  * Reine Funktionen: Farben und Inhalte kommen als Parameter, zurück kommt SVG-Text.
  *
- * Text läuft über Systemschriften (externe Schriften lädt GitHub in Bildern nicht).
+ * Lesetext läuft über Systemschriften (externe Schriften lädt GitHub in Bildern nicht).
+ * Claim, Abschnittstitel, Marke und die Stationen des Ablaufs tragen die eingebettete
+ * Überschriftenschrift der Website (siehe setzeSchild).
  * Weil die je nach System verschieden breit sind, schätzt breite() absichtlich für
  * eine breite Schrift (Verdana-Maß) — was dort passt, passt überall.
  */
@@ -72,6 +74,18 @@ export function umbrechen(text, px, maxPx) {
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const text = (x, y, px, farbe, inhalt, extra = '') =>
   `<text x="${x}" y="${y}" font-family="${SCHRIFT}" font-size="${px}" fill="${farbe}"${extra}>${esc(inhalt)}</text>`;
+// Überschriftenschrift der Website (Fraunces, SIL OFL 1.1), wie dort für Namen und Überschriften.
+// Das Bauskript reicht die Schriftdatei als base64 herein und sie wird ins Bild eingebettet:
+// Nachladen lässt GitHub in Bildern nicht zu, eine eingebettete Schrift aber rendert der Browser.
+// Ohne Schrift (oder wo der Browser sie nicht nimmt) bleibt es bei der Systemschrift.
+let schildSchrift = null;
+export function setzeSchild(base64) { schildSchrift = base64; }
+const schildStil = () => (schildSchrift
+  ? `<!-- Schrift: Fraunces, SIL Open Font License 1.1, The Fraunces Project Authors --><style>@font-face { font-family: 'Fraunces Werkstatt'; font-weight: 100 900; src: url(data:font/woff2;base64,${schildSchrift}) format('woff2') }</style>`
+  : '');
+// Stärke 560 wie auf der Website; ohne eingebettete Schrift 600 in der Systemschrift wie bisher.
+const schild = (x, y, px, farbe, inhalt, extra = '') =>
+  `<text x="${x}" y="${y}" font-family="${schildSchrift ? `'Fraunces Werkstatt', ${SCHRIFT}` : SCHRIFT}" font-size="${px}" font-weight="${schildSchrift ? 560 : 600}" fill="${farbe}"${extra}>${esc(inhalt)}</text>`;
 // Feldname wie im Banner: klein, fett, gesperrt.
 const feldname = (x, y, f, inhalt) => text(x, y, 11, f.label, inhalt, ' font-weight="700" letter-spacing="1.6"');
 const pfeilspitze = (x, y, winkel, farbe) =>
@@ -108,10 +122,13 @@ function raster(f, id, x0, y0) {
 const familienbalken = (x, y, f) =>
   `<g transform="translate(${x} ${y})"><rect width="88" height="4" rx="2" fill="${f.familie[0]}"/><rect x="86" width="47" height="4" fill="${f.familie[1]}"/><rect x="131" width="29" height="4" rx="2" fill="${f.familie[2]}"/></g>`;
 
-// Werkzeug-Icon (48er viewBox) als verschachteltes SVG an Position x/y in Größe g.
+// Werkzeug-Icon als verschachteltes SVG an Position x/y in Größe g. Das Raster (viewBox) des
+// Icons bleibt sein eigenes: die meisten zeichnen auf 48, Pocketsum auf 44, Hourbridge auf 64.
+// Ein fest eingetragenes 48er Raster schnitt Hourbridge ab (11.11.2026).
 function icon(svg, x, y, g, idPraefix) {
+  const raster = (svg.match(/<svg\b[^>]*\bviewBox="([^"]+)"/) || [null, '0 0 48 48'])[1];
   return svg
-    .replace(/<svg\b[^>]*>/, `<svg x="${x}" y="${y}" width="${g}" height="${g}" viewBox="0 0 48 48">`)
+    .replace(/<svg\b[^>]*>/, `<svg x="${x}" y="${y}" width="${g}" height="${g}" viewBox="${raster}">`)
     .replace(/\bid="([^"]+)"/g, `id="${idPraefix}-$1"`)
     .replace(/url\(#([^)]+)\)/g, `url(#${idPraefix}-$1)`)
     .trim();
@@ -148,7 +165,7 @@ export function titel(f, { claimZeilen, claimEn, name, seit, werkzeuge }) {
   const o = [];
   o.push(`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">`);
   // Schmal dargestellt (Handy): die englische Zeile wäre unter 7 px, sie steht im Alt-Text.
-  o.push('<style>@media (max-width: 560px) { .en { display: none } }</style>');
+  o.push('<style>@media (max-width: 560px) { .en { display: none } }</style>' + schildStil());
   const defsPlatz = o.push('') - 1;
 
   // --- Blatt: Grund, Aurora, Raster, Rahmen
@@ -214,10 +231,10 @@ export function titel(f, { claimZeilen, claimEn, name, seit, werkzeuge }) {
   o.push(familienbalken(650, 241, f));
   o.push(feldname(30, 399, f, 'WERKSTATT'));
   o.push(feldname(614, 399, f, 'SEIT'));
-  o.push(text(30, 296, 46, 'url(#tc)', claimZeilen[0], ' font-weight="600"'));
-  o.push(text(30, 344, 46, 'url(#tc)', claimZeilen[1], ' font-weight="600"'));
+  o.push(schild(30, 296, 46, 'url(#tc)', claimZeilen[0]));
+  o.push(schild(30, 344, 46, 'url(#tc)', claimZeilen[1]));
   o.push(text(30, 372, 19, f.schrift2, claimEn, ' lang="en" class="en"'));
-  o.push(text(30, 436, 42, f.schrift, name, ' font-weight="600"'));
+  o.push(schild(30, 436, 42, f.schrift, name));
   o.push(text(614, 436, 42, f.akzent, seit, ' font-weight="300"'));
   o.push('</svg>', '');
   o[defsPlatz] = `<defs>${defs.join('')}</defs>`;
@@ -231,7 +248,7 @@ export function balken(f, { nummer, titel: t, en }) {
   return [
     `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">`,
     // Schmal dargestellt (Handy): Titel größer als Fließtext, rechtes Feld samt englischer Zeile aus.
-    '<style>@media (max-width: 560px) { .titel { font-size: 50px } .en { display: none } }</style>',
+    '<style>@media (max-width: 560px) { .titel { font-size: 50px } .en { display: none } }</style>' + schildStil(),
     `<defs><clipPath id="bb"><rect x="3" y="3" width="${W - 6}" height="${H - 6}" rx="10"/></clipPath>${raster(f, 'br', 8, 8)}${weich('ba', 22)}${verlaufQuer('bc', f.claim)}</defs>`,
     `<g clip-path="url(#bb)"><rect width="${W}" height="${H}" fill="${f.grund}"/>`
       + auroraFlecken(f.aurora, [[110, 30, 220, 40], [770, 46, 230, 42], [430, 36, 170, 26]], 'ba')
@@ -242,7 +259,7 @@ export function balken(f, { nummer, titel: t, en }) {
     `<path class="en" d="M640 8V64" stroke="${f.rahmen}" stroke-width="1.6"/>`,
     `<circle cx="40" cy="36" r="17" fill="${f.grund}" fill-opacity="0.6" stroke="${f.akzent}" stroke-width="2.4"/>`,
     text(40, 42, 17, f.akzent, nummer, ' font-weight="600" text-anchor="middle"'),
-    text(90, 52, 42, 'url(#bc)', t, ' font-weight="600" class="titel"'),
+    schild(90, 52, 42, 'url(#bc)', t, ' class="titel"'),
     text(824, 43, 19, f.schrift2, en, ' text-anchor="end" lang="en" class="en"'),
     '</svg>',
     '',
@@ -315,7 +332,7 @@ function ablaufKopf(f, W, H, flecken, t) {
     `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-labelledby="at ad">`,
     `<title id="at">${esc(t.titel)}</title><desc id="ad">${esc(t.beschreibung)}</desc>`,
     // Die Verbindungsstriche laufen langsam; ohne Bewegung bleibt ein lesbares Standbild.
-    '<style>.leit { stroke-dasharray: 7 6; animation: lauf 9s linear infinite } @keyframes lauf { to { stroke-dashoffset: -130 } } @media (prefers-reduced-motion: reduce) { .leit { animation: none } }</style>',
+    '<style>.leit { stroke-dasharray: 7 6; animation: lauf 9s linear infinite } @keyframes lauf { to { stroke-dashoffset: -130 } } @media (prefers-reduced-motion: reduce) { .leit { animation: none } }</style>' + schildStil(),
     `<defs><clipPath id="ab"><rect x="3" y="3" width="${W - 6}" height="${H - 6}" rx="10"/></clipPath>${raster(f, 'ar', 8, 8)}${weich('aa', 30)}${verlaufQuer('ac', f.claim)}`
       + `<filter id="ag" x="-30%" y="-50%" width="160%" height="200%"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>`,
     `<g clip-path="url(#ab)"><rect width="${W}" height="${H}" fill="${f.grund}"/>`
@@ -333,7 +350,7 @@ function station(f, a, s, x, y, b, h, namePx, unterPx) {
   const nameY = y + h / 2 - 3;
   return `<rect x="${x}" y="${y}" width="${b}" height="${h}" rx="9" fill="${flaeche}" stroke="${rand}" stroke-width="1.8"`
       + `${s.art === 'start' ? ' stroke-dasharray="6 5"' : ''}${ziel ? ' filter="url(#ag)"' : ''}/>`
-    + text(mitte, nameY, namePx, ziel ? a.tinte : a.schrift, s.name, ' font-weight="600" text-anchor="middle"')
+    + schild(mitte, nameY, namePx, ziel ? a.tinte : a.schrift, s.name, ' text-anchor="middle"')
     + text(mitte, nameY + unterPx + 4, unterPx, ziel ? a.tinte : betont ? f.schrift : f.schrift2, s.unter, ' text-anchor="middle"');
 }
 
@@ -366,8 +383,8 @@ function ablaufQuer(f, a, t) {
     // Schriftfeld unten links
     `<rect x="${x(0)}" y="${y2}" width="${b}" height="${h}" fill="${f.grund}" fill-opacity="0.55" stroke="${f.rahmen}" stroke-width="1.6"/>`,
     `<path d="M${x(0)} ${m2}H${x(0) + b}" stroke="${f.rahmen}" stroke-width="1.6"/>`,
-    feldname(x(0) + 10, y2 + 15, f, t.blattFeld) + text(x(0) + 10, y2 + 32, 14, a.schrift, t.blatt, ' font-weight="600"'),
-    feldname(x(0) + 10, m2 + 15, f, t.werkstattFeld) + text(x(0) + 10, m2 + 32, 14, 'url(#ac)', t.marke, ' font-weight="600"'),
+    feldname(x(0) + 10, y2 + 15, f, t.blattFeld) + schild(x(0) + 10, y2 + 32, 14, a.schrift, t.blatt),
+    feldname(x(0) + 10, m2 + 15, f, t.werkstattFeld) + schild(x(0) + 10, m2 + 32, 14, 'url(#ac)', t.marke),
     '</svg>',
     '',
   ].join('\n');
@@ -390,7 +407,7 @@ function ablaufHoch(f, a, t) {
     ...t.stationen.map((s, i) => station(f, a, s, x, y(i), b, h, namePx, unterPx)
       + text(x - 12, y(i) + h / 2 + 7, 20, f.akzent, nummer(i), ' text-anchor="end"')),
     text(W / 2, H - 58, 21, f.schrift2, t.haktLang, ' text-anchor="middle"'),
-    text(W / 2, H - 26, 20, 'url(#ac)', t.marke, ' font-weight="600" text-anchor="middle"'),
+    schild(W / 2, H - 26, 20, 'url(#ac)', t.marke, ' text-anchor="middle"'),
     '</svg>',
     '',
   ].join('\n');
