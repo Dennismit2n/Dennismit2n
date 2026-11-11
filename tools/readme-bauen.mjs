@@ -106,6 +106,7 @@ const BALKEN = [
   { datei: 'werkzeugkiste', nummer: '02', titel: 'Die Werkzeugkiste', en: 'The toolbox' },
   { datei: 'werkbank', nummer: '03', titel: 'Die Werkbank', en: 'The workbench' },
   { datei: 'ablauf', nummer: '04', titel: 'Der Ablauf', en: 'How it’s made' },
+  { datei: 'zahlen', nummer: '05', titel: 'Die Zahlen', en: 'The numbers' },
 ];
 // Blatt 04: wie ein Werkzeug entsteht (Dennis, 11.11.2026). Die Stationen folgen dem
 // tatsächlichen Ablauf: Idee, grill-me, Entscheidung mit Ausschluss, Bau, Prüfung, Release, News.
@@ -335,6 +336,18 @@ function ablaufBild(anhang, alt) {
   return `<picture><source media="(max-width: 600px)" srcset="assets/ablauf-handy${anhang}.svg"><img src="assets/ablauf${anhang}.svg" width="846" alt="${escHtml(alt)}"></picture>`;
 }
 
+// Blatt 05: Die Bilder baut die Action (tools/statistik-bauen.mjs) einmal am Tag. Die Zahlen
+// selbst stehen nur im Bild, darum beschreibt der Alt-Text, was zu sehen ist, ohne Werte.
+const ZAHLEN_ALT = {
+  de: { schlange: 'Mein Beitragsraster der letzten zwölf Monate auf GitHub, eine Schlange frisst sich durch die Felder.', zahlen: 'Mein Beitragskalender als 3D-Zeichnung, daneben vier Zahlen: Werkzeuge, Releases, öffentliche Repos und aktive Tage. Die Werte stehen im Bild und ändern sich täglich.' },
+  en: { schlange: 'My contribution grid of the last twelve months on GitHub, with a snake eating its way through the cells.', zahlen: 'My contribution calendar as a 3D drawing, next to four numbers: tools, releases, public repos and active days. The values are in the image and change daily.' },
+};
+function zahlenTeil(sprache) {
+  const anhang = sprache === 'de' ? '' : `-${sprache}`, alt = ZAHLEN_ALT[sprache], lang = sprache === 'de' ? ' lang="de"' : '';
+  return `<p${lang}><img src="assets/statistik/snake.svg" width="846" alt="${escHtml(alt.schlange)}"></p>\n\n`
+    + `<p${lang}><picture><source media="(max-width: 600px)" srcset="assets/statistik/zahlen-handy${anhang}.svg"><img src="assets/statistik/zahlen${anhang}.svg" width="846" alt="${escHtml(alt.zahlen)}"></picture></p>`;
+}
+
 function liste(werkzeuge, texte, sprache) {
   return werkzeuge.map((w, i) => {
     const name = w.nameKey ? texte[sprache][w.nameKey] : w.name;
@@ -434,6 +447,8 @@ const teile = {
   knoepfe: `<p><a href="https://dennismit2n.github.io/">${bild('knopf', 'Zur Werkzeugkiste · To the toolbox', 350)}</a> <a href="https://dennismit2n.github.io/gaming.html">${bild('gaming', 'Zum Gaming-Stuff · To the gaming stuff', 350)}</a></p>`,
   ablauf: `<p lang="de">${ablaufBild('', ABLAUF_TEXT.de.alt)}</p>`,
   'ablauf:en': `<p>${ablaufBild('-en', ABLAUF_TEXT.en.alt)}</p>`,
+  zahlen: zahlenTeil('de'),
+  'zahlen:en': zahlenTeil('en'),
   kaffee: `<a href="https://buymeacoffee.com/dennis_mit_2n">${bild('kaffee', 'Kaffee spendieren · Buy me a coffee', 350)}</a>`,
   karten: '<p align="center" lang="de">' + werkzeuge.map((w) => `<a href="${w.url}"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/karten/${w.key}-dunkel.svg"><img src="assets/karten/${w.key}-hell.svg" width="${KACHEL_ANZEIGE}" alt="${escHtml(`${w.anzeigename}, ${ART_TEXT.de[w.art]}: ${w.beschreibung}`)}"></picture></a>`).join('') + '</p>',
   'werkzeuge:en': liste(werkzeuge, texte, 'en'),

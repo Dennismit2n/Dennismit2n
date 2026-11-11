@@ -39,6 +39,12 @@
 
 <!-- ablauf -->
 
+<!-- balken:zahlen -->
+
+<p lang="de">Meine eigenen Zahlen, alle öffentlich. Ein Skript in diesem Repo rechnet sie einmal am Tag auf GitHub aus und legt die Bilder hier ab.</p>
+
+<!-- zahlen -->
+
 <details lang="en">
 <summary><b>In English</b></summary>
 
@@ -67,11 +73,17 @@ The gaming tools have their own page on the website: [Gaming](https://dennismit2
 
 <!-- ablauf:en -->
 
-<sub>To be honest: my tools don’t count anything anymore, neither visits nor clicks. Only a few of them need other servers. Spectroton sends the chosen colour (and, when you search by name, your search term) to api.color.pizza to find its name. Prismatical checks passwords with Have I Been Pwned only if you switch it on, and even then only five characters of the hash leave your device, never the password. Heizwarte asks Open-Meteo and Bright Sky for the weather at your places and looks up place names with Photon by komoot. Craftionary downloads the original game textures straight from Mojang, only when you tap the button for it. The Besucher-Ticker fetches your own numbers from GoatCounter with your token, and the token stays on your computer. This page loads nothing from other servers: no counters, no stats, every image lives in this repo.</sub>
+### The numbers
+
+My own numbers, all of them public. A script in this repo recalculates them on GitHub once a day and puts the images right here.
+
+<!-- zahlen:en -->
+
+<sub>To be honest: my tools don’t count anything anymore, neither visits nor clicks. Only a few of them need other servers. Spectroton sends the chosen colour (and, when you search by name, your search term) to api.color.pizza to find its name. Prismatical checks passwords with Have I Been Pwned only if you switch it on, and even then only five characters of the hash leave your device, never the password. Heizwarte asks Open-Meteo and Bright Sky for the weather at your places and looks up place names with Photon by komoot. Craftionary downloads the original game textures straight from Mojang, only when you tap the button for it. The Besucher-Ticker fetches your own numbers from GoatCounter with your token, and the token stays on your computer. This page loads nothing from other servers: no counters, no stats about you, every image lives in this repo. The numbers above are my own.</sub>
 
 </details>
 
-<p lang="de"><sub>Ehrlich gesagt: Meine Werkzeuge zählen nichts mehr, weder Aufrufe noch Klicks. Nur ein paar davon brauchen fremde Server. Spectroton schickt die gewählte Farbe (und bei der Namenssuche deinen Suchbegriff) an api.color.pizza, um ihren Namen zu finden. Prismatical prüft Passwörter nur auf Wunsch bei Have I Been Pwned, selbst dann verlassen nur fünf Zeichen des Hashs dein Gerät, nie das Passwort. Heizwarte fragt das Wetter für deine Orte bei Open-Meteo und Bright Sky ab, Ortsnamen sucht es über Photon von komoot. Craftionary lädt die Original-Texturen nur auf Knopfdruck direkt von Mojang. Der Besucher-Ticker holt deine eigenen Zahlen mit deinem Token von GoatCounter, der Token bleibt auf deinem Rechner. Diese Seite lädt nichts von fremden Servern: kein Zähler, keine Statistik, alle Bilder liegen hier im Repo.</sub></p>
+<p lang="de"><sub>Ehrlich gesagt: Meine Werkzeuge zählen nichts mehr, weder Aufrufe noch Klicks. Nur ein paar davon brauchen fremde Server. Spectroton schickt die gewählte Farbe (und bei der Namenssuche deinen Suchbegriff) an api.color.pizza, um ihren Namen zu finden. Prismatical prüft Passwörter nur auf Wunsch bei Have I Been Pwned, selbst dann verlassen nur fünf Zeichen des Hashs dein Gerät, nie das Passwort. Heizwarte fragt das Wetter für deine Orte bei Open-Meteo und Bright Sky ab, Ortsnamen sucht es über Photon von komoot. Craftionary lädt die Original-Texturen nur auf Knopfdruck direkt von Mojang. Der Besucher-Ticker holt deine eigenen Zahlen mit deinem Token von GoatCounter, der Token bleibt auf deinem Rechner. Diese Seite lädt nichts von fremden Servern: kein Zähler, keine Statistik über dich, alle Bilder liegen hier im Repo. Die Zahlen oben sind meine eigenen.</sub></p>
 
 <p align="center"><!-- kaffee --><br><sub><span lang="de">Wenn dir ein Werkzeug geholfen hat und du magst: Über einen Kaffee freue ich mich. Ganz freiwillig, alles bleibt kostenlos, nichts wird freigeschaltet. Der Knopf führt zu buymeacoffee.com.</span><br><span lang="en">If a tool helped you and you feel like it: I’d love a coffee. Entirely optional. Everything stays free, nothing gets unlocked. The button leads to buymeacoffee.com.</span></sub></p>
 
