@@ -6,8 +6,8 @@
  * Reine Funktionen: Farben und Inhalte kommen als Parameter, zurück kommt SVG-Text.
  *
  * Lesetext läuft über Systemschriften (externe Schriften lädt GitHub in Bildern nicht).
- * Claim, Abschnittstitel, Marke und die Stationen des Ablaufs tragen die eingebettete
- * Überschriftenschrift der Website (siehe setzeSchild).
+ * Claim, Abschnittstitel, Marke, Werkzeugnamen und die Stationen des Ablaufs tragen die
+ * eingebettete Überschriftenschrift der Website (siehe setzeSchild).
  * Weil die je nach System verschieden breit sind, schätzt breite() absichtlich für
  * eine breite Schrift (Verdana-Maß) — was dort passt, passt überall.
  */
@@ -75,17 +75,34 @@ const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, 
 const text = (x, y, px, farbe, inhalt, extra = '') =>
   `<text x="${x}" y="${y}" font-family="${SCHRIFT}" font-size="${px}" fill="${farbe}"${extra}>${esc(inhalt)}</text>`;
 // Überschriftenschrift der Website (Fraunces, SIL OFL 1.1), wie dort für Namen und Überschriften.
-// Das Bauskript reicht die Schriftdatei als base64 herein und sie wird ins Bild eingebettet:
 // Nachladen lässt GitHub in Bildern nicht zu, eine eingebettete Schrift aber rendert der Browser.
-// Ohne Schrift (oder wo der Browser sie nicht nimmt) bleibt es bei der Systemschrift.
-let schildSchrift = null;
-export function setzeSchild(base64) { schildSchrift = base64; }
-const schildStil = () => (schildSchrift
-  ? `<!-- Schrift: Fraunces, SIL Open Font License 1.1, The Fraunces Project Authors --><style>@font-face { font-family: 'Fraunces Werkstatt'; font-weight: 100 900; src: url(data:font/woff2;base64,${schildSchrift}) format('woff2') }</style>`
-  : '');
-// Stärke 560 wie auf der Website; ohne eingebettete Schrift 600 in der Systemschrift wie bisher.
-const schild = (x, y, px, farbe, inhalt, extra = '') =>
-  `<text x="${x}" y="${y}" font-family="${schildSchrift ? `'Fraunces Werkstatt', ${SCHRIFT}` : SCHRIFT}" font-size="${px}" font-weight="${schildSchrift ? 560 : 600}" fill="${farbe}"${extra}>${esc(inhalt)}</text>`;
+// Damit die Bilder leicht bleiben, bekommt jedes nur die Buchstaben, die es wirklich zeigt:
+// schild() merkt sich die Zeichen je Stärke, mitSchild() holt am Ende jeder Zeichnung die
+// passende Teil-Schrift (base64) von der Quelle, die das Bauskript mit setzeSchild() hereinreicht.
+// Ohne Quelle (oder wo der Browser die Schrift nicht nimmt) bleibt es bei der Systemschrift.
+let schildQuelle = null; // (zeichen, stärke) => base64 einer woff2 mit genau diesen Zeichen
+const schildZeichen = new Map();
+export function setzeSchild(quelle) { schildQuelle = quelle; }
+const SCHILD_PLATZ = '<!--schild-->';
+const schildStil = () => SCHILD_PLATZ;
+// Stärke 560 wie die Überschriften der Website, Werkzeugnamen dort 600.
+const schild = (x, y, px, farbe, inhalt, extra = '', staerke = 560) => {
+  if (schildQuelle) {
+    if (!schildZeichen.has(staerke)) schildZeichen.set(staerke, new Set());
+    for (const z of inhalt) schildZeichen.get(staerke).add(z);
+  }
+  return `<text x="${x}" y="${y}" font-family="${schildQuelle ? `'Fraunces Werkstatt', ${SCHRIFT}` : SCHRIFT}" font-size="${px}" font-weight="${schildQuelle ? staerke : 600}" fill="${farbe}"${extra}>${esc(inhalt)}</text>`;
+};
+// Setzt an die Stelle von schildStil() die Teil-Schriften für alles, was seit dem letzten Aufruf
+// mit schild() gezeichnet wurde. Jede Zeichenfunktion, die schild() nutzt, endet damit.
+function mitSchild(svg) {
+  const flaechen = [...schildZeichen].map(([staerke, zeichen]) =>
+    `@font-face { font-family: 'Fraunces Werkstatt'; font-weight: ${staerke}; src: url(data:font/woff2;base64,${schildQuelle([...zeichen].sort().join(''), staerke)}) format('woff2') }`);
+  schildZeichen.clear();
+  return svg.replace(SCHILD_PLATZ, () => (flaechen.length
+    ? `<!-- Schrift: Fraunces, SIL Open Font License 1.1, The Fraunces Project Authors --><style>${flaechen.join(' ')}</style>`
+    : ''));
+}
 // Feldname wie im Banner: klein, fett, gesperrt.
 const feldname = (x, y, f, inhalt) => text(x, y, 11, f.label, inhalt, ' font-weight="700" letter-spacing="1.6"');
 const pfeilspitze = (x, y, winkel, farbe) =>
@@ -238,14 +255,14 @@ export function titel(f, { claimZeilen, claimEn, name, seit, werkzeuge }) {
   o.push(text(614, 436, 42, f.akzent, seit, ' font-weight="300"'));
   o.push('</svg>', '');
   o[defsPlatz] = `<defs>${defs.join('')}</defs>`;
-  return o.join('\n');
+  return mitSchild(o.join('\n'));
 }
 
 // ------------------------------------------------------------------ Abschnittsbalken
 
 export function balken(f, { nummer, titel: t, en }) {
   const W = 846, H = 72;
-  return [
+  return mitSchild([
     `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">`,
     // Schmal dargestellt (Handy): Titel größer als Fließtext, rechtes Feld samt englischer Zeile aus.
     '<style>@media (max-width: 560px) { .titel { font-size: 50px } .en { display: none } }</style>' + schildStil(),
@@ -263,7 +280,7 @@ export function balken(f, { nummer, titel: t, en }) {
     text(824, 43, 19, f.schrift2, en, ' text-anchor="end" lang="en" class="en"'),
     '</svg>',
     '',
-  ].join('\n');
+  ].join('\n'));
 }
 
 // ------------------------------------------------------------------ Werkzeug-Kachel
@@ -294,21 +311,21 @@ export function karte(f, { iconSvg, name, art, zeilen, hoehe, id }, akzent) {
   }
   const o = [];
   o.push(`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${hoehe}" viewBox="0 0 ${W} ${hoehe}">`);
-  o.push(`<defs>${defs.join('')}</defs>`);
+  o.push(`<defs>${defs.join('')}</defs>` + schildStil());
   o.push(`<g clip-path="url(#${id}-c)"><rect width="${W}" height="${hoehe}" fill="${f.grund}"/>`
     + auroraFlecken(f.aurora, [[W - 40, 0, 170, 60], [W - 10, hoehe + 10, 190, 60], [-20, hoehe / 2, 90, 50]], `${id}-a`)
     + `<circle cx="52" cy="50" r="24" fill="${akzent.linie}" opacity="0.55" filter="url(#${id}-g)"/></g>`);
   o.push(`<rect x="${x}" y="${y}" width="${b}" height="${h}" rx="16" fill="none" stroke="${rand}" stroke-width="2.5"/>`);
   o.push(`<rect x="${r + 9}" y="${r + 9}" width="${W - 2 * r - 18}" height="${hoehe - 2 * r - 18}" rx="9" fill="none" stroke="${f.rahmen}" stroke-opacity="0.55" stroke-width="1.2"/>`);
   o.push(icon(iconSvg, 24, 22, 56, id));
-  o.push(text(94, 48, 24, f.schrift, name, ' font-weight="700"'));
+  o.push(schild(94, 48, 24, f.schrift, name, '', 600));
   // Etikett der Art: Umriss in der Kachelfarbe, Text in ihr oder (zu dunkel) im Nebentext.
   const eb = breite(art, KARTE.artPx) + 24;
   o.push(`<rect x="94" y="58" width="${eb.toFixed(1)}" height="30" rx="15" fill="${f.grund}" fill-opacity="0.5" stroke="${akzent.linie}" stroke-width="1.8"/>`);
   o.push(text(106, 80, KARTE.artPx, akzent.text, art));
   zeilen.forEach((z, i) => o.push(text(24, KARTE.oben + i * KARTE.descZeile, KARTE.descPx, f.schrift2, z)));
   o.push('</svg>', '');
-  return o.join('\n');
+  return mitSchild(o.join('\n'));
 }
 
 // ------------------------------------------------------------------ Ablauf (Blatt 04)
@@ -414,7 +431,7 @@ function ablaufHoch(f, a, t) {
 }
 
 export function ablauf(f, a, t, hoch = false) {
-  return hoch ? ablaufHoch(f, a, t) : ablaufQuer(f, a, t);
+  return mitSchild(hoch ? ablaufHoch(f, a, t) : ablaufQuer(f, a, t));
 }
 
 // ------------------------------------------------------------------ Knopf

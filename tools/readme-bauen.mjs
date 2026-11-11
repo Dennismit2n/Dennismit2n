@@ -12,11 +12,16 @@
  * tools/README.vorlage.md, die Farben in tools/farben.json, das Zeichnen in
  * tools/zeichnen.mjs.
  *
- * Läuft ohne Abhängigkeiten, nur mit Node.
+ * Läuft ohne Abhängigkeiten, nur mit Node. Einzige Ausnahme: Zeigt ein Bild Überschriften-Text
+ * mit neuen Buchstaben, schneidet tools/schrift-teilen.py einmal eine Teil-Schrift dafür
+ * (Python mit fonttools und brotli). Die Teil-Schriften liegen in tools/schrift/ im Repo,
+ * ein Lauf ohne neue Texte braucht also kein Python.
  */
 import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
+import crypto from 'node:crypto';
+import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { titel, balken, karte, knopf, ablauf, setzeSchild, ABLAUF, KNOEPFE, kontrast, hellsteStelle, breite, umbrechen, KARTE, kartenHoehe } from './zeichnen.mjs';
 
@@ -31,13 +36,31 @@ const PRUEFEN = args.includes('--pruefen');
 
 const FARBEN = JSON.parse(fs.readFileSync(path.join(ROOT, 'tools', 'farben.json'), 'utf8'));
 const VORLAGE = path.join(ROOT, 'tools', 'README.vorlage.md');
-// Überschriftenschrift der Website (Fraunces, Lateinschrift, alle Stärken). Sie wird in die
-// Bilder eingebettet, die Claim, Abschnittstitel oder den Ablauf tragen (Dennis, 11.11.2026).
-// Nicht in die Kacheln: die Datei wiegt eingebettet rund 49 KB je Bild, bei zwanzig Kacheln
-// wäre die Seite zehnmal so schwer. Dafür bräuchte es eine verkleinerte Schriftdatei.
+// Überschriftenschrift der Website (Fraunces). Jedes Bild bekommt eine Teil-Schrift mit genau
+// den Buchstaben, die es zeigt (Dennis, 11.11.2026): eingebettet wiegt die ganze Datei rund
+// 49 KB je Bild, eine Teil-Schrift wenige KB. Die Teile liegen in tools/schrift/ und heißen
+// nach Stärke und Zeichensatz. Ändert sich die Schriftdatei der Website, den Ordner leeren
+// (bis auf OFL.txt) und neu bauen.
 const SCHILD_DATEI = path.join(WEBSITE, 'assets', 'fonts', 'fraunces', 'fraunces-latin-wght-normal.woff2');
+const SCHILD_ORDNER = path.join(ROOT, 'tools', 'schrift');
 if (!fs.existsSync(SCHILD_DATEI)) throw new Error(`Überschriftenschrift fehlt: ${SCHILD_DATEI}`);
-setzeSchild(fs.readFileSync(SCHILD_DATEI).toString('base64'));
+const schildBenutzt = new Set(['OFL.txt']);
+setzeSchild((zeichen, staerke) => {
+  const name = `fraunces-${staerke}-${crypto.createHash('sha1').update(zeichen).digest('hex').slice(0, 12)}.woff2`;
+  const datei = path.join(SCHILD_ORDNER, name);
+  schildBenutzt.add(name);
+  if (!fs.existsSync(datei)) {
+    fs.mkdirSync(SCHILD_ORDNER, { recursive: true });
+    const hex = [...zeichen].map((z) => z.codePointAt(0).toString(16)).join(',');
+    try {
+      execFileSync('python', [path.join(ROOT, 'tools', 'schrift-teilen.py'), SCHILD_DATEI, datei, String(staerke), hex], { stdio: ['ignore', 'pipe', 'pipe'] });
+    } catch (e) {
+      throw new Error(`Teil-Schrift für „${zeichen}“ ließ sich nicht schneiden. Einmalig nötig: pip install fonttools brotli\n${e.stderr || e.message}`);
+    }
+    console.log(`  Teil-Schrift neu: ${name} für „${zeichen}“`);
+  }
+  return fs.readFileSync(datei).toString('base64');
+});
 // Breite, in der GitHub eine Kachel zeigt. Das Bild ist 420 breit gezeichnet, sein Lesetext 21 px:
 // bei 320 wird er 16 px groß, so groß wie der Fließtext der README (Dennis, 11.11.2026).
 // Am Handy (Spalte 293 px) bleibt alles wie vorher, dort begrenzt die Spaltenbreite.
@@ -443,6 +466,7 @@ function alleDateien(ordner) {
     e.isDirectory() ? alleDateien(path.join(ordner, e.name)) : [path.join(ordner, e.name).split(path.sep).join('/')]);
 }
 for (const datei of alleDateien('assets')) if (!erwartet.has(datei)) console.warn(`  WARNUNG: ${datei} wird nicht mehr erzeugt`);
+for (const datei of fs.readdirSync(SCHILD_ORDNER)) if (!schildBenutzt.has(datei)) console.warn(`  WARNUNG: tools/schrift/${datei} wird nicht mehr gebraucht`);
 
 console.log(`${werkzeuge.length} Werkzeuge aus ${WEBSITE}, Kachelhöhen ${[...new Set(werkzeuge.map((w) => w.kartenHoehe))].join('/')}`);
 console.log(geschrieben.length ? `Geändert (${geschrieben.length}): ${geschrieben.join(', ')}` : 'Nichts geändert.');
