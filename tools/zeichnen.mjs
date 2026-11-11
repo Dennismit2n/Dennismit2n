@@ -2,7 +2,7 @@
  * Zeichnet die Bilder der Profil-README im Stil einer Werkstattzeichnung (Blaupause),
  * eingefärbt wie das Twitch-Banner: Violett-Grund mit weicher Aurora, Konturen im
  * Verlauf, leuchtende Icons und ein bunter Saum um den Einsatz.
- * Titelbild, Abschnittsbalken, Werkzeug-Kacheln, den Ablauf (Blatt 04), den Knopf zur Werkzeugkiste und den Kaffee-Knopf.
+ * Titelbild, Abschnittsbalken, Werkzeug-Kacheln, Mindmap, den Ablauf (Blatt 04), Zeitstrahl, den Knopf zur Werkzeugkiste und den Kaffee-Knopf.
  * Reine Funktionen: Farben und Inhalte kommen als Parameter, zurück kommt SVG-Text.
  *
  * Lesetext läuft über Systemschriften (externe Schriften lädt GitHub in Bildern nicht).
@@ -432,6 +432,147 @@ function ablaufHoch(f, a, t) {
 
 export function ablauf(f, a, t, hoch = false) {
   return mitSchild(hoch ? ablaufHoch(f, a, t) : ablaufQuer(f, a, t));
+}
+
+// ------------------------------------------------------------------ Mindmap und Zeitstrahl
+
+/*
+ * Zwei Bilder, die GitHub sonst aus Mermaid-Text zeichnen würde (Dennis, 11.11.2026). Mermaid legt
+ * Größe und Platz jeder Blase selbst fest und wird am Handy unlesbar, darum sind beide selbst
+ * gezeichnet: gleiche Form, aber alle Blätter gleich groß und eine eigene Hochkant-Fassung.
+ *   mindmap()     die Werkstatt in der Mitte, ein Ast je Gruppe, daran die Werkzeuge.
+ *                 Quer hängt die erste Gruppe rechts, die übrigen links. Hoch wächst der Baum nach unten.
+ *   zeitstrahl()  Balken mit Linie: wie viele Werkzeuge in welchem Monat dazukamen.
+ * f = Bauplan-Farben, a = eigene Farben (farben.json, mindmap und zeitstrahl), t = Texte.
+ * Die Namen stehen in der Systemschrift. breite() schätzt für eine sehr breite Schrift; für diese
+ * kleinen Schilder gilt das Maß mal SCHMAL (in Edge mit Segoe UI nachgemessen, mit Luft).
+ */
+export const SCHMAL = 0.85;
+export const MINDMAP = {
+  quer: { breite: 846, blatt: 144, blattPx: 13, astPx: 13 },
+  hoch: { breite: 420, blatt: 250, blattPx: 21, astPx: 21, zahlPx: 21 },
+};
+export const astBreite = (name, px, luft) => Math.ceil(breite(name, px, true) * SCHMAL) + luft;
+const pille = (a, x, y, b, h, name, px, farbe, ast = false) =>
+  `<rect x="${x}" y="${y}" width="${b}" height="${h}" rx="${h / 2}" fill="${ast ? a.ast : a.blatt}" stroke="${farbe}" stroke-width="${ast ? 2 : 1.4}"/>`
+  + text(x + b / 2, +(y + h / 2 + px * 0.35).toFixed(1), px, a.schrift, name, ` text-anchor="middle"${ast ? ' font-weight="600"' : ''}`);
+const bogen = (x1, y1, x2, y2, farbe, dick) => {
+  const m = (x1 + x2) / 2;
+  return `<path d="M${x1} ${y1}C${m} ${y1} ${m} ${y2} ${x2} ${y2}" fill="none" stroke="${farbe}" stroke-width="${dick}" stroke-linecap="round"/>`;
+};
+
+function mindmapQuer(f, a, t) {
+  const { breite: W, blatt: bb, blattPx, astPx } = MINDMAP.quer;
+  const bh = 30, schritt = 36, luft = 22, rand = 44, r = 52, ah = 38;
+  const [rechts, ...links] = t.gruppen.map((g, i) => ({ ...g, farbe: a.aeste[i % a.aeste.length] }));
+  const hoeheR = rechts.dinge.length * schritt - (schritt - bh);
+  const hoeheL = links.reduce((s, g) => s + g.dinge.length * schritt, 0) - (schritt - bh) + (links.length - 1) * luft;
+  const H = Math.max(hoeheR, hoeheL) + 2 * rand, cy = H / 2;
+  const abL = Math.max(...links.map((g) => astBreite(g.name, astPx, 12))), abR = Math.max(104, astBreite(rechts.name, astPx, 12));
+  const axL = 24 + bb + 26, cx = axL + abL + 56 + r, axR = cx + r + 20, bxR = W - 24 - bb;
+  if (bxR - (axR + abR) < 40) throw new Error('Mindmap quer: Gruppennamen zu lang, rechts bleibt kein Platz für die Bögen');
+  const linien = [], knoten = [];
+  linien.push(bogen(cx + r, cy, axR, cy, rechts.farbe, 4));
+  rechts.dinge.forEach((d, i) => {
+    const y = cy - hoeheR / 2 + i * schritt;
+    linien.push(bogen(axR + abR, cy, bxR, y + bh / 2, rechts.farbe, 2));
+    knoten.push(pille(a, bxR, y, bb, bh, d, blattPx, rechts.farbe));
+  });
+  knoten.push(pille(a, axR, cy - ah / 2, abR, ah, rechts.name, astPx, rechts.farbe, true));
+  let y = cy - hoeheL / 2;
+  for (const g of links) {
+    const n = g.dinge.length, mitte = y + (n * schritt - (schritt - bh)) / 2;
+    linien.push(bogen(cx - r, cy, axL + abL, mitte, g.farbe, 4));
+    g.dinge.forEach((d, i) => {
+      linien.push(bogen(axL, mitte, 24 + bb, y + i * schritt + bh / 2, g.farbe, 2));
+      knoten.push(pille(a, 24, y + i * schritt, bb, bh, d, blattPx, g.farbe));
+    });
+    knoten.push(pille(a, axL, mitte - ah / 2, abL, ah, g.name, astPx, g.farbe, true));
+    y += n * schritt + luft;
+  }
+  return [
+    ...ablaufKopf(f, W, H, [[90, 60, 150, 90], [cx, cy, 190, 150], [780, H - 50, 130, 90]], t),
+    verlaufRaum('ms', f.kontur, [cx - r, 0, cx + r, 0]),
+    `<g opacity="0.85">${linien.join('')}</g>`,
+    ...knoten,
+    `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${a.ast}" stroke="url(#ms)" stroke-width="3" filter="url(#ag)"/>`,
+    schild(cx, cy - 1, 18, a.schrift, t.mitte, ' text-anchor="middle"'),
+    text(cx, cy + 18, 12, f.akzent, t.zahl, ' text-anchor="middle"'),
+    '</svg>',
+    '',
+  ].join('\n');
+}
+
+function mindmapHoch(f, a, t) {
+  const { breite: W, blatt: bb, blattPx, astPx, zahlPx } = MINDMAP.hoch;
+  const stamm = 34, zweig = 78, bx = 106, bh = 34, schritt = 40, ah = 46, luft = 18, r = 58, cx = 28 + r, cy = 30 + r;
+  const linien = [], knoten = [];
+  let y = cy + r + 34, letzter = y;
+  t.gruppen.forEach((g, gi) => {
+    const farbe = a.aeste[gi % a.aeste.length], am = y + ah / 2, erstes = y + ah + 10;
+    linien.push(`<path d="M${stamm} ${am}H56" stroke="${farbe}" stroke-width="4" stroke-linecap="round" fill="none"/>`);
+    letzter = am;
+    g.dinge.forEach((d, i) => {
+      const m = erstes + i * schritt + bh / 2;
+      linien.push(`<path d="M${zweig} ${i === 0 ? y + ah : m - schritt}V${m - 12}Q${zweig} ${m} ${zweig + 12} ${m}H${bx}" stroke="${farbe}" stroke-width="2" stroke-linecap="round" fill="none"/>`);
+      knoten.push(pille(a, bx, erstes + i * schritt, bb, bh, d, blattPx, farbe));
+    });
+    knoten.push(pille(a, 56, y, astBreite(g.name, astPx, 36), ah, g.name, astPx, farbe, true));
+    y = erstes + g.dinge.length * schritt + luft;
+  });
+  const H = y - luft + 30;
+  return [
+    ...ablaufKopf(f, W, H, [[cx, cy, 170, 120], [60, H - 120, 150, 130], [380, H / 2, 110, 110]], t),
+    verlaufRaum('ms', f.kontur, [0, cy, 0, letzter]),
+    `<path d="M${stamm} ${cy}V${letzter}" fill="none" stroke="url(#ms)" stroke-width="4" stroke-linecap="round"/>`,
+    `<g opacity="0.85">${linien.join('')}</g>`,
+    ...knoten,
+    `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${a.ast}" stroke="${f.kontur[1]}" stroke-width="3" filter="url(#ag)"/>`,
+    schild(cx, cy + 8, 22, a.schrift, t.mitte, ' text-anchor="middle"'),
+    text(cx + r + 20, cy - 4, zahlPx, f.akzent, t.zahl),
+    text(cx + r + 20, cy + 24, zahlPx, f.schrift2, t.zahl2),
+    '</svg>',
+    '',
+  ].join('\n');
+}
+
+export function mindmap(f, a, t, hoch = false) {
+  return mitSchild(hoch ? mindmapHoch(f, a, t) : mindmapQuer(f, a, t));
+}
+
+export const ZEITSTRAHL = {
+  quer: { breite: 846, hoehe: 400, x0: 70, x1: 806, oben: 116, basis: 340, balken: 84, px: 14, titelPx: 20 },
+  hoch: { breite: 420, hoehe: 460, x0: 56, x1: 398, oben: 150, basis: 390, balken: 46, px: 20, titelPx: 24 },
+};
+
+export function zeitstrahl(f, a, t, hoch = false) {
+  const m = hoch ? ZEITSTRAHL.hoch : ZEITSTRAHL.quer;
+  const { breite: W, hoehe: H, x0, x1, oben, basis, px } = m;
+  const hoechst = Math.max(2, Math.ceil(Math.max(...t.monate.map((mo) => mo.n)) / 2) * 2), stufe = hoechst <= 10 ? 2 : Math.ceil(hoechst / 5);
+  const sb = (x1 - x0) / t.monate.length, bb = Math.min(m.balken, Math.round(sb * 0.57));
+  const mx = (i) => +(x0 + sb * (i + 0.5)).toFixed(1), yv = (v) => +(basis - (v * (basis - oben)) / hoechst).toFixed(1);
+  const teile = [
+    ...ablaufKopf(f, W, H, [[W * 0.14, H * 0.2, W * 0.2, H * 0.3], [W * 0.86, H * 0.85, W * 0.22, H * 0.32], [W * 0.5, H * 0.55, W * 0.14, H * 0.16]], t),
+    `<defs><linearGradient id="zb" x1="0" x2="0" y1="0" y2="1">${stopps(a.balken)}</linearGradient></defs>`,
+    schild(hoch ? 26 : 40, 52, m.titelPx, a.schrift, t.titel),
+    hoch ? text(26, 84, px, f.schrift2, t.unter) : text(x1, 52, px, f.schrift2, t.unter, ' text-anchor="end"'),
+  ];
+  for (let v = 0; v <= hoechst; v += stufe) {
+    teile.push(`<path d="M${x0} ${yv(v)}H${x1}" stroke="${f.raster}" stroke-opacity="${v === 0 ? 0.55 : 0.18}" stroke-width="${v === 0 ? 1.6 : 1}"${v === 0 ? '' : ' stroke-dasharray="3 5"'}/>`
+      + text(x0 - 10, +(yv(v) + px * 0.34).toFixed(1), hoch ? px : px - 2, f.schrift2, String(v), ' text-anchor="end"'));
+  }
+  t.monate.forEach((mo, i) => {
+    const y = yv(mo.n), x = +(mx(i) - bb / 2).toFixed(1), rr = Math.min(10, bb / 5, (basis - y) / 2);
+    if (mo.n > 0) teile.push(`<path d="M${x} ${basis}V${y + rr}Q${x} ${y} ${x + rr} ${y}H${x + bb - rr}Q${x + bb} ${y} ${x + bb} ${y + rr}V${basis}Z" fill="url(#zb)" stroke="${f.kontur[0]}" stroke-opacity="0.7" stroke-width="1.2"/>`);
+    teile.push(text(mx(i), basis + px + 10, px, a.schrift, hoch ? mo.kurz : mo.name, ' text-anchor="middle" font-weight="600"'));
+  });
+  teile.push(`<path d="M${t.monate.map((mo, i) => `${mx(i)} ${yv(mo.n)}`).join('L')}" fill="none" stroke="${a.linie}" stroke-width="${hoch ? 3 : 2.6}" stroke-linejoin="round" filter="url(#ag)"/>`);
+  t.monate.forEach((mo, i) => {
+    teile.push(`<circle cx="${mx(i)}" cy="${yv(mo.n)}" r="${hoch ? 7 : 6}" fill="${f.grund}" stroke="${a.linie}" stroke-width="${hoch ? 3 : 2.6}"/>`
+      + text(mx(i), yv(mo.n) - (hoch ? 16 : 14), px + 3, a.schrift, String(mo.n), ' text-anchor="middle" font-weight="600"'));
+  });
+  teile.push('</svg>', '');
+  return mitSchild(teile.join('\n'));
 }
 
 // ------------------------------------------------------------------ Zahlen (Blatt 05)

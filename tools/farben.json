@@ -108,6 +108,19 @@
     "schrift": "#E2E2F6",
     "tinte": "#0F0F21"
   },
+  "mindmap": {
+    "_rollen": "Mindmap der Werkzeuge (Blatt 02, 11.11.2026): aeste = eine Farbe je Gruppe für Linien und Ränder, in der Reihenfolge der Gruppen im Bauskript; ast = Fläche der Gruppen-Schilder und der Mitte; blatt = Fläche der Werkzeug-Schilder; schrift = Text auf beiden.",
+    "aeste": ["#6D54FB", "#75C7FF", "#AFA1FF", "#4D94C3", "#A5A5FF"],
+    "ast": "#352B80",
+    "blatt": "#181831",
+    "schrift": "#E2E2F6"
+  },
+  "zeitstrahl": {
+    "_rollen": "Zeitstrahl (Blatt 05, 11.11.2026): balken = Verlauf der Balken von oben nach unten, linie = Linie und Punkte darüber, schrift = Titel, Monate und Werte.",
+    "balken": ["#7F69FF", "#352B80"],
+    "linie": "#75C7FF",
+    "schrift": "#E2E2F6"
+  },
   "zahlen": {
     "_rollen": "Blatt 05, die eigenen GitHub-Zahlen (11.11.2026): stufen = fünf Farben des Beitragskalenders von 0 Beiträgen bis sehr viele, flaeche = Zahlenfelder. Dieselben fünf Farben und die Farbe der Schlange (#E2E2F6) stehen auch in .github/workflows/statistik.yml bei der Snake-Action, dort von Hand mitziehen.",
     "stufen": ["#181831", "#493687", "#6D54FB", "#A5A5FF", "#75C7FF"],

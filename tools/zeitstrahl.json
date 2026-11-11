@@ -1,0 +1,25 @@
+{
+  "_quelle": "Tag, an dem das Repo des Werkzeugs angelegt wurde (GitHub-API, created_at, Stand 11.11.2026). vault und ruestkammer haben kein eigenes Repo: dort der erste Commit ihres Ordners (bl4/, mw4/) im Website-Repo. Kommt ein Werkzeug dazu, hier seinen Tag eintragen, sonst bricht das Bauskript ab.",
+  "tage": {
+    "wifi": "2026-07-25",
+    "shrink": "2026-07-26",
+    "bigday": "2026-07-27",
+    "rad": "2026-07-28",
+    "ram": "2026-07-28",
+    "collective": "2026-07-29",
+    "zaehlwerk": "2026-07-30",
+    "fontart": "2026-07-31",
+    "ticker": "2026-08-03",
+    "prismatical": "2026-08-13",
+    "spectroton": "2026-09-09",
+    "masterprompt": "2026-09-12",
+    "heizwarte": "2026-10-12",
+    "vault": "2026-10-18",
+    "ruestkammer": "2026-10-25",
+    "fadenkreuz": "2026-10-26",
+    "craftionary": "2026-10-28",
+    "pocketsum": "2026-10-29",
+    "mods": "2026-11-01",
+    "hourbridge": "2026-11-10"
+  }
+}

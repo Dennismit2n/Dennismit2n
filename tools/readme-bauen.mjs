@@ -23,7 +23,7 @@ import vm from 'node:vm';
 import crypto from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { titel, balken, karte, knopf, ablauf, setzeSchild, ABLAUF, ZAHLEN_ZEICHEN, KNOEPFE, kontrast, hellsteStelle, breite, umbrechen, KARTE, kartenHoehe } from './zeichnen.mjs';
+import { titel, balken, karte, knopf, ablauf, mindmap, zeitstrahl, astBreite, setzeSchild, ABLAUF, MINDMAP, ZEITSTRAHL, SCHMAL, ZAHLEN_ZEICHEN, KNOEPFE, kontrast, hellsteStelle, breite, umbrechen, KARTE, kartenHoehe } from './zeichnen.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const args = process.argv.slice(2);
@@ -145,6 +145,31 @@ const ABLAUF_TEXT = {
     ],
     alt: 'How a tool is made: idea, grill me (a round of questions), decision and what it rules out, build with Claude Code, check script and phone test, release, a news line in 14 languages. If the check fails, it goes back to the build.',
   },
+};
+// Mindmap der Werkzeuge (Blatt 02) und Zeitstrahl (Blatt 05), Dennis, 11.11.2026. Die Mindmap
+// ordnet die Werkzeuge der Website in Gruppen: nach ihrer Art, die Spiele-Werkzeuge für sich.
+// Die erste Gruppe hängt im queren Bild rechts von der Mitte, die übrigen links.
+const GAMING = ['craftionary', 'vault', 'ruestkammer'];
+const MINDMAP_GRUPPEN = [
+  { de: 'Im Browser', en: 'In the browser', passt: (w) => w.art === 'browser' && !GAMING.includes(w.key) },
+  { de: 'Für Windows', en: 'For Windows', passt: (w) => w.art === 'windows' },
+  { de: 'Browser + Windows', en: 'Browser + Windows', passt: (w) => w.art === 'beides' },
+  { de: 'Für Claude Code', en: 'For Claude Code', passt: (w) => w.art === 'skill' || w.art === 'mods' },
+  { de: 'Gaming', en: 'Gaming', passt: (w) => GAMING.includes(w.key) },
+];
+const MINDMAP_TEXT = {
+  de: { titel: 'Die Werkstatt als Mindmap', mitte: 'Werkstatt', zahl: (n) => `${n} Werkzeuge`, zahl2: (k) => `in ${k} Gruppen`, alt: (n, k) => `Die Werkstatt als Mindmap: ${n} Werkzeuge in ${k} Gruppen.` },
+  en: { titel: 'The workshop as a mind map', mitte: 'Workshop', zahl: (n) => `${n} tools`, zahl2: (k) => `in ${k} groups`, alt: (n, k) => `The workshop as a mind map: ${n} tools in ${k} groups.` },
+};
+// Zeitstrahl: wie viele Werkzeuge in welchem Monat dazukamen. Die Tage stehen in tools/zeitstrahl.json.
+const ZEITSTRAHL_TAGE = JSON.parse(fs.readFileSync(path.join(ROOT, 'tools', 'zeitstrahl.json'), 'utf8')).tage;
+const MONATSNAMEN = {
+  de: { lang: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'], kurz: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'] },
+  en: { lang: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'], kurz: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] },
+};
+const ZEITSTRAHL_TEXT = {
+  de: { titel: 'Neue Werkzeuge je Monat', bis: 'bis', zusammen: (n) => `zusammen ${n}`, alt: 'Neue Werkzeuge je Monat' },
+  en: { titel: 'New tools per month', bis: 'to', zusammen: (n) => `${n} in total`, alt: 'New tools per month' },
 };
 const SEIT = '2026';
 const MARKE = 'Dennis_mit_2n';
@@ -303,6 +328,19 @@ function pruefeFarben() {
     }
     for (const px of [ABLAUF.hoch.namePx, ABLAUF.hoch.unterPx, ABLAUF.hoch.massPx]) if (handyPx(px, ABLAUF.hoch.breite) < 14) fehler.push(`Ablauf-Text am Handy unter 14 px (${px})`);
   }
+  // Mindmap und Zeitstrahl: Schrift auf den Schildern, Astfarben gegen den Grund, Schriftgrößen am Handy.
+  {
+    const m = FARBEN.mindmap, z = FARBEN.zeitstrahl, b = FARBEN.bauplan.dunkel, hell = aurorahell('dunkel');
+    mindestens('Mindmap Schrift auf Blatt', m.schrift, m.blatt, 4.5);
+    mindestens('Mindmap Schrift auf Ast', m.schrift, m.ast, 4.5);
+    mindestens('Mindmap Zahl in der Mitte', b.akzent, m.ast, 4.5);
+    for (const c of m.aeste) { mindestens('Mindmap Astfarbe auf Grund', c, b.grund, 3); mindestens('Mindmap Astfarbe auf Blatt', c, m.blatt, 3); }
+    if (m.aeste.length < MINDMAP_GRUPPEN.length) fehler.push('Mindmap: weniger Astfarben als Gruppen');
+    mindestens('Zeitstrahl Schrift auf Aurora', z.schrift, hell, 4.5);
+    mindestens('Zeitstrahl Linie auf Aurora', z.linie, hell, 3);
+    for (const px of [MINDMAP.hoch.blattPx, MINDMAP.hoch.astPx, MINDMAP.hoch.zahlPx]) if (handyPx(px, MINDMAP.hoch.breite) < 14) fehler.push(`Mindmap-Text am Handy unter 14 px (${px})`);
+    if (handyPx(ZEITSTRAHL.hoch.px, ZEITSTRAHL.hoch.breite) < 13.9) fehler.push('Zeitstrahl-Text am Handy unter 14 px');
+  }
   // Text zwischen Zeichen (bis x 140) und Pfeil (ab x 606).
   for (const art of Object.values(KNOEPFE)) {
     if (140 + breite(art.oben, 40, true) > 596) fehler.push(`Knopftext zu breit: ${art.oben}`);
@@ -334,6 +372,11 @@ function bild(datei, alt, breiteAttr, hoeheAttr) {
 // Ablauf-Bild: unter 600 px Fensterbreite die Hochkant-Fassung, sonst die quere.
 function ablaufBild(anhang, alt) {
   return `<picture><source media="(max-width: 600px)" srcset="assets/ablauf-handy${anhang}.svg"><img src="assets/ablauf${anhang}.svg" width="846" alt="${escHtml(alt)}"></picture>`;
+}
+
+// Mindmap und Zeitstrahl: wie beim Ablauf unter 600 px die Hochkant-Fassung.
+function wechselBild(name, anhang, alt) {
+  return `<picture><source media="(max-width: 600px)" srcset="assets/${name}-handy${anhang}.svg"><img src="assets/${name}${anhang}.svg" width="846" alt="${escHtml(alt)}"></picture>`;
 }
 
 // Blatt 05: Die Bilder baut die Action (tools/statistik-bauen.mjs) einmal am Tag. Die Zahlen
@@ -437,6 +480,51 @@ for (const [sprache, t] of Object.entries(ABLAUF_TEXT)) {
   schreibe(path.join('assets', `ablauf${anhang}.svg`), ablauf(FARBEN.bauplan.dunkel, FARBEN.ablauf, texteMitMarke));
   schreibe(path.join('assets', `ablauf-handy${anhang}.svg`), ablauf(FARBEN.bauplan.dunkel, FARBEN.ablauf, texteMitMarke, true));
 }
+// Mindmap: Gruppen aus der Werkzeugliste, jedes Werkzeug in genau einer Gruppe.
+const mindmapAlt = {}, zeitstrahlAlt = {};
+{
+  for (const w of werkzeuge) {
+    const n = MINDMAP_GRUPPEN.filter((g) => g.passt(w)).length;
+    if (n !== 1) fehler.push(`Mindmap: „${w.key}“ passt in ${n} Gruppen statt in eine`);
+  }
+  for (const key of GAMING) if (!werkzeuge.some((w) => w.key === key)) fehler.push(`Mindmap: Gaming-Werkzeug „${key}“ steht nicht in der Werkzeugliste`);
+  for (const [sprache, t] of Object.entries(MINDMAP_TEXT)) {
+    const anhang = sprache === 'de' ? '' : `-${sprache}`;
+    const gruppen = MINDMAP_GRUPPEN.map((g) => ({ name: g[sprache], dinge: werkzeuge.filter(g.passt).map((w) => (w.nameKey ? texte[sprache][w.nameKey] : w.name)) })).filter((g) => g.dinge.length);
+    for (const [fassung, m] of Object.entries(MINDMAP)) {
+      for (const g of gruppen) for (const d of g.dinge) if (breite(d, m.blattPx) * SCHMAL > m.blatt - 10) fehler.push(`Mindmap ${sprache} ${fassung}: Name zu breit: ${d}`);
+    }
+    for (const g of gruppen) if (56 + astBreite(g.name, MINDMAP.hoch.astPx, 36) > MINDMAP.hoch.breite - 24) fehler.push(`Mindmap ${sprache} hoch: Gruppenname zu breit: ${g.name}`);
+    const liste = gruppen.map((g) => `${g.name}: ${g.dinge.join(', ')}.`).join(' ');
+    mindmapAlt[sprache] = `${t.alt(werkzeuge.length, gruppen.length)} ${liste}`;
+    const inhalt = { titel: t.titel, beschreibung: mindmapAlt[sprache], mitte: t.mitte, zahl: t.zahl(werkzeuge.length), zahl2: t.zahl2(gruppen.length), gruppen };
+    schreibe(path.join('assets', `mindmap${anhang}.svg`), mindmap(FARBEN.bauplan.dunkel, FARBEN.mindmap, inhalt));
+    schreibe(path.join('assets', `mindmap-handy${anhang}.svg`), mindmap(FARBEN.bauplan.dunkel, FARBEN.mindmap, inhalt, true));
+  }
+}
+// Zeitstrahl: je Monat vom ersten bis zum letzten Werkzeug ein Balken, auch für Monate ohne Zugang.
+{
+  for (const w of werkzeuge) if (!/^\d{4}-\d{2}-\d{2}$/.test(ZEITSTRAHL_TAGE[w.key] || '')) fehler.push(`Zeitstrahl: Tag für „${w.key}“ fehlt in tools/zeitstrahl.json`);
+  for (const key of Object.keys(ZEITSTRAHL_TAGE)) if (!werkzeuge.some((w) => w.key === key)) fehler.push(`Zeitstrahl: „${key}“ steht in tools/zeitstrahl.json, aber nicht in der Werkzeugliste`);
+  const nummern = werkzeuge.map((w) => ZEITSTRAHL_TAGE[w.key]).filter(Boolean).map((tag) => Number(tag.slice(0, 4)) * 12 + Number(tag.slice(5, 7)) - 1);
+  const von = Math.min(...nummern), bis = Math.max(...nummern);
+  if (bis - von + 1 > 8) fehler.push('Zeitstrahl: mehr als 8 Monate, am Handy werden die Balken zu schmal. Fassung überdenken (z. B. Quartale).');
+  for (const [sprache, t] of Object.entries(ZEITSTRAHL_TEXT)) {
+    const anhang = sprache === 'de' ? '' : `-${sprache}`, namen = MONATSNAMEN[sprache];
+    const monate = [];
+    for (let nr = von; nr <= bis; nr++) monate.push({ name: namen.lang[nr % 12], kurz: namen.kurz[nr % 12], jahr: Math.floor(nr / 12), n: nummern.filter((x) => x === nr).length });
+    const spanne = (art) => {
+      const a = monate[0], z = monate.at(-1);
+      return `${a[art]}${a.jahr === z.jahr ? '' : ` ${a.jahr}`} ${t.bis} ${z[art]} ${z.jahr} · ${t.zusammen(werkzeuge.length)}`;
+    };
+    zeitstrahlAlt[sprache] = `${t.alt}: ${monate.map((m) => `${m.name} ${m.jahr}: ${m.n}`).join(', ')}.`;
+    const q = ZEITSTRAHL.quer, h = ZEITSTRAHL.hoch;
+    if (40 + breite(t.titel, q.titelPx, true) * SCHMAL + 30 > q.x1 - breite(spanne('name'), q.px) * SCHMAL) fehler.push(`Zeitstrahl ${sprache} quer: Titel und Zeitraum stoßen aneinander`);
+    if (26 + breite(spanne('kurz'), h.px) * SCHMAL > h.breite - 24) fehler.push(`Zeitstrahl ${sprache} hoch: Zeitraum zu breit`);
+    schreibe(path.join('assets', `zeitstrahl${anhang}.svg`), zeitstrahl(FARBEN.bauplan.dunkel, FARBEN.zeitstrahl, { titel: t.titel, beschreibung: zeitstrahlAlt[sprache], unter: spanne('name'), monate }));
+    schreibe(path.join('assets', `zeitstrahl-handy${anhang}.svg`), zeitstrahl(FARBEN.bauplan.dunkel, FARBEN.zeitstrahl, { titel: t.titel, beschreibung: zeitstrahlAlt[sprache], unter: spanne('kurz'), monate }, true));
+  }
+}
 if (Math.abs((KARTE.descPx * KACHEL_ANZEIGE) / KARTE.breite - 16) > 0.5) fehler.push('Kacheltext am Desktop nicht mehr 16 px: KACHEL_ANZEIGE anpassen');
 for (const px of [KARTE.descPx, KARTE.artPx]) if (handyPx(px, KARTE.breite) < 14) fehler.push(`Kacheltext am Handy unter 14 px (${px})`);
 
@@ -447,6 +535,10 @@ const teile = {
   knoepfe: `<p><a href="https://dennismit2n.github.io/">${bild('knopf', 'Zur Werkzeugkiste · To the toolbox', 350)}</a> <a href="https://dennismit2n.github.io/gaming.html">${bild('gaming', 'Zum Gaming-Stuff · To the gaming stuff', 350)}</a></p>`,
   ablauf: `<p lang="de">${ablaufBild('', ABLAUF_TEXT.de.alt)}</p>`,
   'ablauf:en': `<p>${ablaufBild('-en', ABLAUF_TEXT.en.alt)}</p>`,
+  mindmap: `<p lang="de">${wechselBild('mindmap', '', mindmapAlt.de)}</p>`,
+  'mindmap:en': `<p>${wechselBild('mindmap', '-en', mindmapAlt.en)}</p>`,
+  zeitstrahl: `<p lang="de">${wechselBild('zeitstrahl', '', zeitstrahlAlt.de)}</p>`,
+  'zeitstrahl:en': `<p>${wechselBild('zeitstrahl', '-en', zeitstrahlAlt.en)}</p>`,
   zahlen: zahlenTeil('de'),
   'zahlen:en': zahlenTeil('en'),
   kaffee: `<a href="https://buymeacoffee.com/dennis_mit_2n">${bild('kaffee', 'Kaffee spendieren · Buy me a coffee', 350)}</a>`,

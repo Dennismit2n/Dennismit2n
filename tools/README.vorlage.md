@@ -16,6 +16,8 @@
 
 <!-- balken:werkzeugkiste -->
 
+<!-- mindmap -->
+
 <!-- karten -->
 
 <p lang="de">Zu Zählwerk gehört der <a href="https://github.com/Dennismit2n/zaehlwerk-ticker/releases/latest">Zählwerk Ticker</a> für Windows. Die Werkzeuge rund ums Spielen haben auf der Website eine eigene Seite: <a href="https://dennismit2n.github.io/gaming.html">Gaming</a>. Was sich zuletzt getan hat und wie jedes Werkzeug funktioniert: <a href="https://dennismit2n.github.io/werkstatt.html">Neuigkeiten &amp; Anleitungen</a></p>
@@ -45,10 +47,16 @@
 
 <!-- zahlen -->
 
+<p lang="de">Und so kam die Werkzeugkiste zusammen. Gezählt ist der Monat, in dem ich das Repo eines Werkzeugs angelegt habe.</p>
+
+<!-- zeitstrahl -->
+
 <details lang="en">
 <summary><b>In English</b></summary>
 
 ### The toolbox
+
+<!-- mindmap:en -->
 
 <!-- werkzeuge:en -->
 
@@ -78,6 +86,10 @@ The gaming tools have their own page on the website: [Gaming](https://dennismit2
 My own numbers, all of them public. A script in this repo recalculates them on GitHub once a day and puts the images right here.
 
 <!-- zahlen:en -->
+
+And this is how the toolbox came together. Each tool counts in the month I created its repo.
+
+<!-- zeitstrahl:en -->
 
 <sub>To be honest: my tools don’t count anything anymore, neither visits nor clicks. Only a few of them need other servers. Spectroton sends the chosen colour (and, when you search by name, your search term) to api.color.pizza to find its name. Prismatical checks passwords with Have I Been Pwned only if you switch it on, and even then only five characters of the hash leave your device, never the password. Heizwarte asks Open-Meteo and Bright Sky for the weather at your places and looks up place names with Photon by komoot. Craftionary downloads the original game textures straight from Mojang, only when you tap the button for it. The Besucher-Ticker fetches your own numbers from GoatCounter with your token, and the token stays on your computer. This page loads nothing from other servers: no counters, no stats about you, every image lives in this repo. The numbers above are my own.</sub>
 
