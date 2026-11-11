@@ -283,6 +283,47 @@ export function balken(f, { nummer, titel: t, en }) {
   ].join('\n'));
 }
 
+// ------------------------------------------------------------------ Beschlag
+
+/*
+ * Beschlag wie auf der Website (11.11.2026): in der gerundeten Kachel ein eckiger
+ * Rahmen, an jeder Ecke eine kleine Schraube in Weißgold. Licht von rechts oben,
+ * darum fallen die Schatten nach links unten. Jede Schraube steht in einem anderen
+ * Winkel: von Hand angezogen, nicht ausgerichtet.
+ * beschlagDefs(id) liefert die Verläufe, beschlag(...) Rahmen und vier Schrauben,
+ * schlagschatten(...) den Schatten der Kachel für den Platz VOR ihrer Fläche.
+ */
+const SCHRAUBEN_WINKEL = [32, -58, 78, -14];
+
+export const beschlagDefs = (id) =>
+  `<radialGradient id="${id}-ss" cx="42%" cy="58%" r="50%"><stop offset="55%" stop-opacity=".6"/><stop offset="100%" stop-opacity="0"/></radialGradient>`
+  + `<radialGradient id="${id}-sk" cx="66%" cy="30%" r="78%"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".2" stop-color="#FFFCEE"/><stop offset=".5" stop-color="#F1E4BC"/><stop offset=".8" stop-color="#C4A964"/><stop offset="1" stop-color="#7A6226"/></radialGradient>`
+  + `<linearGradient id="${id}-sm" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8A6A22" stop-opacity=".55"/><stop offset=".5" stop-color="#FFF3C4" stop-opacity="0"/><stop offset="1" stop-color="#FFFBEA" stop-opacity=".7"/></linearGradient>`
+  + `<filter id="${id}-sw" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="2.4"/></filter>`;
+
+// Eine Schraube, gezeichnet auf 12, mit der linken oberen Ecke bei x, y und der Kantenlänge g.
+function schraube(id, x, y, g, winkel) {
+  return `<g transform="translate(${x} ${y}) scale(${(g / 12).toFixed(4)})">`
+    + `<circle cx="5.1" cy="6.9" r="5" fill="url(#${id}-ss)"/>`
+    + `<circle cx="6" cy="6" r="4.3" fill="url(#${id}-sk)"/>`
+    + `<circle cx="6" cy="6" r="4.3" fill="none" stroke="#553E0C" stroke-opacity=".6" stroke-width=".45"/>`
+    + `<circle cx="6" cy="6" r="2.9" fill="none" stroke="url(#${id}-sm)" stroke-width=".5"/>`
+    + `<g transform="rotate(${winkel} 6 6)"><path d="M2.5 6h7" stroke="#3A2A07" stroke-width="1.2" stroke-linecap="round"/>`
+    + `<path d="M2.7 6.62h6.6" stroke="#FFF7DA" stroke-opacity=".75" stroke-width=".3" stroke-linecap="round"/></g>`
+    + `<ellipse cx="7.7" cy="3.9" rx="1.05" ry=".6" transform="rotate(-35 7.7 3.9)" fill="#FFFFFF" fill-opacity=".9"/></g>`;
+}
+
+// Eckiger Rahmen bei x, y mit Breite b und Höhe h; g = Schraubengröße, ab = ihr Abstand vom Rahmen.
+export function beschlag(id, x, y, b, h, farbe, g, ab, deckkraft = 0.5) {
+  const ecken = [[x + ab, y + ab], [x + b - ab - g, y + ab], [x + ab, y + h - ab - g], [x + b - ab - g, y + h - ab - g]];
+  return `<rect x="${x}" y="${y}" width="${b}" height="${h}" fill="none" stroke="${farbe}" stroke-opacity="${deckkraft}" stroke-width="1.2"/>`
+    + ecken.map(([ex, ey], i) => schraube(id, ex, ey, g, SCHRAUBEN_WINKEL[i])).join('');
+}
+
+// Schatten der Kachel nach links unten; er liegt im Rand des Bildes, darum nur wenige Pixel.
+export const schlagschatten = (id, x, y, b, h, rx, weit = 3) =>
+  `<rect x="${x - weit}" y="${y + weit}" width="${b}" height="${h}" rx="${rx}" fill="#000" opacity="0.55" filter="url(#${id}-sw)"/>`;
+
 // ------------------------------------------------------------------ Werkzeug-Kachel
 
 // descPx 21 bei 420 Breite: am Handy (293 px) 14,65 px.
@@ -301,6 +342,7 @@ export function karte(f, { iconSvg, name, art, zeilen, hoehe, id }, akzent) {
     `<clipPath id="${id}-c"><rect x="${x}" y="${y}" width="${b}" height="${h}" rx="16"/></clipPath>`,
     weich(`${id}-a`, 26),
     weich(`${id}-g`, 8, 100),
+    beschlagDefs(id),
   ];
   let rand = akzent.linie;
   if (akzent.verlauf) {
@@ -312,11 +354,14 @@ export function karte(f, { iconSvg, name, art, zeilen, hoehe, id }, akzent) {
   const o = [];
   o.push(`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${hoehe}" viewBox="0 0 ${W} ${hoehe}">`);
   o.push(`<defs>${defs.join('')}</defs>` + schildStil());
+  o.push(schlagschatten(id, x, y, b, h, 16));
   o.push(`<g clip-path="url(#${id}-c)"><rect width="${W}" height="${hoehe}" fill="${f.grund}"/>`
     + auroraFlecken(f.aurora, [[W - 40, 0, 170, 60], [W - 10, hoehe + 10, 190, 60], [-20, hoehe / 2, 90, 50]], `${id}-a`)
     + `<circle cx="52" cy="50" r="24" fill="${akzent.linie}" opacity="0.55" filter="url(#${id}-g)"/></g>`);
   o.push(`<rect x="${x}" y="${y}" width="${b}" height="${h}" rx="16" fill="none" stroke="${rand}" stroke-width="2.5"/>`);
-  o.push(`<rect x="${r + 9}" y="${r + 9}" width="${W - 2 * r - 18}" height="${hoehe - 2 * r - 18}" rx="9" fill="none" stroke="${f.rahmen}" stroke-opacity="0.55" stroke-width="1.2"/>`);
+  // Eckiger Rahmen 6 px innerhalb der Rundung, Schrauben 8 px groß: Sie enden bei x = 21,5,
+  // der Text beginnt bei 24.
+  o.push(beschlag(id, r + 6, r + 6, W - 2 * r - 12, hoehe - 2 * r - 12, akzent.linie, 8, 2.5));
   o.push(icon(iconSvg, 24, 22, 56, id));
   o.push(schild(94, 48, 24, f.schrift, name, '', 600));
   // Etikett der Art: Umriss in der Kachelfarbe, Text in ihr oder (zu dunkel) im Nebentext.
@@ -742,7 +787,7 @@ export const KNOEPFE = {
 
 // f = Knopf-Farben; rand ist eine Farbe oder ein Verlauf (Liste).
 export function knopf(f, art = KNOEPFE.werkzeugkiste) {
-  const defs = [`<clipPath id="kc"><rect x="2" y="2" width="696" height="124" rx="26"/></clipPath>`, weich('ka', 26)];
+  const defs = [`<clipPath id="kc"><rect x="2" y="2" width="696" height="124" rx="26"/></clipPath>`, weich('ka', 26), beschlagDefs('kb')];
   if (Array.isArray(f.rand)) defs.push(verlaufRaum('kr', f.rand, [2, 2, 698, 126]));
   return [
     '<svg xmlns="http://www.w3.org/2000/svg" width="700" height="128" viewBox="0 0 700 128">',
@@ -750,6 +795,7 @@ export function knopf(f, art = KNOEPFE.werkzeugkiste) {
     `<g clip-path="url(#kc)"><rect width="700" height="128" fill="${f.flaeche}"/>`
       + auroraFlecken(f.aurora, [[90, 70, 170, 60], [560, 64, 200, 50]], 'ka') + '</g>',
     `<rect x="2" y="2" width="696" height="124" rx="26" fill="none" stroke="${farbeOder(f.rand, 'kr')}" stroke-width="3"/>`,
+    beschlag('kb', 11, 11, 678, 106, Array.isArray(f.rand) ? f.rand[0] : f.rand, 13, 4, 0.55),
     art.zeichen(f[art.farbe]),
     text(140, 60, 40, f.schrift, art.oben, ' font-weight="700"'),
     text(140, 102, 34, f.schrift2, art.unten),
