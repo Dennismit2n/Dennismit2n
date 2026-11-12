@@ -98,6 +98,7 @@ const KURZ_SONDERFAELLE = {
 };
 const ZUSATZ_EN = {
   zaehlwerk: 'Plus the [Zählwerk Ticker](https://github.com/Dennismit2n/zaehlwerk-ticker/releases/latest) for Windows.',
+  ticker: 'Plus the [Besucher-Ticker App](https://dennismit2n.github.io/besucher-ticker-app/) for your phone.',
 };
 
 // Abschnittsbalken: Datei, Nummer, Titel, englischer Titel.
