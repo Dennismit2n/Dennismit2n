@@ -163,9 +163,13 @@ function icon(svg, x, y, g, idPraefix) {
  */
 export function titel(f, { claimZeilen, claimEn, name, seit, werkzeuge }) {
   const W = 846, H = 460;
-  const n = werkzeuge.length, spalten = Math.ceil(n / 2), zelleB = 46, zelleH = 42;
-  const innenB = spalten * zelleB, innenH = 2 * zelleH, wand = 6;
-  const dx = Math.round(560 - innenB / 2 - wand), dy = 72;
+  // Der Einsatz liegt zwischen Vorderansicht und Rahmen (x 292 bis 816). Mit mehr Werkzeugen
+  // werden die Fächer schmaler statt über den Rahmen hinaus zu wachsen (13.11.2026).
+  const n = werkzeuge.length, spalten = Math.ceil(n / 2), wand = 6, links = 292, rechts = 816;
+  const zelleB = Math.min(46, Math.floor((rechts - links - 2 * wand) / spalten)), zelleH = 42;
+  if (zelleB < 38) throw new Error(`Titelbild: ${n} Werkzeuge passen nicht mehr in zwei Reihen (Fach nur ${zelleB} breit)`);
+  const innenB = spalten * zelleB, innenH = 2 * zelleH;
+  const dx = Math.round((links + rechts) / 2 - innenB / 2 - wand), dy = 72;
   const ix = dx + wand, iy = dy + wand, eb = innenB + 2 * wand, eh = innenH + 2 * wand;
 
   const defs = [
@@ -175,7 +179,7 @@ export function titel(f, { claimZeilen, claimEn, name, seit, werkzeuge }) {
     weich('ta', 40),
     weich('tg', 5, 100),
     weich('ts', 8, 40),
-    verlaufRaum('tk', f.kontur, [74, 64, 266, 168]),
+    verlaufRaum('tk', f.kontur, [74, 50, 266, 172]),
     verlaufRaum('te', f.kontur, [dx, dy, dx + eb, dy + eh]),
     verlaufRaum('tsv', werkzeuge.map((w) => w.farbe), [dx, 0, dx + eb, 0]),
     verlaufQuer('tc', f.claim),
@@ -197,26 +201,27 @@ export function titel(f, { claimZeilen, claimEn, name, seit, werkzeuge }) {
   for (let i = 1; i < 8; i++) { const x = +(16 + i * 814 / 8).toFixed(1); if (i !== 4) marken.push(`M${x} 10V16M${x} 444V450`); }
   o.push(`<path d="${marken.join('')}" fill="none" stroke="${f.rahmen}" stroke-width="1.6"/>`);
 
-  // --- Vorderansicht: flache Kiste, niedriger Bügelgriff, zwei seitliche Verschlüsse
+  // --- Vorderansicht: flache Kiste, niedriger Bügelgriff, zwei seitliche Verschlüsse.
+  // Maßstäblich (Dennis, 13.11.2026): 28 breit, 14 hoch, gezeichnet 192 × 96.
   const k = [];
-  k.push(`<rect x="74" y="84" width="192" height="78" rx="14" fill="${f.grund}" fill-opacity="0.5" stroke="url(#tk)" stroke-width="2.6"/>`);
-  k.push(`<path d="M170 50V178" stroke="${f.mass}" stroke-opacity="0.55" stroke-width="1" stroke-dasharray="16 4 3 4" fill="none"/>`);
-  k.push(`<rect x="82" y="112" width="176" height="42" rx="8" fill="none" stroke="${f.raster}" stroke-opacity="0.75" stroke-width="1.3" stroke-dasharray="7 5"/>`);
-  k.push(`<path d="M122 84V71Q122 64 129 64H211Q218 64 218 71V84M134 84V76H206V84" fill="none" stroke="url(#tk)" stroke-width="2.6" stroke-linejoin="round"/>`);
-  k.push(`<path d="M74 106H266" stroke="url(#tk)" stroke-width="1.8"/>`);
-  for (const x of [114, 198]) k.push(`<rect x="${x}" y="79" width="28" height="7" rx="2" fill="${f.grund}" stroke="url(#tk)" stroke-width="2"/>`);
+  k.push(`<rect x="74" y="70" width="192" height="96" rx="14" fill="${f.grund}" fill-opacity="0.5" stroke="url(#tk)" stroke-width="2.6"/>`);
+  k.push(`<path d="M170 38V182" stroke="${f.mass}" stroke-opacity="0.55" stroke-width="1" stroke-dasharray="16 4 3 4" fill="none"/>`);
+  k.push(`<rect x="82" y="102" width="176" height="56" rx="8" fill="none" stroke="${f.raster}" stroke-opacity="0.75" stroke-width="1.3" stroke-dasharray="7 5"/>`);
+  k.push(`<path d="M122 70V57Q122 50 129 50H211Q218 50 218 57V70M134 70V62H206V70" fill="none" stroke="url(#tk)" stroke-width="2.6" stroke-linejoin="round"/>`);
+  k.push(`<path d="M74 94H266" stroke="url(#tk)" stroke-width="1.8"/>`);
+  for (const x of [114, 198]) k.push(`<rect x="${x}" y="65" width="28" height="7" rx="2" fill="${f.grund}" stroke="url(#tk)" stroke-width="2"/>`);
   for (const x of [90, 228]) {
-    k.push(`<rect x="${x}" y="98" width="22" height="17" rx="3" fill="${f.grund}"/>`);
-    k.push(`<rect x="${x}" y="98" width="22" height="17" rx="3" fill="${f.akzent}" fill-opacity="0.14" stroke="${f.akzent}" stroke-width="2.4"/><path d="M${x + 6} 106.5h10" stroke="${f.akzent}" stroke-width="2.4" stroke-linecap="round"/>`);
+    k.push(`<rect x="${x}" y="86" width="22" height="17" rx="3" fill="${f.grund}"/>`);
+    k.push(`<rect x="${x}" y="86" width="22" height="17" rx="3" fill="${f.akzent}" fill-opacity="0.14" stroke="${f.akzent}" stroke-width="2.4"/><path d="M${x + 6} 94.5h10" stroke="${f.akzent}" stroke-width="2.4" stroke-linecap="round"/>`);
   }
-  for (const x of [90, 224]) k.push(`<rect x="${x}" y="162" width="26" height="6" rx="2" fill="none" stroke="url(#tk)" stroke-width="2"/>`);
+  for (const x of [90, 224]) k.push(`<rect x="${x}" y="166" width="26" height="6" rx="2" fill="none" stroke="url(#tk)" stroke-width="2"/>`);
   o.push(`<g>${k.join('')}</g>`);
   // Maße, die Maßlinie offen für die Zahl
-  o.push(`<path d="M74 168V198M266 168V198M66 84H40M66 162H40" fill="none" stroke="${f.mass}" stroke-opacity="0.7" stroke-width="1"/>`);
-  o.push(`<path d="M74 190H152M188 190H266M48 84V109M48 137V162" fill="none" stroke="${f.mass}" stroke-width="1.3"/>`);
-  o.push(pfeilspitze(74, 190, 0, f.mass), pfeilspitze(266, 190, 180, f.mass), pfeilspitze(48, 84, 90, f.mass), pfeilspitze(48, 162, -90, f.mass));
-  o.push(text(170, 196, 16, f.akzent, '32', ' text-anchor="middle"'));
-  o.push(text(48, 123, 16, f.akzent, '15', ' text-anchor="middle" dominant-baseline="central" transform="rotate(-90 48 123)"'));
+  o.push(`<path d="M74 174V198M266 174V198M66 70H40M66 166H40" fill="none" stroke="${f.mass}" stroke-opacity="0.7" stroke-width="1"/>`);
+  o.push(`<path d="M74 190H152M188 190H266M48 70V103M48 133V166" fill="none" stroke="${f.mass}" stroke-width="1.3"/>`);
+  o.push(pfeilspitze(74, 190, 0, f.mass), pfeilspitze(266, 190, 180, f.mass), pfeilspitze(48, 70, 90, f.mass), pfeilspitze(48, 166, -90, f.mass));
+  o.push(text(170, 196, 16, f.akzent, '28', ' text-anchor="middle"'));
+  o.push(text(48, 118, 16, f.akzent, '14', ' text-anchor="middle" dominant-baseline="central" transform="rotate(-90 48 118)"'));
   o.push(feldname(74, 220, f, 'VORDERANSICHT'));
 
   // --- Draufsicht, geöffnet: ein Fach je Werkzeug, zwei Reihen
