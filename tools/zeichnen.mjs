@@ -2,7 +2,7 @@
  * Zeichnet die Bilder der Profil-README im Stil einer Werkstattzeichnung (Blaupause),
  * eingefärbt wie das Twitch-Banner: Violett-Grund mit weicher Aurora, Konturen im
  * Verlauf, leuchtende Icons und ein bunter Saum um den Einsatz.
- * Titelbild, Abschnittsbalken, Werkzeug-Kacheln, Mindmap, den Ablauf (Blatt 04), Zeitstrahl, den Knopf zur Werkzeugkiste und den Kaffee-Knopf.
+ * Titelbild, Abschnittsbalken, Werkzeug-Kacheln, Mindmap, den Ablauf (Blatt 04), Zeitstrahl, den Knopf zur Werkzeugkiste, den Kaffee-Knopf und die Schildchen der Werkbank.
  * Reine Funktionen: Farben und Inhalte kommen als Parameter, zurück kommt SVG-Text.
  *
  * Lesetext läuft über Systemschriften (externe Schriften lädt GitHub in Bildern nicht).
@@ -814,4 +814,34 @@ export function knopf(f, art = KNOEPFE.werkzeugkiste) {
     '</svg>',
     '',
   ].join('\n');
+}
+
+// ------------------------------------------------------------------ Schildchen der Werkbank
+
+/*
+ * Schildchen für Sprachen und Werkzeuge in Blatt 02 (Dennis, 13.11.2026): dunkle Fläche wie
+ * die Knöpfe, links ein Fach in der Markenfarbe mit dem Logo, rechts der Name in der
+ * Überschriftenschrift. Eine Fassung für hell und dunkel, die Fläche trägt auf beiden.
+ * logo = Inhalt des Logo-SVGs (Raster 24), farbe = Markenfarbe, schon auf 3:1 gegen die Fläche gebracht.
+ */
+export const SCHILDCHEN = { hoehe: 36, fach: 36, px: 17, luft: 13 };
+export const schildchenBreite = (name) =>
+  Math.round(SCHILDCHEN.fach + SCHILDCHEN.luft * 2 + breite(name, SCHILDCHEN.px, true) * SCHMAL);
+
+export function schildchen(f, { name, logo, farbe, id }) {
+  const H = SCHILDCHEN.hoehe, F = SCHILDCHEN.fach, W = schildchenBreite(name);
+  return mitSchild([
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">`,
+    schildStil(),
+    `<defs><clipPath id="${id}-c"><rect x="1" y="1" width="${W - 2}" height="${H - 2}" rx="7"/></clipPath>${weich(`${id}-g`, 5, 100)}</defs>`,
+    `<g clip-path="url(#${id}-c)"><rect width="${W}" height="${H}" fill="${f.flaeche}"/>`
+      + `<rect width="${F}" height="${H}" fill="${mischen(f.flaeche, farbe, 0.16)}"/>`
+      + `<circle cx="${F / 2}" cy="${H / 2}" r="9" fill="${farbe}" opacity="0.35" filter="url(#${id}-g)"/></g>`,
+    `<path d="M${F} 1V${H - 1}" stroke="${farbe}" stroke-opacity="0.45" stroke-width="1.2"/>`,
+    `<rect x="1" y="1" width="${W - 2}" height="${H - 2}" rx="7" fill="none" stroke="${farbe}" stroke-opacity="0.8" stroke-width="1.5"/>`,
+    `<svg x="${(F - 20) / 2}" y="${(H - 20) / 2}" width="20" height="20" viewBox="0 0 24 24" fill="${farbe}" color="${farbe}">${logo}</svg>`,
+    schild((F + W) / 2, H / 2 + 6, SCHILDCHEN.px, f.schrift, name, ' text-anchor="middle"', 600),
+    '</svg>',
+    '',
+  ].join('\n'));
 }

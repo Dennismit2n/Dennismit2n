@@ -109,7 +109,7 @@
     "tinte": "#0F0F21"
   },
   "mindmap": {
-    "_rollen": "Mindmap der Werkzeuge (Blatt 02, 11.11.2026): aeste = eine Farbe je Gruppe für Linien und Ränder, in der Reihenfolge der Gruppen im Bauskript; ast = Fläche der Gruppen-Schilder und der Mitte; blatt = Fläche der Werkzeug-Schilder; schrift = Text auf beiden.",
+    "_rollen": "Mindmap der Werkzeuge (Blatt 03, seit 13.11.2026; vorher Blatt 02): aeste = eine Farbe je Gruppe für Linien und Ränder, in der Reihenfolge der Gruppen im Bauskript; ast = Fläche der Gruppen-Schilder und der Mitte; blatt = Fläche der Werkzeug-Schilder; schrift = Text auf beiden.",
     "aeste": ["#6D54FB", "#75C7FF", "#AFA1FF", "#4D94C3", "#A5A5FF"],
     "ast": "#352B80",
     "blatt": "#181831",
@@ -119,6 +119,11 @@
     "_rollen": "Zeitstrahl (Blatt 05, 11.11.2026): balken = Verlauf der Balken von oben nach unten, linie = Linie und Punkte darüber, schrift = Titel, Monate und Werte.",
     "balken": ["#7F69FF", "#352B80"],
     "linie": "#75C7FF",
+    "schrift": "#E2E2F6"
+  },
+  "schildchen": {
+    "_rollen": "Schildchen für Sprachen und Werkzeuge in Blatt 02, der Werkbank (13.11.2026): flaeche = dunkle Fläche wie bei den Knöpfen, auch im hellen GitHub, schrift = Name. Logo, Rand und Fach tragen die Markenfarbe aus SCHILDCHEN_LISTE in readme-bauen.mjs.",
+    "flaeche": "#181831",
     "schrift": "#E2E2F6"
   },
   "zahlen": {

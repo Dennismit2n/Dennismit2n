@@ -23,7 +23,7 @@ import vm from 'node:vm';
 import crypto from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { titel, balken, karte, knopf, ablauf, mindmap, zeitstrahl, astBreite, setzeSchild, ABLAUF, MINDMAP, ZEITSTRAHL, SCHMAL, ZAHLEN_ZEICHEN, KNOEPFE, kontrast, hellsteStelle, breite, umbrechen, KARTE, kartenHoehe } from './zeichnen.mjs';
+import { titel, balken, karte, knopf, ablauf, mindmap, zeitstrahl, astBreite, setzeSchild, ABLAUF, MINDMAP, ZEITSTRAHL, SCHMAL, ZAHLEN_ZEICHEN, KNOEPFE, schildchen, schildchenBreite, SCHILDCHEN, kontrast, mischen, hellsteStelle, breite, umbrechen, KARTE, kartenHoehe } from './zeichnen.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const args = process.argv.slice(2);
@@ -104,13 +104,41 @@ const ZUSATZ_EN = {
 // Abschnittsbalken: Datei, Nummer, Titel, englischer Titel.
 const BALKEN = [
   { datei: 'ueber-mich', nummer: '01', titel: 'Über mich', en: 'About me' },
-  { datei: 'werkzeugkiste', nummer: '02', titel: 'Die Werkzeugkiste', en: 'The toolbox' },
-  { datei: 'werkbank', nummer: '03', titel: 'Die Werkbank', en: 'The workbench' },
+  // Werkbank vor der Werkzeugkiste (Dennis, 13.11.2026): wer nach mir schaut, sieht zuerst, womit ich baue.
+  { datei: 'werkbank', nummer: '02', titel: 'Die Werkbank', en: 'The workbench' },
+  { datei: 'werkzeugkiste', nummer: '03', titel: 'Die Werkzeugkiste', en: 'The toolbox' },
   { datei: 'ablauf', nummer: '04', titel: 'Der Ablauf', en: 'How it’s made' },
   { datei: 'zahlen', nummer: '05', titel: 'Die Zahlen', en: 'The numbers' },
 ];
 // Blatt 04: wie ein Werkzeug entsteht (Dennis, 11.11.2026). Die Stationen folgen dem
 // tatsächlichen Ablauf: Idee, grill-me, Entscheidung mit Ausschluss, Bau, Prüfung, Release, News.
+// Schildchen der Werkbank (Dennis, 13.11.2026): je Gruppe eine Reihe, Name = Alt-Text und Aufschrift.
+// logo = Datei in tools/logos (Herkunft und Lizenzen dort in README.md), farbe = Markenfarbe.
+// Schafft eine Farbe auf der dunklen Fläche keine 3:1, hellt sie das Skript auf.
+const SCHILDCHEN_LISTE = {
+  sprachen: [
+    { name: 'HTML', logo: 'html5', farbe: '#E34F26' },
+    { name: 'JavaScript', logo: 'javascript', farbe: '#F7DF1E' },
+    { name: 'TypeScript', logo: 'typescript', farbe: '#3178C6' },
+    { name: 'CSS', logo: 'css', farbe: '#663399' },
+    { name: 'Python', logo: 'python', farbe: '#3776AB' },
+    { name: 'PowerShell', logo: 'powershell', farbe: '#5391FE' },
+  ],
+  etwas: [
+    { name: 'Batch', logo: 'batch', farbe: '#F0B429' },
+    { name: 'Inno Setup', logo: 'innosetup', farbe: '#F0726A' },
+  ],
+  werkzeuge: [
+    { name: 'VS Code', logo: 'vscode', farbe: '#3BA7F5' },
+    { name: 'Git', logo: 'git', farbe: '#F03C2E' },
+    { name: 'GitHub', logo: 'github', farbe: '#181717' },
+    { name: 'Claude Code', logo: 'claude', farbe: '#D97757' },
+    { name: 'Electron', logo: 'electron', farbe: '#47848F' },
+  ],
+};
+// Gezeigte Höhe in der README: Name dann 15 px, am Handy unverändert.
+const SCHILDCHEN_ANZEIGE = 32;
+
 const ABLAUF_TEXT = {
   de: {
     titel: 'Wie ein Werkzeug entsteht',
@@ -526,6 +554,27 @@ const mindmapAlt = {}, zeitstrahlAlt = {};
     schreibe(path.join('assets', `zeitstrahl-handy${anhang}.svg`), zeitstrahl(FARBEN.bauplan.dunkel, FARBEN.zeitstrahl, { titel: t.titel, beschreibung: zeitstrahlAlt[sprache], unter: spanne('kurz'), monate }, true));
   }
 }
+// Schildchen der Werkbank: Markenfarbe auf 3:1 gegen Fläche und Fach bringen, zeichnen.
+const schildchenTeile = {};
+{
+  const s = FARBEN.schildchen;
+  mindestens('Schildchen Name auf Fläche', s.schrift, s.flaeche, 4.5);
+  for (const seite of FARBEN.github.hell) mindestens('Schildchen Fläche gegen GitHub hell', s.flaeche, seite, 3);
+  for (const [gruppe, liste] of Object.entries(SCHILDCHEN_LISTE)) {
+    schildchenTeile[gruppe] = liste.map((e) => {
+      let farbe = e.farbe;
+      const reicht = (c) => kontrast(c, s.flaeche) >= 3 && kontrast(c, mischen(s.flaeche, c, 0.16)) >= 3;
+      for (let t = 0.05; !reicht(farbe) && t <= 1; t += 0.05) farbe = mischen(e.farbe, '#FFFFFF', t);
+      if (!reicht(farbe)) fehler.push(`Schildchen ${e.name}: Farbe schafft keine 3:1`);
+      const quelle = path.join(ROOT, 'tools', 'logos', `${e.logo}.svg`);
+      if (!fs.existsSync(quelle)) { fehler.push(`Logo fehlt: tools/logos/${e.logo}.svg`); return ''; }
+      const logo = fs.readFileSync(quelle, 'utf8').replace(/^[\s\S]*?<svg\b[^>]*>/, '').replace(/<\/svg>\s*$/, '').replace(/<title>[\s\S]*?<\/title>/, '').trim();
+      schreibe(path.join('assets', 'schildchen', `${e.logo}.svg`), schildchen(s, { name: e.name, logo, farbe, id: `s-${e.logo}` }));
+      const b = Math.round((schildchenBreite(e.name) * SCHILDCHEN_ANZEIGE) / SCHILDCHEN.hoehe);
+      return `<img src="assets/schildchen/${e.logo}.svg" width="${b}" height="${SCHILDCHEN_ANZEIGE}" align="absmiddle" alt="${escHtml(e.name)}">`;
+    }).join(' ');
+  }
+}
 if (Math.abs((KARTE.descPx * KACHEL_ANZEIGE) / KARTE.breite - 16) > 0.5) fehler.push('Kacheltext am Desktop nicht mehr 16 px: KACHEL_ANZEIGE anpassen');
 for (const px of [KARTE.descPx, KARTE.artPx]) if (handyPx(px, KARTE.breite) < 14) fehler.push(`Kacheltext am Handy unter 14 px (${px})`);
 
@@ -545,6 +594,9 @@ const teile = {
   kaffee: `<a href="https://buymeacoffee.com/dennis_mit_2n">${bild('kaffee', 'Kaffee spendieren · Buy me a coffee', 350)}</a>`,
   karten: '<p align="center" lang="de">' + werkzeuge.map((w) => `<a href="${w.url}"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/karten/${w.key}-dunkel.svg"><img src="assets/karten/${w.key}-hell.svg" width="${KACHEL_ANZEIGE}" alt="${escHtml(`${w.anzeigename}, ${ART_TEXT.de[w.art]}: ${w.beschreibung}`)}"></picture></a>`).join('') + '</p>',
   'werkzeuge:en': liste(werkzeuge, texte, 'en'),
+  'schildchen:sprachen': schildchenTeile.sprachen,
+  'schildchen:etwas': schildchenTeile.etwas,
+  'schildchen:werkzeuge': schildchenTeile.werkzeuge,
 };
 for (const b of BALKEN) teile[`balken:${b.datei}`] = `<h2 lang="de">${bild(`balken-${b.datei}`, b.titel, 846)}</h2>`;
 
@@ -552,7 +604,7 @@ let readme = fs.readFileSync(VORLAGE, 'utf8').replace(/\r\n/g, '\n');
 for (const [marke, inhalt] of Object.entries(teile)) {
   const platz = `<!-- ${marke} -->`;
   if (!readme.includes(platz)) throw new Error(`Marke ${platz} fehlt in der Vorlage.`);
-  readme = readme.replace(platz, inhalt);
+  readme = readme.split(platz).join(inhalt); // Schildchen stehen zweimal (de und en)
 }
 const rest = readme.match(/<!-- (?!Erzeugt)[a-z:-]+ -->/);
 if (rest) throw new Error(`Unbekannte Marke in der Vorlage: ${rest[0]}`);

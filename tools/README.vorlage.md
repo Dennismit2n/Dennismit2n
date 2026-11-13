@@ -14,20 +14,12 @@
 
 </td></tr></table>
 
-<!-- balken:werkzeugkiste -->
-
-<!-- mindmap -->
-
-<!-- karten -->
-
-<p lang="de">Zu Zählwerk gehört der <a href="https://github.com/Dennismit2n/zaehlwerk-ticker/releases/latest">Zählwerk Ticker</a> für Windows, zum Besucher-Ticker die <a href="https://dennismit2n.github.io/besucher-ticker-app/">Besucher-Ticker App</a> fürs Handy. Die Werkzeuge rund ums Spielen haben auf der Website eine eigene Seite: <a href="https://dennismit2n.github.io/gaming.html">Gaming</a>. Was sich zuletzt getan hat und wie jedes Werkzeug funktioniert: <a href="https://dennismit2n.github.io/werkstatt.html">Neuigkeiten &amp; Anleitungen</a></p>
-
 <!-- balken:werkbank -->
 
 <table lang="de">
 <tr><th align="left" scope="row">Gelernt</th><td>selbst beigebracht, mit KI als Lernhilfe</td></tr>
-<tr><th align="left" scope="row">Sprachen bisher</th><td>HTML, JavaScript, TypeScript, CSS, Python, PowerShell, dazu etwas Batch und Inno Setup</td></tr>
-<tr><th align="left" scope="row">Werkzeuge</th><td>VS Code, Git und GitHub, Claude Code, Electron</td></tr>
+<tr><th align="left" scope="row">Sprachen bisher</th><td><!-- schildchen:sprachen --><br>dazu etwas <!-- schildchen:etwas --></td></tr>
+<tr><th align="left" scope="row">Werkzeuge</th><td><!-- schildchen:werkzeuge --></td></tr>
 <tr><th align="left" scope="row">Gebaut auf</th><td>einem Windows-11-Laptop</td></tr>
 <tr><th align="left" scope="row">Getestet auf</th><td>einem Android-Handy und einem Android-Tablet mit Stift</td></tr>
 <tr><th align="left" scope="row">Sprachen der Werkzeuge</th><td>Website und die meisten Web-Werkzeuge in 14 Sprachen</td></tr>
@@ -36,6 +28,14 @@
 <tr><th align="left" scope="row">Geprüft</th><td>das Bauskript dieser Seite rechnet bei jedem Lauf jeden Textkontrast nach</td></tr>
 <tr><th align="left" scope="row">Gepflegt</th><td>jede sichtbare Änderung bekommt einen Satz in den Neuigkeiten</td></tr>
 </table>
+
+<!-- balken:werkzeugkiste -->
+
+<!-- mindmap -->
+
+<!-- karten -->
+
+<p lang="de">Zu Zählwerk gehört der <a href="https://github.com/Dennismit2n/zaehlwerk-ticker/releases/latest">Zählwerk Ticker</a> für Windows, zum Besucher-Ticker die <a href="https://dennismit2n.github.io/besucher-ticker-app/">Besucher-Ticker App</a> fürs Handy. Die Werkzeuge rund ums Spielen haben auf der Website eine eigene Seite: <a href="https://dennismit2n.github.io/gaming.html">Gaming</a>. Was sich zuletzt getan hat und wie jedes Werkzeug funktioniert: <a href="https://dennismit2n.github.io/werkstatt.html">Neuigkeiten &amp; Anleitungen</a></p>
 
 <!-- balken:ablauf -->
 
@@ -54,20 +54,12 @@
 <details lang="en">
 <summary><b>In English</b></summary>
 
-### The toolbox
-
-<!-- mindmap:en -->
-
-<!-- werkzeuge:en -->
-
-The gaming tools have their own page on the website: [Gaming](https://dennismit2n.github.io/gaming.html). What’s new and how each tool works: [News & guides](https://dennismit2n.github.io/werkstatt.html)
-
 ### The workbench
 
 <table>
 <tr><th align="left" scope="row">Learned</th><td>self-taught, with AI as my tutor</td></tr>
-<tr><th align="left" scope="row">Languages so far</th><td>HTML, JavaScript, TypeScript, CSS, Python, PowerShell, plus a bit of Batch and Inno Setup</td></tr>
-<tr><th align="left" scope="row">Tools</th><td>VS Code, Git and GitHub, Claude Code, Electron</td></tr>
+<tr><th align="left" scope="row">Languages so far</th><td><!-- schildchen:sprachen --><br>plus a bit of <!-- schildchen:etwas --></td></tr>
+<tr><th align="left" scope="row">Tools</th><td><!-- schildchen:werkzeuge --></td></tr>
 <tr><th align="left" scope="row">Built on</th><td>a Windows 11 laptop</td></tr>
 <tr><th align="left" scope="row">Tested on</th><td>an Android phone and an Android tablet with a stylus</td></tr>
 <tr><th align="left" scope="row">Languages of the tools</th><td>the website and most web tools come in 14 languages</td></tr>
@@ -76,6 +68,14 @@ The gaming tools have their own page on the website: [Gaming](https://dennismit2
 <tr><th align="left" scope="row">Checked</th><td>this page’s build script recalculates every text contrast on each run</td></tr>
 <tr><th align="left" scope="row">Maintained</th><td>every visible change gets a line in the news</td></tr>
 </table>
+
+### The toolbox
+
+<!-- mindmap:en -->
+
+<!-- werkzeuge:en -->
+
+The gaming tools have their own page on the website: [Gaming](https://dennismit2n.github.io/gaming.html). What’s new and how each tool works: [News & guides](https://dennismit2n.github.io/werkstatt.html)
 
 ### How it’s made
 
