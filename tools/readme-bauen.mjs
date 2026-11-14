@@ -65,10 +65,11 @@ setzeSchild(teilSchrift);
 // Blatt 05 baut tools/statistik-bauen.mjs auf GitHub, wo kein Python läuft. Darum liegt die
 // Teil-Schrift für alle Ziffern schon hier bereit und gilt als gebraucht.
 teilSchrift([...ZAHLEN_ZEICHEN].sort().join(''), 560);
-// Breite, in der GitHub eine Kachel zeigt. Das Bild ist 420 breit gezeichnet, sein Lesetext 21 px:
-// bei 320 wird er 16 px groß, so groß wie der Fließtext der README (Dennis, 11.11.2026).
-// Am Handy (Spalte 293 px) bleibt alles wie vorher, dort begrenzt die Spaltenbreite.
-const KACHEL_ANZEIGE = 320;
+// Breite, in der GitHub eine Kachel zeigt. Das Bild ist 420 breit gezeichnet, sein Lesetext 24 px:
+// bei 278 wird er 16 px groß, so groß wie der Fließtext der README (Dennis, 11.11.2026), und
+// drei Kacheln passen in die 846er Spalte (Dennis, 13.11.2026). Schmaler umbrechend werden es
+// zwei, am Handy (Spalte 293 px) eine; dort begrenzt die Spaltenbreite, Text 16,7 px.
+const KACHEL_ANZEIGE = 278;
 const THEMEN = ['dunkel', 'hell'];
 
 // Was die Website nicht selbst verrät. Ein Werkzeug, das hier fehlt und nicht
@@ -466,8 +467,8 @@ for (const w of werkzeuge) {
   schreibe(path.join('assets', 'werkzeuge', w.iconDatei), svg);
   if (gerandet) console.log(`  Rand für ${w.iconDatei}`);
   w.zeilen = umbrechen(KURZ_SONDERFAELLE[w.key] || kurz(w.beschreibung), KARTE.descPx, KARTE.descMax);
-  if (breite(w.anzeigename, 24, true) > 420 - 94 - 18) fehler.push(`Name zu breit für die Kachel: ${w.anzeigename}`);
-  if (94 + breite(ART_ETIKETT[w.art], KARTE.artPx) + 24 > 406) fehler.push(`Art-Etikett zu breit: ${ART_ETIKETT[w.art]}`);
+  if (breite(w.anzeigename, 24, true) > KARTE.breite - 94 - 18) fehler.push(`Name zu breit für die Kachel: ${w.anzeigename}`);
+  if (94 + breite(ART_ETIKETT[w.art], KARTE.artPx) + 24 > KARTE.breite - 14) fehler.push(`Art-Etikett zu breit: ${ART_ETIKETT[w.art]}`);
   const variable = kachelfarben.zuordnung[w.key];
   w.farbe = variable && kachelfarben.werte[variable];
   w.verlauf = variable && kachelfarben.verlaeufe[variable];
@@ -476,9 +477,10 @@ for (const w of werkzeuge) {
   mindestens(`Kachelrand ${w.key} auf Kachelgrund dunkel`, w.farbe, FARBEN.bauplan.dunkel.grund, 3);
   mindestens(`Etikett ${w.key} dunkel auf Aurora`, kachelAkzent(w.farbe, null, 'dunkel').text, aurorahell('dunkel'), 4.5);
 }
-// Nebeneinander stehende Kacheln (am Desktop je zwei) bekommen dieselbe Höhe.
+// Nebeneinander stehende Kacheln (am Desktop je drei) bekommen dieselbe Höhe.
+const JE_REIHE = 3;
 werkzeuge.forEach((w, i) => {
-  const paar = werkzeuge.slice(i - (i % 2), i - (i % 2) + 2);
+  const paar = werkzeuge.slice(i - (i % JE_REIHE), i - (i % JE_REIHE) + JE_REIHE);
   const zeilen = Math.max(...paar.map((p) => p.zeilen.length));
   w.kartenHoehe = kartenHoehe(zeilen);
 });

@@ -57,7 +57,8 @@ export function breite(text, px, fett = false) {
 export function umbrechen(text, px, maxPx) {
   const stuecke = [];
   for (const wort of text.split(' ')) {
-    const teile = wort.split(/(?<=-)(?=\p{L})/u);
+    // Trennen nur hinter mindestens drei Buchstaben: „E-Mail“ bleibt zusammen, „Kontext-Paket“ nicht.
+    const teile = wort.split(/(?<=\p{L}{3}-)(?=\p{L})/u);
     teile.forEach((t, i) => stuecke.push({ t, leer: i === 0 }));
   }
   const zeilen = [];
@@ -341,8 +342,10 @@ export const schlagschatten = (id, x, y, b, h, rx, weit = 3) =>
 
 // ------------------------------------------------------------------ Werkzeug-Kachel
 
-// descPx 21 bei 420 Breite: am Handy (293 px) 14,65 px.
-export const KARTE = { breite: 420, rand: 5, descPx: 21, descZeile: 27, descMax: 368, artPx: 21, oben: 122 };
+// descPx 24 bei 420 Breite: am Desktop (drei Kacheln je 278 px) 15,9 px, am Handy (293 px) 16,7 px.
+// Schmaler als 420 geht nicht, „create-masterprompt“ braucht in 24 px die ganze Breite.
+// Bis 13.11.2026 war der Text 21 px und die Kacheln standen zu zweit nebeneinander.
+export const KARTE = { breite: 420, rand: 5, descPx: 24, descZeile: 31, descMax: 368, artPx: 24, oben: 128 };
 
 // Höhe einer Kachel mit n Beschreibungszeilen.
 export const kartenHoehe = (n) => KARTE.oben + (n - 1) * KARTE.descZeile + 26;
@@ -381,8 +384,8 @@ export function karte(f, { iconSvg, name, art, zeilen, hoehe, id }, akzent) {
   o.push(schild(94, 48, 24, f.schrift, name, '', 600));
   // Etikett der Art: Umriss in der Kachelfarbe, Text in ihr oder (zu dunkel) im Nebentext.
   const eb = breite(art, KARTE.artPx) + 24;
-  o.push(`<rect x="94" y="58" width="${eb.toFixed(1)}" height="30" rx="15" fill="${f.grund}" fill-opacity="0.5" stroke="${akzent.linie}" stroke-width="1.8"/>`);
-  o.push(text(106, 80, KARTE.artPx, akzent.text, art));
+  o.push(`<rect x="94" y="57" width="${eb.toFixed(1)}" height="34" rx="17" fill="${f.grund}" fill-opacity="0.5" stroke="${akzent.linie}" stroke-width="1.8"/>`);
+  o.push(text(106, 82, KARTE.artPx, akzent.text, art));
   zeilen.forEach((z, i) => o.push(text(24, KARTE.oben + i * KARTE.descZeile, KARTE.descPx, f.schrift2, z)));
   o.push('</svg>', '');
   return mitSchild(o.join('\n'));
