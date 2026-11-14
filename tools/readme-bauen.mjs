@@ -66,10 +66,11 @@ setzeSchild(teilSchrift);
 // Teil-Schrift für alle Ziffern schon hier bereit und gilt als gebraucht.
 teilSchrift([...ZAHLEN_ZEICHEN].sort().join(''), 560);
 // Breite, in der GitHub eine Kachel zeigt. Das Bild ist 420 breit gezeichnet, sein Lesetext 24 px:
-// bei 278 wird er 16 px groß, so groß wie der Fließtext der README (Dennis, 11.11.2026), und
-// drei Kacheln passen in die 846er Spalte (Dennis, 13.11.2026). Schmaler umbrechend werden es
-// zwei, am Handy (Spalte 293 px) eine; dort begrenzt die Spaltenbreite, Text 16,7 px.
-const KACHEL_ANZEIGE = 278;
+// bei 276 wird er 15,8 px groß, fast so groß wie der Fließtext der README (Dennis, 11.11.2026), und
+// drei Kacheln passen nebeneinander (Dennis, 13.11.2026). Live ist die Spalte bei 1280 px Fenster
+// nur 831 breit, nicht 846: 3 × 278 brach dort auf zwei um. Schmaler umbrechend werden es
+// zwei, am Handy eine.
+const KACHEL_ANZEIGE = 276;
 const THEMEN = ['dunkel', 'hell'];
 
 // Was die Website nicht selbst verrät. Ein Werkzeug, das hier fehlt und nicht
