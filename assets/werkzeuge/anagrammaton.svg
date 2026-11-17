@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Anagrammaton: das kleine App-Symbol (favicon.svg der App), vier Buchstabenkacheln A, N, A, G,
+       die letzte schon im Flug leicht gedreht. Die erste Fläche ist ein Vollton, damit readme-bauen.mjs
+       der Profil-README ihr den feinen Rand geben kann. Die Verläufe tragen den Vorsatz ag-, weil das
+       Symbol auch eingebettet neben anderen steht. -->
+  <defs>
+    <linearGradient id="ag-a" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8D55DD"/><stop offset="1" stop-color="#8B1693"/></linearGradient>
+    <linearGradient id="ag-n" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#CB3587"/><stop offset="1" stop-color="#A6002F"/></linearGradient>
+    <linearGradient id="ag-g" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#AF6600"/><stop offset="1" stop-color="#6C5500"/></linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="16" fill="#15121E" stroke="#6E7681" stroke-width="2"/>
+  <g fill="#000" fill-opacity=".45">
+    <rect x="7.5" y="11" width="22" height="22" rx="4"/><rect x="31.5" y="11" width="22" height="22" rx="4"/>
+    <rect x="7.5" y="35" width="22" height="22" rx="4"/><rect x="31.5" y="35" width="22" height="22" rx="4" transform="rotate(-7 42.5 46)"/>
+  </g>
+  <rect x="9" y="9" width="22" height="22" rx="4" fill="url(#ag-a)"/>
+  <rect x="33" y="9" width="22" height="22" rx="4" fill="url(#ag-n)"/>
+  <rect x="9" y="33" width="22" height="22" rx="4" fill="url(#ag-a)"/>
+  <g transform="rotate(-7 44 44)"><rect x="33" y="33" width="22" height="22" rx="4" fill="url(#ag-g)"/></g>
+  <g fill="none" stroke="#F4EFFA" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M14 26 20 14l6 12M16.6 21.6h6.8"/>
+    <path d="M39 26V14l10 12V14"/>
+    <path d="M14 50 20 38l6 12M16.6 45.6h6.8"/>
+    <path d="M49.3 40.6A6.3 6.3 0 1 0 50.2 45H44.6" transform="rotate(-7 44 44)"/>
+  </g>
+</svg>
